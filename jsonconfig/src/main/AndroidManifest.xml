@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ptpmcn.cong.jsonconfig" >
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <application
+        android:allowBackup="true" >
+        <activity android:name=".About_Activity" android:label="About">
+
+        </activity>
+    </application>
+
+</manifest>

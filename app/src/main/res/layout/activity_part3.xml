@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout
+        android:id="@+id/group_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:stretchColumns="1">
+        <TableRow>
+            <Button
+                android:id="@+id/btn_prev"
+                android:layout_width="wrap_content"
+                android:layout_height="60dip"
+                android:text="Lùi"/>
+            <Button
+                android:id="@+id/btn_finish"
+                android:layout_width="wrap_content"
+                android:layout_height="60dip"
+                android:text="Kết thúc"/>
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="wrap_content"
+                android:layout_height="60dip"
+                android:text="Tiếp"/>
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_above="@id/group_button"
+        android:id="@+id/player_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </LinearLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/player_container">
+        <LinearLayout
+            android:id="@+id/choose_layout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioGroup
+                android:id="@+id/group_radio1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/tv_q1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cau 1"/>
+                <RadioButton
+                    android:id="@+id/radio1A"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A"/>
+                <RadioButton
+                    android:id="@+id/radio1B"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="B"/>
+                <RadioButton
+                    android:id="@+id/radio1C"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="C" />
+                <RadioButton
+                    android:id="@+id/radio1D"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="D"/>
+            </RadioGroup>
+            <RadioGroup
+                android:id="@+id/group_radio2"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/tv_q2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cau 2"/>
+                <RadioButton
+                    android:id="@+id/radio2A"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A"/>
+                <RadioButton
+                    android:id="@+id/radio2B"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="B"/>
+                <RadioButton
+                    android:id="@+id/radio2C"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="C" />
+                <RadioButton
+                    android:id="@+id/radio2D"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="D"/>
+            </RadioGroup>
+            <RadioGroup
+                android:id="@+id/group_radio3"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/tv_q3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cau 3"/>
+                <RadioButton
+                    android:id="@+id/radio3A"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A"/>
+                <RadioButton
+                    android:id="@+id/radio3B"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="B"/>
+                <RadioButton
+                    android:id="@+id/radio3C"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="C" />
+                <RadioButton
+                    android:id="@+id/radio3D"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="D"/>
+            </RadioGroup>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

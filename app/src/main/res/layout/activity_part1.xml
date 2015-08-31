@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout
+        android:id="@+id/group_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:stretchColumns="1">
+        <TableRow>
+            <Button
+                android:id="@+id/btn_prev"
+                android:layout_width="wrap_content"
+                android:layout_height="60dip"
+                android:text="Lùi"/>
+            <Button
+                android:id="@+id/btn_finish"
+                android:layout_width="wrap_content"
+                android:layout_height="60dip"
+                android:text="Kết thúc"/>
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="wrap_content"
+                android:layout_height="60dip"
+                android:text="Tiếp"/>
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_above="@id/group_button"
+        android:id="@+id/player_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/choose_layout"
+        android:layout_above="@id/player_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="60dip">
+        <RadioGroup
+            android:id="@+id/group_radio"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+                <RadioButton
+                    android:id="@+id/radioA"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A"/>
+                <RadioButton
+                    android:id="@+id/radioB"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="B"/>
+                <RadioButton
+                    android:id="@+id/radioC"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="C" />
+                <RadioButton
+                    android:id="@+id/radioD"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="D"/>
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_above="@id/choose_layout"
+        android:id="@+id/image_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </LinearLayout>
+
+</RelativeLayout>

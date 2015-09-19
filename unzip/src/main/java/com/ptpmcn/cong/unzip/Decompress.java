@@ -42,7 +42,8 @@ public class Decompress {
                 file.setLastModified(time);
             */
             }
-            zipFile.delete();
+            //Delete file zip after decompress
+            //zipFile.delete();
         } finally {
             zis.close();
         }

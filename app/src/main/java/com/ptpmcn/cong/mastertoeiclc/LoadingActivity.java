@@ -33,8 +33,8 @@ public class LoadingActivity extends AppCompatActivity {
             protected Boolean doInBackground(String... params) {
 
                 File dataFile = new File(context.getFilesDir()+"/data.db");
-                File part1File = new File(context.getFilesDir()+"/part1.zip");
-                File part3File = new File(context.getFilesDir()+"/part3.zip");
+                File part1File = new File(context.getFilesDir()+"/data0.zip");
+                //File part3File = new File(context.getFilesDir()+"/part3.zip");
                     if (internetAvailable()) {
 
                         if(!dataFile.exists()){
@@ -42,8 +42,8 @@ public class LoadingActivity extends AppCompatActivity {
                         }
                         if(!part1File.exists() ){
                             Downloader.download(context
-                                , "https://www.dropbox.com/s/xer7kzymso7x56c/part1.zip?dl=1");
-                            part1File = new File(context.getFilesDir() + "/part1.zip");
+                                , "https://www.dropbox.com/s/fhb584qhofibl94/data0.zip?dl=1");
+                            part1File = new File(context.getFilesDir() + "/data0.zip");
                             if (part1File.exists())
                                 try {
                                     Decompress.unzip(part1File, context.getFilesDir());
@@ -52,7 +52,7 @@ public class LoadingActivity extends AppCompatActivity {
                                 }
 
                         }
-                        if(!part3File.exists()) {
+                        /*if(!part3File.exists()) {
                             Downloader.download(context
                                     , "https://www.dropbox.com/s/vwqse77bvaflker/part3.zip?dl=1");
                             part3File = new File(context.getFilesDir() + "/part3.zip");
@@ -63,7 +63,7 @@ public class LoadingActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             }
-                        }
+                        }*/
                     }else{
                         return false;
                     }

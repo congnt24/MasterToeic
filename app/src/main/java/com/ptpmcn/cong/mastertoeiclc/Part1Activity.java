@@ -1,9 +1,11 @@
 package com.ptpmcn.cong.mastertoeiclc;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,6 +76,9 @@ public class Part1Activity extends AppCompatActivity {
                 }
             }
         });
+        btnprev.setOnClickListener(onPrev);
+        btnnext.setOnClickListener(onNext);
+        btnfinish.setOnClickListener(onFinish);
     }
 
     private void initdata() {
@@ -88,9 +93,50 @@ public class Part1Activity extends AppCompatActivity {
         }
     }
     private void initQuestion(){
-        AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part1/" + list.get(count)[0] + ".mp3"))
-            .initImage(new File(context.getFilesDir() + "/part1/" + list.get(count)[0] + ".jpg"));
+        try {
+            AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part1/" + list.get(count)[0] + ".mp3"))
+                    .initImage(new File(context.getFilesDir() + "/part1/" + list.get(count)[0] + ".jpg"));
+        }catch (Exception e){
+
+        }
     }
+
+    View.OnClickListener onPrev = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            if (count>0){
+                count--;
+                initQuestion();
+            }
+        }
+    };
+    View.OnClickListener onNext = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            if (count<9){
+                count++;
+                initQuestion();
+            }
+            else {//Ket thuc
+
+            }
+        }
+    };
+    View.OnClickListener onFinish = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context, ResultActivity.class);
+            Bundle b = new Bundle();
+            b.putInt("part", 1);
+            b.putInt("correct", 1);
+            b.putInt("total", 10);
+            intent.putExtras(b);
+            startActivity(intent);
+        }
+    };
+
+
+
 
 
     //Menu
@@ -111,8 +157,8 @@ public class Part1Activity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.showLyric) {
-
             if (imgDisplay) {
+                Toast.makeText(Part1Activity.this, "Show Transcript", Toast.LENGTH_SHORT).show();
                 AudioCong.getInstance().setOnlyLyricUi(imagecontainer, getLayoutInflater());
                 imgDisplay = false;
             } else {

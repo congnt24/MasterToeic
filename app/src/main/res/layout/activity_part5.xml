@@ -27,17 +27,9 @@
                 android:text="Tiếp"/>
         </TableRow>
     </TableLayout>
-
-    <LinearLayout
-        android:layout_above="@id/group_button"
-        android:id="@+id/player_container"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </LinearLayout>
     <LinearLayout
         android:id="@+id/parent_group"
-        android:layout_above="@id/player_container"
+        android:layout_above="@id/group_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -87,7 +79,7 @@
 
     <LinearLayout
         android:layout_above="@id/parent_group"
-        android:id="@+id/image_container"
+        android:id="@+id/question_container"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

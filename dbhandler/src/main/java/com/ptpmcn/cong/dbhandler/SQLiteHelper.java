@@ -18,8 +18,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         super(context, DB_NAME, null, 1);
         this.context = context;
     }
-    public boolean openDatabase(){
-        File file = new File(context.getFilesDir()+"/"+DB_NAME);
+    public boolean openDatabase(String dbname){
+        File file = new File(context.getFilesDir()+"/"+dbname);
         if (file.exists()) {
             sqLiteDatabase = SQLiteDatabase.openDatabase(file.getPath(), null, SQLiteDatabase.OPEN_READONLY);
             return true;

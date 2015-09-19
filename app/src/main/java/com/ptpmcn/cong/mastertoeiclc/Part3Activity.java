@@ -1,10 +1,12 @@
 package com.ptpmcn.cong.mastertoeiclc;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -65,8 +67,10 @@ public class Part3Activity extends AppCompatActivity {
             Bundle b = getIntent().getExtras();
             if (b.getInt("part") == 3){//Part 3
                 part = 3;
+                getSupportActionBar().setTitle("Part 3");
             }else if (b.getInt("part") == 4){//Part 4
                 part = 4;
+                getSupportActionBar().setTitle("Part 4");
             }
         }
 
@@ -109,6 +113,9 @@ public class Part3Activity extends AppCompatActivity {
         this.btnfinish = (Button) findViewById(R.id.btn_finish);
         this.btnprev = (Button) findViewById(R.id.btn_prev);
         AudioCong.getInstance().setDefaultUi(playercontainer, getLayoutInflater());
+        btnprev.setOnClickListener(onPrev);
+        btnnext.setOnClickListener(onNext);
+        btnfinish.setOnClickListener(onFinish);
     }
     private void initdata() {
         if (SQLiteHelper.sqLiteDatabase != null) {
@@ -131,24 +138,53 @@ public class Part3Activity extends AppCompatActivity {
         }
     }
     private void initQuestion(){
-        AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part"+part+"/" + list.get(count)[0] + ".mp3"));
-        String[] questions = list.get(count)[1].replaceAll("(?m)^\\s", "").split("\\n");
-        tvq1.setText(questions[0]);
-        radio1A.setText(questions[1]);
-        radio1B.setText(questions[2]);
-        radio1C.setText(questions[3]);
-        radio1D.setText(questions[4]);
-        tvq2.setText(questions[5]);
-        radio2A.setText(questions[6]);
-        radio2B.setText(questions[7]);
-        radio2C.setText(questions[8]);
-        radio2D.setText(questions[9]);
-        tvq3.setText(questions[10]);
-        radio3A.setText(questions[11]);
-        radio3B.setText(questions[12]);
-        radio3C.setText(questions[13]);
-        radio3D.setText(questions[14]);
-    }
+        try {
+            AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part"+part+"/" + list.get(count)[0] + ".mp3"));
+            String[] questions = list.get(count)[1].replaceAll("(?m)^\\s", "").split("\\n");
+            tvq1.setText(questions[0]);
+            radio1A.setText(questions[1]);
+            radio1B.setText(questions[2]);
+            radio1C.setText(questions[3]);
+            radio1D.setText(questions[4]);
+            tvq2.setText(questions[5]);
+            radio2A.setText(questions[6]);
+            radio2B.setText(questions[7]);
+            radio2C.setText(questions[8]);
+            radio2D.setText(questions[9]);
+            tvq3.setText(questions[10]);
+            radio3A.setText(questions[11]);
+            radio3B.setText(questions[12]);
+            radio3C.setText(questions[13]);
+            radio3D.setText(questions[14]);
+        }catch (Exception e){
 
+        }
+    }
+    View.OnClickListener onPrev = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            if (count>0) count--;
+            initQuestion();
+        }
+    };
+    View.OnClickListener onNext = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            if (count<9) count++;
+            initQuestion();
+        }
+    };
+    View.OnClickListener onFinish = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context, ResultActivity.class);
+            Bundle b = new Bundle();
+            b.putInt("part", 1);
+            b.putInt("correct", 1);
+            b.putInt("total", 30);
+            intent.putExtras(b);
+            startActivity(intent);
+        }
+    };
 
 }

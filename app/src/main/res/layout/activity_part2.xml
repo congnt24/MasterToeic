@@ -35,8 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </LinearLayout>
+
     <LinearLayout
-        android:id="@+id/parent_group"
         android:layout_above="@id/player_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,9 +51,8 @@
             android:id="@+id/group_radio"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="50dip"
-            android:weightSum="4"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_height="50dp">
             <RadioButton
                 android:layout_weight="1"
                 android:layout_centerHorizontal="true"
@@ -76,21 +75,86 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="C"/>
+        </RadioGroup>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text="Cau 2:"/>
+        <RadioGroup
+            android:id="@+id/group_radio1"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="50dp">
             <RadioButton
+                android:layout_weight="1"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/radioD"
+                android:layout_gravity="end"
+                android:id="@+id/radioA1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="D"/>
+                android:text="A"/>
+            <RadioButton
+                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/radioB1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="B"/>
+            <RadioButton
+                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/radioC1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="C"/>
+        </RadioGroup>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text="Cau 3:"/>
+        <RadioGroup
+            android:id="@+id/group_radio2"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="50dp">
+            <RadioButton
+                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="end"
+                android:id="@+id/radioA2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="A"/>
+            <RadioButton
+                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/radioB2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="B"/>
+            <RadioButton
+                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/radioC2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="C"/>
         </RadioGroup>
     </LinearLayout>
 
+<!--
     <LinearLayout
-        android:layout_above="@id/parent_group"
+        android:layout_above="@id/group_radio"
         android:id="@+id/image_container"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </LinearLayout>
+    </LinearLayout>-->
 
 </RelativeLayout>

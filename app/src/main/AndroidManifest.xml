@@ -25,8 +25,16 @@
             android:label="Part 1" >
         </activity>
         <activity
+            android:name=".Part2Activity"
+            android:label="Part 2" >
+        </activity>
+        <activity
             android:name=".Part3Activity"
             android:label="Part 3" >
+        </activity>
+        <activity
+            android:name=".ResultActivity"
+            android:label="Result" >
         </activity>
     </application>
 

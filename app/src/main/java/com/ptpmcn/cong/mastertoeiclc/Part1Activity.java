@@ -5,20 +5,24 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.example.cong.audiocong.AudioCong;
 import com.ptpmcn.cong.dbhandler.SQLiteHelper;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,6 +40,10 @@ public class Part1Activity extends AppCompatActivity {
     private int count = 0;
     Context context;
     private boolean imgDisplay=true;
+    private String[] listResult = new String[10];
+    private LinearLayout parentgroup;
+    private ArrayList<String> listCorrect = new ArrayList<>();
+    //private int sentenceCount=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +87,7 @@ public class Part1Activity extends AppCompatActivity {
         btnprev.setOnClickListener(onPrev);
         btnnext.setOnClickListener(onNext);
         btnfinish.setOnClickListener(onFinish);
+        groupradio.setOnCheckedChangeListener(onChecked);
     }
 
     private void initdata() {
@@ -86,6 +95,7 @@ public class Part1Activity extends AppCompatActivity {
             Cursor cs = SQLiteHelper.sqLiteDatabase.query("part1", null, null, null, null, null, null);
             while (cs.moveToNext()) {
                 list.add(new String[]{cs.getString(1), cs.getString(2)});
+                listCorrect.add(cs.getString(2));
             }
             initQuestion();
         }else{
@@ -101,7 +111,7 @@ public class Part1Activity extends AppCompatActivity {
         }
     }
 
-    View.OnClickListener onPrev = new View.OnClickListener(){
+    private View.OnClickListener onPrev = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
             if (count>0){
@@ -110,30 +120,71 @@ public class Part1Activity extends AppCompatActivity {
             }
         }
     };
-    View.OnClickListener onNext = new View.OnClickListener(){
+    private View.OnClickListener onNext = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
             if (count<9){
                 count++;
                 initQuestion();
             }
-            else {//Ket thuc
-
+            else {//neu tra loi het 10 cau thi tu ket thuc khi chon next
+                finishTest();
             }
         }
     };
-    View.OnClickListener onFinish = new View.OnClickListener(){
+    private View.OnClickListener onFinish = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(context, ResultActivity.class);
-            Bundle b = new Bundle();
-            b.putInt("part", 1);
-            b.putInt("correct", 1);
-            b.putInt("total", 10);
-            intent.putExtras(b);
-            startActivity(intent);
+            finishTest();
         }
     };
+
+    private RadioGroup.OnCheckedChangeListener onChecked = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            listResult[count] = getResult(checkedId);
+        }
+    };
+
+    //Finish test method, show the result of current test
+    private void finishTest(){
+        //Count correct answer
+        Intent intent = new Intent(context, ResultActivity.class);
+        Bundle b = new Bundle();
+        b.putInt("part", 1);
+        b.putInt("correct", 1);
+        b.putStringArray("result", listResult);
+        b.putStringArray("correctanswer", ListToArray(listCorrect));
+        b.putInt("total", 10);
+        intent.putExtras(b);
+        startActivity(intent);
+    }
+    public String[] ListToArray(List<String> list){
+        String[] tmp = new String[10];
+        for (int i = 0; i < list.size(); i++) {
+            tmp[i] = list.get(i);
+        }
+        return tmp;
+    }
+    public String getResult(int checkedId){
+        String result = "X";
+        switch (checkedId){
+            case R.id.radioA:
+                result = "A";
+                break;
+            case R.id.radioB:
+                result = "B";
+                break;
+            case R.id.radioC:
+                result = "C";
+                break;
+            case R.id.radioD:
+                result = "D";
+                break;
+        }
+        return result;
+    }
+
 
 
 

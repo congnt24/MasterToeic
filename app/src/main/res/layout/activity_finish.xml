@@ -2,35 +2,60 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_above="@+id/linearLayout">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="30dip"
+            android:textSize="30dip"
+            android:textColor="@android:color/holo_red_dark"
+            android:text="Result"
+            android:id="@+id/tv_Result"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dip"
+            android:textSize="23dip"
+            android:text="Time"
+            android:gravity="center"
+            android:id="@+id/tv_time"
+            android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="30dip"
-        android:textSize="30dip"
-        android:textColor="@android:color/holo_red_dark"
-        android:text="Result"
-        android:id="@+id/tv_Result"
-        android:layout_centerHorizontal="true"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dip"
-        android:textSize="23dip"
-        android:text="Time"
-        android:id="@+id/tv_time"
-        android:layout_below="@id/tv_Result"
-        android:layout_centerHorizontal="true" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dip"
+            android:textSize="23dip"
+            android:text="Correct Num"
+            android:gravity="center"
+            android:id="@+id/tv_correct"
+            android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dip"
-        android:textSize="23dip"
-        android:text="Correct"
-        android:id="@+id/tv_correct"
-        android:layout_below="@id/tv_time"
-        android:layout_centerHorizontal="true" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dip"
+            android:textSize="23dip"
+            android:text="Answer"
+            android:id="@+id/tv_resultanswer"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dip"
+            android:textSize="23dip"
+            android:text="Correct"
+            android:id="@+id/tv_correctanswer"
+            android:layout_centerHorizontal="true" />
+    </LinearLayout>
+
 
     <ImageView
         android:layout_width="match_parent"
@@ -41,7 +66,8 @@
         android:layout_above="@id/iv_Banner"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout">
         <Button
             android:layout_weight="1"
             style="@android:style/Widget.Button"

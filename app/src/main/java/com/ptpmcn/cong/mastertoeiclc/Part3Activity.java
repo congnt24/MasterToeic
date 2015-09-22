@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.Question;
+
 /**
  * Created by cong on 8/30/2015.
  */
@@ -29,8 +32,8 @@ public class Part3Activity extends AppCompatActivity {
 
 
 
-
-    private List<String[]> list = new ArrayList<>();
+    public static final int QUESTIONNUMBER = 10;
+    private List<Question> list = new ArrayList<>();
     private int count = 0;
     Context context;
     int part=3;
@@ -58,6 +61,7 @@ public class Part3Activity extends AppCompatActivity {
     private RadioButton radio3D;
     private RadioGroup groupradio3;
     private LinearLayout chooselayout;
+    private String[] listResult = new String[QUESTIONNUMBER];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +120,9 @@ public class Part3Activity extends AppCompatActivity {
         btnprev.setOnClickListener(onPrev);
         btnnext.setOnClickListener(onNext);
         btnfinish.setOnClickListener(onFinish);
+        groupradio1.setOnCheckedChangeListener(onChecked);
+        groupradio2.setOnCheckedChangeListener(onChecked);
+        groupradio3.setOnCheckedChangeListener(onChecked);
     }
     private void initdata() {
         if (SQLiteHelper.sqLiteDatabase != null) {
@@ -123,11 +130,12 @@ public class Part3Activity extends AppCompatActivity {
                 Cursor cs = SQLiteHelper.sqLiteDatabase.query("part"+part, null, null, null, null, null, null);
                 while (cs.moveToNext()) {
                     cs.getColumnCount();
-                    list.add(new String[]{cs.getString(1)//audio name
-                            , cs.getString(2)//3question
-                            , cs.getString(3)//3 answer
-                            , cs.getString(4)//transcript
-                    });
+                    Question q = new Question();
+                    q.setAudio(cs.getString(1));
+                    q.setQuestion(cs.getString(2));
+                    q.setAnswer(cs.getString(3));
+                    q.setTranscript(cs.getString(4));
+                    list.add(q);
                 }
                 initQuestion();
             }catch (Exception e){
@@ -139,8 +147,8 @@ public class Part3Activity extends AppCompatActivity {
     }
     private void initQuestion(){
         try {
-            AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part"+part+"/" + list.get(count)[0] + ".mp3"));
-            String[] questions = list.get(count)[1].replaceAll("(?m)^\\s", "").split("\\n");
+            AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part" + part + "/" + list.get(count).getAudio() + ".mp3"));
+            String[] questions = list.get(count).getQuestion().replaceAll("(?m)^\\s", "").split("\\n");
             tvq1.setText(questions[0]);
             radio1A.setText(questions[1]);
             radio1B.setText(questions[2]);
@@ -160,31 +168,62 @@ public class Part3Activity extends AppCompatActivity {
 
         }
     }
+
+    private RadioGroup.OnCheckedChangeListener onChecked = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+                //listResult[count] = getResult(checkedId);
+        }
+    };
+
+
     View.OnClickListener onPrev = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            if (count>0) count--;
-            initQuestion();
+            if (count>0){
+                count--;
+                initQuestion();
+                groupradio1.clearCheck();
+                groupradio2.clearCheck();
+                groupradio3.clearCheck();
+            }
         }
     };
     View.OnClickListener onNext = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            if (count<9) count++;
-            initQuestion();
+            if (count<9){
+                count++;
+                initQuestion();
+                groupradio1.clearCheck();
+                groupradio2.clearCheck();
+                groupradio3.clearCheck();
+            }
+            else {//neu tra loi het 10 cau thi tu ket thuc khi chon next
+                finishTest();
+            }
         }
     };
     View.OnClickListener onFinish = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(context, ResultActivity.class);
-            Bundle b = new Bundle();
-            b.putInt("part", 1);
-            b.putInt("correct", 1);
-            b.putInt("total", 30);
-            intent.putExtras(b);
-            startActivity(intent);
+            finishTest();
         }
     };
+
+    /**
+     * Finish test method, show the result activity of current test
+     */
+    private void finishTest(){
+        //Count correct answer
+        Intent intent = new Intent(context, ResultActivity.class);
+        Bundle b = new Bundle();
+        b.putInt("part", part);
+        b.putStringArray("result", listResult);
+        b.putParcelableArrayList("question", (ArrayList<? extends Parcelable>) list);
+        b.putInt("total", QUESTIONNUMBER);
+        intent.putExtras(b);
+        startActivity(intent);
+    }
 
 }

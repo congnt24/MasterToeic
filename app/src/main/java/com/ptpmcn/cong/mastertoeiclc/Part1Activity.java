@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TableLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cong.audiocong.AudioCong;
@@ -25,6 +27,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import Model.Question;
+
 /**
  * Created by cong on 8/29/2015.
  */
@@ -33,16 +37,17 @@ public class Part1Activity extends AppCompatActivity {
     private Button btnprev;
     private Button btnfinish;
     private Button btnnext;
+    private TextView tvcau;
     private LinearLayout playercontainer;
     private RadioGroup groupradio;
+    private List<Integer> listRadioButton = new ArrayList<>();
     private LinearLayout imagecontainer;
-    private List<String[]> list = new ArrayList<>();
+    private List<Question> list = new ArrayList<>();
     private int count = 0;
     Context context;
     private boolean imgDisplay=true;
     private String[] listResult = new String[10];
     private LinearLayout parentgroup;
-    private ArrayList<String> listCorrect = new ArrayList<>();
     //private int sentenceCount=0;
 
     @Override
@@ -69,6 +74,8 @@ public class Part1Activity extends AppCompatActivity {
         this.btnnext = (Button) findViewById(R.id.btn_next);
         this.btnfinish = (Button) findViewById(R.id.btn_finish);
         this.btnprev = (Button) findViewById(R.id.btn_prev);
+        this.tvcau = (TextView) findViewById(R.id.tv_cau);
+        tvcau.setText("Câu 1:");
         AudioCong.getInstance().setDefaultUi(playercontainer, getLayoutInflater());
         AudioCong.getInstance().setOnlyImageUi(imagecontainer, getLayoutInflater());
         imagecontainer.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +86,7 @@ public class Part1Activity extends AppCompatActivity {
                     imgDisplay = false;
                 } else {
                     AudioCong.getInstance().setOnlyImageUi(imagecontainer, getLayoutInflater());
-                    AudioCong.getInstance().initImage(new File(context.getFilesDir() + "/part1/" + list.get(count)[0] + ".jpg"));
+                    AudioCong.getInstance().initImage(new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg"));
                     imgDisplay = true;
                 }
             }
@@ -88,14 +95,20 @@ public class Part1Activity extends AppCompatActivity {
         btnnext.setOnClickListener(onNext);
         btnfinish.setOnClickListener(onFinish);
         groupradio.setOnCheckedChangeListener(onChecked);
+        listRadioButton.add(R.id.radioA);
+        listRadioButton.add(R.id.radioB);
+        listRadioButton.add(R.id.radioC);
+        listRadioButton.add(R.id.radioD);
     }
 
     private void initdata() {
         if (SQLiteHelper.sqLiteDatabase != null) {
             Cursor cs = SQLiteHelper.sqLiteDatabase.query("part1", null, null, null, null, null, null);
             while (cs.moveToNext()) {
-                list.add(new String[]{cs.getString(1), cs.getString(2)});
-                listCorrect.add(cs.getString(2));
+                Question q = new Question();
+                q.setAudio(cs.getString(1));
+                q.setAnswer(cs.getString(2));
+                list.add(q);
             }
             initQuestion();
         }else{
@@ -104,8 +117,8 @@ public class Part1Activity extends AppCompatActivity {
     }
     private void initQuestion(){
         try {
-            AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part1/" + list.get(count)[0] + ".mp3"))
-                    .initImage(new File(context.getFilesDir() + "/part1/" + list.get(count)[0] + ".jpg"));
+            AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".mp3"))
+                    .initImage(new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg"));
         }catch (Exception e){
 
         }
@@ -116,7 +129,9 @@ public class Part1Activity extends AppCompatActivity {
         public void onClick(View v) {
             if (count>0){
                 count--;
+                tvcau.setText("Câu "+count+1+":");
                 initQuestion();
+                groupradio.clearCheck();
             }
         }
     };
@@ -125,7 +140,9 @@ public class Part1Activity extends AppCompatActivity {
         public void onClick(View v) {
             if (count<9){
                 count++;
+                tvcau.setText("Câu "+(count+1)+":");
                 initQuestion();
+                groupradio.clearCheck();
             }
             else {//neu tra loi het 10 cau thi tu ket thuc khi chon next
                 finishTest();
@@ -142,19 +159,22 @@ public class Part1Activity extends AppCompatActivity {
     private RadioGroup.OnCheckedChangeListener onChecked = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
-            listResult[count] = getResult(checkedId);
+            if (listRadioButton.contains(checkedId) ) {
+                listResult[count] = getResult(checkedId);
+            }
         }
     };
 
-    //Finish test method, show the result of current test
+    /**
+     * Finish test method, show the result activity of current test
+     */
     private void finishTest(){
         //Count correct answer
         Intent intent = new Intent(context, ResultActivity.class);
         Bundle b = new Bundle();
         b.putInt("part", 1);
-        b.putInt("correct", 1);
         b.putStringArray("result", listResult);
-        b.putStringArray("correctanswer", ListToArray(listCorrect));
+        b.putParcelableArrayList("question", (ArrayList<? extends Parcelable>) list);
         b.putInt("total", 10);
         intent.putExtras(b);
         startActivity(intent);
@@ -214,7 +234,7 @@ public class Part1Activity extends AppCompatActivity {
                 imgDisplay = false;
             } else {
                 AudioCong.getInstance().setOnlyImageUi(imagecontainer, getLayoutInflater());
-                AudioCong.getInstance().initImage(new File(context.getFilesDir() + "/part1/" + list.get(count)[0] + ".jpg"));
+                AudioCong.getInstance().initImage(new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg"));
                 imgDisplay = true;
             }
             return true;

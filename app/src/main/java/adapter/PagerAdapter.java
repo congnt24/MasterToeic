@@ -4,6 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import fragments.QuestionFragment;
+import fragments.TranscriptFragment;
+
 /**
  * Created by cong on 9/22/2015.
  */
@@ -16,9 +19,9 @@ public class PagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return new fragments.QuestionFragment();
+                return QuestionFragment.getInstance();
             case 1:
-                return new fragments.TranscriptFragment();
+                return TranscriptFragment.getInstance();
         }
         return null;
     }

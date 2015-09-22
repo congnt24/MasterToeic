@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.SystemClock;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.PagerAdapter;
+import fragments.QuestionFragment;
+import fragments.TranscriptFragment;
 import model.Question;
 
 
@@ -60,6 +63,7 @@ public class Part1Activity extends AppCompatActivity {
         initdata();
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -80,13 +84,7 @@ public class Part1Activity extends AppCompatActivity {
         viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
         tvcau.setText("Câu 1:");
         AudioCong.getInstance().setDefaultUi(playercontainer, getLayoutInflater());
-       /* AudioCong.getInstance().setOnlyImageUi(imagecontainer, getLayoutInflater());
-        imagecontainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });*/
+       /* AudioCong.getInstance().setOnlyImageUi(imagecontainer, getLayoutInflater());*/
         btnprev.setOnClickListener(onPrev);
         btnnext.setOnClickListener(onNext);
         btnfinish.setOnClickListener(onFinish);
@@ -99,13 +97,16 @@ public class Part1Activity extends AppCompatActivity {
 
     private void initdata() {
         if (SQLiteHelper.sqLiteDatabase != null) {
+
             Cursor cs = SQLiteHelper.sqLiteDatabase.query("part1", null, null, null, null, null, null);
             while (cs.moveToNext()) {
                 Question q = new Question();
                 q.setAudio(cs.getString(1));
                 q.setAnswer(cs.getString(2));
+                q.setTranscript(cs.getString(3));
                 list.add(q);
             }
+            SystemClock.sleep(300);
             initQuestion();
         }else{
             Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
@@ -113,10 +114,13 @@ public class Part1Activity extends AppCompatActivity {
     }
     private void initQuestion(){
         try {
-            AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".mp3"))
-                    .initImage(new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg"));
+            viewPager.setCurrentItem(0, true);
+            AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".mp3"));
+                    //.initImage(new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg"));
+            QuestionFragment.getInstance().setImageView(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg");
+            TranscriptFragment.getInstance().setTranscript("" + list.get(count).getTranscript());
         }catch (Exception e){
-
+            Toast.makeText(Part1Activity.this, "Image not found", Toast.LENGTH_SHORT).show();
         }
     }
 

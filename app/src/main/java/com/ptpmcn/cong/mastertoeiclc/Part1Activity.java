@@ -5,15 +5,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,16 +20,17 @@ import com.example.cong.audiocong.AudioCong;
 import com.ptpmcn.cong.dbhandler.SQLiteHelper;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import Model.Question;
+import adapter.PagerAdapter;
+import model.Question;
+
 
 /**
- * Created by cong on 8/29/2015.
+ * Created on 8/29/2015. This activity will display Part1 screen of TOEIC TEST
+ * @author Nguyen Trung Cong
+ *
  */
 public class Part1Activity extends AppCompatActivity {
 
@@ -40,8 +40,9 @@ public class Part1Activity extends AppCompatActivity {
     private TextView tvcau;
     private LinearLayout playercontainer;
     private RadioGroup groupradio;
+    private ViewPager viewPager;
     private List<Integer> listRadioButton = new ArrayList<>();
-    private LinearLayout imagecontainer;
+    //private LinearLayout imagecontainer;
     private List<Question> list = new ArrayList<>();
     private int count = 0;
     Context context;
@@ -68,29 +69,24 @@ public class Part1Activity extends AppCompatActivity {
 
     public void initialize(){
 
-        this.imagecontainer = (LinearLayout) findViewById(R.id.image_container);
+        //this.imagecontainer = (LinearLayout) findViewById(R.id.image_container);
         this.groupradio = (RadioGroup) findViewById(R.id.group_radio);
         this.playercontainer = (LinearLayout) findViewById(R.id.player_container);
         this.btnnext = (Button) findViewById(R.id.btn_next);
         this.btnfinish = (Button) findViewById(R.id.btn_finish);
         this.btnprev = (Button) findViewById(R.id.btn_prev);
         this.tvcau = (TextView) findViewById(R.id.tv_cau);
+        this.viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
         tvcau.setText("Câu 1:");
         AudioCong.getInstance().setDefaultUi(playercontainer, getLayoutInflater());
-        AudioCong.getInstance().setOnlyImageUi(imagecontainer, getLayoutInflater());
+       /* AudioCong.getInstance().setOnlyImageUi(imagecontainer, getLayoutInflater());
         imagecontainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (imgDisplay) {
-                    AudioCong.getInstance().setOnlyLyricUi(imagecontainer, getLayoutInflater());
-                    imgDisplay = false;
-                } else {
-                    AudioCong.getInstance().setOnlyImageUi(imagecontainer, getLayoutInflater());
-                    AudioCong.getInstance().initImage(new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg"));
-                    imgDisplay = true;
-                }
+
             }
-        });
+        });*/
         btnprev.setOnClickListener(onPrev);
         btnnext.setOnClickListener(onNext);
         btnfinish.setOnClickListener(onFinish);
@@ -228,15 +224,6 @@ public class Part1Activity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.showLyric) {
-            if (imgDisplay) {
-                Toast.makeText(Part1Activity.this, "Show Transcript", Toast.LENGTH_SHORT).show();
-                AudioCong.getInstance().setOnlyLyricUi(imagecontainer, getLayoutInflater());
-                imgDisplay = false;
-            } else {
-                AudioCong.getInstance().setOnlyImageUi(imagecontainer, getLayoutInflater());
-                AudioCong.getInstance().initImage(new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg"));
-                imgDisplay = true;
-            }
             return true;
         }
 

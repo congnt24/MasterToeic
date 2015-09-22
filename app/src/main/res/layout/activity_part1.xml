@@ -85,13 +85,17 @@
                 android:text="D"/>
         </RadioGroup>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_above="@id/parent_group"
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/view_pager"
+        android:layout_above="@+id/parent_group" />
+    <!--<LinearLayout
         android:id="@+id/image_container"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_above="@id/parent_group">
+    </LinearLayout>-->
 
 </RelativeLayout>

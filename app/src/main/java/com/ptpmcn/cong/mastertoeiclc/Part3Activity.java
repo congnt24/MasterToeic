@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -23,7 +22,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.Question;
+import model.Question;
 
 /**
  * Created by cong on 8/30/2015.
@@ -32,7 +31,7 @@ public class Part3Activity extends AppCompatActivity {
 
 
 
-    public static final int QUESTIONNUMBER = 10;
+    public static final int QUESTIONNUMBER = 30;
     private List<Question> list = new ArrayList<>();
     private int count = 0;
     Context context;
@@ -120,9 +119,9 @@ public class Part3Activity extends AppCompatActivity {
         btnprev.setOnClickListener(onPrev);
         btnnext.setOnClickListener(onNext);
         btnfinish.setOnClickListener(onFinish);
-        groupradio1.setOnCheckedChangeListener(onChecked);
-        groupradio2.setOnCheckedChangeListener(onChecked);
-        groupradio3.setOnCheckedChangeListener(onChecked);
+        groupradio1.setOnCheckedChangeListener(onChecked1);
+        groupradio2.setOnCheckedChangeListener(onChecked2);
+        groupradio3.setOnCheckedChangeListener(onChecked3);
     }
     private void initdata() {
         if (SQLiteHelper.sqLiteDatabase != null) {
@@ -169,13 +168,42 @@ public class Part3Activity extends AppCompatActivity {
         }
     }
 
-    private RadioGroup.OnCheckedChangeListener onChecked = new RadioGroup.OnCheckedChangeListener() {
+    private RadioGroup.OnCheckedChangeListener onChecked1 = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
-                //listResult[count] = getResult(checkedId);
+            listResult[count*3] = getResult(checkedId);
         }
     };
-
+    private RadioGroup.OnCheckedChangeListener onChecked2 = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            listResult[count*3+1] = getResult(checkedId);
+        }
+    };
+    private RadioGroup.OnCheckedChangeListener onChecked3 = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            listResult[count*3+2] = getResult(checkedId);
+        }
+    };
+    public String getResult(int checkedId){
+        String result = "X";
+        switch (checkedId){
+            case R.id.radioA:
+                result = "A";
+                break;
+            case R.id.radioB:
+                result = "B";
+                break;
+            case R.id.radioC:
+                result = "C";
+                break;
+            case R.id.radioD:
+                result = "D";
+                break;
+        }
+        return result;
+    }
 
     View.OnClickListener onPrev = new View.OnClickListener(){
         @Override

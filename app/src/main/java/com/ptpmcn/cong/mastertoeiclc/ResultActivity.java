@@ -2,7 +2,6 @@ package com.ptpmcn.cong.mastertoeiclc;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +13,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.Question;
+import model.Question;
 
 /**
  * Created by cong on 8/31/2015.
@@ -30,6 +29,7 @@ public class ResultActivity extends AppCompatActivity {
     private String[] result;
     private List<Question> list;
     private List<Integer> listcorrect = new ArrayList<>();
+    private int part;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +38,12 @@ public class ResultActivity extends AppCompatActivity {
         initialize();
         if (getIntent() != null) {
             Bundle b = getIntent().getExtras();
+            part = b.getInt("part");
             result = b.getStringArray("result");
             list = b.getParcelableArrayList("question");
             Log.d("Result", "Result: "+result+ " - List Question"+list);
             Toast.makeText(ResultActivity.this,"Result: "+result.length+ " - List Question"+list.size(), Toast.LENGTH_SHORT).show();
-            tvResult.setText("Kết Quả Part " + b.getInt("part"));
+            tvResult.setText("Kết Quả Part " + part);
             tvtime.setText("Thời gian: "+ b.getInt("time"));
             tvcorrect.setText("Số câu đúng: "+KiemTraKetQua(result, list));
         }
@@ -84,7 +85,21 @@ public class ResultActivity extends AppCompatActivity {
         btnktlai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ResultActivity.this, Part1Activity.class));
+                switch(part){
+                    case 1:
+                        startActivity(new Intent(ResultActivity.this, Part1Activity.class));
+                        break;
+                    case 2:
+                        startActivity(new Intent(ResultActivity.this, Part2Activity.class));
+                        break;
+                    case 3:
+                        startActivity(new Intent(ResultActivity.this, Part3Activity.class));
+                        break;
+                    case 4:
+                        startActivity(new Intent(ResultActivity.this, Part3Activity.class));
+                        break;
+                }
+
             }
         });
     }

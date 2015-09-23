@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.SystemClock;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -51,6 +54,7 @@ public class Part1Activity extends AppCompatActivity {
     Context context;
     private boolean imgDisplay=true;
     private String[] listResult = new String[10];
+    PagerAdapter pagerAdapter;
     private LinearLayout parentgroup;
     //private int sentenceCount=0;
 
@@ -81,7 +85,6 @@ public class Part1Activity extends AppCompatActivity {
         this.btnprev = (Button) findViewById(R.id.btn_prev);
         this.tvcau = (TextView) findViewById(R.id.tv_cau);
         this.viewPager = (ViewPager) findViewById(R.id.view_pager);
-        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
         tvcau.setText("Câu 1:");
         AudioCong.getInstance().setDefaultUi(playercontainer, getLayoutInflater());
        /* AudioCong.getInstance().setOnlyImageUi(imagecontainer, getLayoutInflater());*/
@@ -94,29 +97,41 @@ public class Part1Activity extends AppCompatActivity {
         listRadioButton.add(R.id.radioC);
         listRadioButton.add(R.id.radioD);
     }
-
+    /**
+     * Initialize data for part from database sqlite
+     */
     private void initdata() {
         if (SQLiteHelper.sqLiteDatabase != null) {
-
-            Cursor cs = SQLiteHelper.sqLiteDatabase.query("part1", null, null, null, null, null, null);
-            while (cs.moveToNext()) {
-                Question q = new Question();
-                q.setAudio(cs.getString(1));
-                q.setAnswer(cs.getString(2));
-                q.setTranscript(cs.getString(3));
-                list.add(q);
+            try {
+                Cursor cs = SQLiteHelper.sqLiteDatabase.query("part1", null, null, null, null, null, null);
+                while (cs.moveToNext()) {
+                    Question q = new Question();
+                    q.setAudio(cs.getString(1));
+                    q.setAnswer(cs.getString(2));
+                    q.setTranscript(cs.getString(3));
+                    list.add(q);
+                }
+                AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".mp3"));
+                pagerAdapter = new PagerAdapter(getSupportFragmentManager()
+                        , 1//part 1
+                        , context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg" //Question: img path
+                        , ""+list.get(count).getTranscript());  //transcript
+                viewPager.setAdapter(pagerAdapter);
+            }catch (Exception e){
+                Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
             }
-            SystemClock.sleep(300);
-            initQuestion();
         }else{
             Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
         }
     }
+
+    /**
+     * Using when user wanna change question
+     */
     private void initQuestion(){
         try {
             viewPager.setCurrentItem(0, true);
             AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".mp3"));
-                    //.initImage(new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg"));
             QuestionFragment.getInstance().setImageView(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg");
             TranscriptFragment.getInstance().setTranscript("" + list.get(count).getTranscript());
         }catch (Exception e){
@@ -129,7 +144,7 @@ public class Part1Activity extends AppCompatActivity {
         public void onClick(View v) {
             if (count>0){
                 count--;
-                tvcau.setText("Câu "+count+1+":");
+                tvcau.setText("Câu "+(count+1)+":");
                 initQuestion();
                 groupradio.clearCheck();
             }
@@ -204,11 +219,6 @@ public class Part1Activity extends AppCompatActivity {
         }
         return result;
     }
-
-
-
-
-
 
     //Menu
 

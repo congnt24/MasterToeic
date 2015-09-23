@@ -46,7 +46,11 @@ public class MainActivity extends AppCompatActivity {
         btnpart2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Part2Activity.class));
+                Intent intent = new Intent(getApplicationContext(), Part3Activity.class);
+                Bundle b = new Bundle();
+                b.putInt("part", 2);
+                intent.putExtras(b);
+                startActivity(intent);
             }
         });
         btnpart3.setOnClickListener(new View.OnClickListener() {

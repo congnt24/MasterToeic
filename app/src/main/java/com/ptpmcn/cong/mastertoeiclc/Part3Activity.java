@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import adapter.PagerAdapter;
+import fragments.QuestionFragment;
 import model.Question;
 
 /**
@@ -41,26 +44,10 @@ public class Part3Activity extends AppCompatActivity {
     private Button btnnext;
     private TableLayout groupbutton;
     private LinearLayout playercontainer;
-    private android.widget.TextView tvq1;
-    private RadioButton radio1A;
-    private RadioButton radio1B;
-    private RadioButton radio1C;
-    private RadioButton radio1D;
-    private RadioGroup groupradio1;
-    private android.widget.TextView tvq2;
-    private RadioButton radio2A;
-    private RadioButton radio2B;
-    private RadioButton radio2C;
-    private RadioButton radio2D;
-    private RadioGroup groupradio2;
-    private android.widget.TextView tvq3;
-    private RadioButton radio3A;
-    private RadioButton radio3B;
-    private RadioButton radio3C;
-    private RadioButton radio3D;
-    private RadioGroup groupradio3;
     private LinearLayout chooselayout;
     private String[] listResult = new String[QUESTIONNUMBER];
+    private PagerAdapter pagerAdapter;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +61,9 @@ public class Part3Activity extends AppCompatActivity {
             }else if (b.getInt("part") == 4){//Part 4
                 part = 4;
                 getSupportActionBar().setTitle("Part 4");
+            }else if (b.getInt("part") == 2){//Part 4
+                part = 2;
+                getSupportActionBar().setTitle("Part 2");
             }
         }
 
@@ -92,36 +82,19 @@ public class Part3Activity extends AppCompatActivity {
     public void initialize(){
 
         this.chooselayout = (LinearLayout) findViewById(R.id.choose_layout);
-        this.groupradio3 = (RadioGroup) findViewById(R.id.group_radio3);
-        this.radio3D = (RadioButton) findViewById(R.id.radio3D);
-        this.radio3C = (RadioButton) findViewById(R.id.radio3C);
-        this.radio3B = (RadioButton) findViewById(R.id.radio3B);
-        this.radio3A = (RadioButton) findViewById(R.id.radio3A);
-        this.tvq3 = (TextView) findViewById(R.id.tv_q3);
-        this.groupradio2 = (RadioGroup) findViewById(R.id.group_radio2);
-        this.radio2D = (RadioButton) findViewById(R.id.radio2D);
-        this.radio2C = (RadioButton) findViewById(R.id.radio2C);
-        this.radio2B = (RadioButton) findViewById(R.id.radio2B);
-        this.radio2A = (RadioButton) findViewById(R.id.radio2A);
-        this.tvq2 = (TextView) findViewById(R.id.tv_q2);
-        this.groupradio1 = (RadioGroup) findViewById(R.id.group_radio1);
-        this.radio1D = (RadioButton) findViewById(R.id.radio1D);
-        this.radio1C = (RadioButton) findViewById(R.id.radio1C);
-        this.radio1B = (RadioButton) findViewById(R.id.radio1B);
-        this.radio1A = (RadioButton) findViewById(R.id.radio1A);
-        this.tvq1 = (TextView) findViewById(R.id.tv_q1);
         this.playercontainer = (LinearLayout) findViewById(R.id.player_container);
         this.groupbutton = (TableLayout) findViewById(R.id.group_button);
         this.btnnext = (Button) findViewById(R.id.btn_next);
         this.btnfinish = (Button) findViewById(R.id.btn_finish);
         this.btnprev = (Button) findViewById(R.id.btn_prev);
+        this.viewPager = (ViewPager) findViewById(R.id.view_pager);
         AudioCong.getInstance().setDefaultUi(playercontainer, getLayoutInflater());
         btnprev.setOnClickListener(onPrev);
         btnnext.setOnClickListener(onNext);
         btnfinish.setOnClickListener(onFinish);
-        groupradio1.setOnCheckedChangeListener(onChecked1);
-        groupradio2.setOnCheckedChangeListener(onChecked2);
-        groupradio3.setOnCheckedChangeListener(onChecked3);
+//        groupradio1.setOnCheckedChangeListener(onChecked1);
+//        groupradio2.setOnCheckedChangeListener(onChecked2);
+//        groupradio3.setOnCheckedChangeListener(onChecked3);
     }
     private void initdata() {
         if (SQLiteHelper.sqLiteDatabase != null) {
@@ -136,34 +109,25 @@ public class Part3Activity extends AppCompatActivity {
                     q.setTranscript(cs.getString(4));
                     list.add(q);
                 }
-                initQuestion();
+                AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part" + part + "/" + list.get(count).getAudio() + ".mp3"));
+                pagerAdapter = new PagerAdapter(getSupportFragmentManager()
+                        , 3//part
+                        , list.get(count).getQuestion() //Question:
+                        , ""+list.get(count).getTranscript());  //transcript
+                viewPager.setAdapter(pagerAdapter);
             }catch (Exception e){
-                Toast.makeText(Part3Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Part3Activity.this, "Dữ liệu không khả dụng1", Toast.LENGTH_SHORT).show();
             }
         }else{
-            Toast.makeText(Part3Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Part3Activity.this, "Dữ liệu không khả dụng2", Toast.LENGTH_SHORT).show();
         }
     }
     private void initQuestion(){
         try {
             AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part" + part + "/" + list.get(count).getAudio() + ".mp3"));
             String[] questions = list.get(count).getQuestion().replaceAll("(?m)^\\s", "").split("\\n");
-            tvq1.setText(questions[0]);
-            radio1A.setText(questions[1]);
-            radio1B.setText(questions[2]);
-            radio1C.setText(questions[3]);
-            radio1D.setText(questions[4]);
-            tvq2.setText(questions[5]);
-            radio2A.setText(questions[6]);
-            radio2B.setText(questions[7]);
-            radio2C.setText(questions[8]);
-            radio2D.setText(questions[9]);
-            tvq3.setText(questions[10]);
-            radio3A.setText(questions[11]);
-            radio3B.setText(questions[12]);
-            radio3C.setText(questions[13]);
-            radio3D.setText(questions[14]);
-        }catch (Exception e){
+            QuestionFragment.getInstance().setQuestion(questions);
+        } catch (Exception e) {
 
         }
     }
@@ -211,9 +175,9 @@ public class Part3Activity extends AppCompatActivity {
             if (count>0){
                 count--;
                 initQuestion();
-                groupradio1.clearCheck();
-                groupradio2.clearCheck();
-                groupradio3.clearCheck();
+//                groupradio1.clearCheck();
+//                groupradio2.clearCheck();
+//                groupradio3.clearCheck();
             }
         }
     };
@@ -223,9 +187,9 @@ public class Part3Activity extends AppCompatActivity {
             if (count<9){
                 count++;
                 initQuestion();
-                groupradio1.clearCheck();
-                groupradio2.clearCheck();
-                groupradio3.clearCheck();
+//                groupradio1.clearCheck();
+//                groupradio2.clearCheck();
+//                groupradio3.clearCheck();
             }
             else {//neu tra loi het 10 cau thi tu ket thuc khi chon next
                 finishTest();

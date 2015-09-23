@@ -49,18 +49,37 @@ public class ResultActivity extends AppCompatActivity {
         }
     }
 
+
     private int KiemTraKetQua(String[] list1, List<Question> list2) {
-        int countCorrect=0;
+        int countCorrect = 0;
         tv_correctanswer.setText("Correct: ");
         tv_resultanswer.setText("Answer: ");
-        for (int i = 0; i < list1.length; i++) {
-            if (list2.get(i) != null && list1[i]!=null) {
-                tv_resultanswer.append(list1[i] + " ");
-                tv_correctanswer.append(list2.get(i).getAnswer() + " ");
-                if (list1[i].equalsIgnoreCase(list2.get(i).getAnswer())) {
-                    listcorrect.add(i);
-                    countCorrect++;
+        if (list1.length < 30){
+            for (int i = 0; i < list1.length; i++) {
+                if (list1[i] != null) {
+                    tv_resultanswer.append(list1[i] + " ");
+                    if (list1[i].equalsIgnoreCase(list2.get(i).getAnswer())) {
+                        listcorrect.add(i);
+                        countCorrect++;
+                    }
+                } else {
+                    tv_resultanswer.append("X ");
                 }
+                tv_correctanswer.append(list2.get(i).getAnswer() + " ");
+            }
+        }
+        else{
+            for (int i = 0; i < list1.length; i++) {
+                if (list1[i] != null) {
+                    tv_resultanswer.append(list1[i] + " ");
+                    if (list1[i].equalsIgnoreCase(list2.get(i/3+i%3).getAnswer())) {
+                        listcorrect.add(i);
+                        countCorrect++;
+                    }
+                } else {
+                    tv_resultanswer.append("X ");
+                }
+                tv_correctanswer.append(list2.get(i/3+i%3).getAnswer() + " ");
             }
         }
         return  countCorrect;
@@ -87,7 +106,7 @@ public class ResultActivity extends AppCompatActivity {
             public void onClick(View v) {
                 switch(part){
                     case 1:
-                        startActivity(new Intent(ResultActivity.this, Part1Activity.class));
+                        startActivity(new Intent(ResultActivity.this, Part1Activity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                         break;
                     case 2:
                         startActivity(new Intent(ResultActivity.this, Part2Activity.class));

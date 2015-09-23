@@ -11,17 +11,28 @@ import fragments.TranscriptFragment;
  * Created by cong on 9/22/2015.
  */
 public class PagerAdapter extends FragmentPagerAdapter {
-    public PagerAdapter(FragmentManager fm) {
+    private int part;
+    private String question;
+    private String transcript;
+    public PagerAdapter(FragmentManager fm, int p, String q, String t) {
         super(fm);
+        part = p;
+        question = q;
+        transcript = t;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return QuestionFragment.getInstance();
+                switch (part){
+                    case 1:
+                        return QuestionFragment.newInstance(1, question);
+                    default:
+                        return QuestionFragment.newInstance(3, question);
+                }
             case 1:
-                return TranscriptFragment.getInstance();
+                return TranscriptFragment.newInstance(transcript);
         }
         return null;
     }

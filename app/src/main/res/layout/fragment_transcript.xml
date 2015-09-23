@@ -13,7 +13,6 @@
             android:layout_height="match_parent"
             android:text="Transcription"
             android:textSize="20dp"
-            android:id="@+id/tv_transcript"
-            android:gravity="center"/>
+            android:id="@+id/tv_transcript"/>
     </ScrollView>
 </LinearLayout>

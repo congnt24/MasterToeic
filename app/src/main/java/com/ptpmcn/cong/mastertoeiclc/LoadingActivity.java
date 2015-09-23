@@ -31,39 +31,21 @@ public class LoadingActivity extends AppCompatActivity {
         new AsyncTask<String, Boolean, Boolean>(){
             @Override
             protected Boolean doInBackground(String... params) {
-
-                File dataFile = new File(context.getFilesDir()+"/data.db");
-                File part1File = new File(context.getFilesDir()+"/data0.zip");
-                //File part3File = new File(context.getFilesDir()+"/part3.zip");
+                File dataFile = new File(context.getFilesDir()+"/data0.zip");
                     if (internetAvailable()) {
 
-                        if(!dataFile.exists()){
-                            Downloader.download(context, "https://www.dropbox.com/s/mdr3x4n149j4v0j/data.db?dl=1");
-                        }
-                        if(!part1File.exists() ){
+                        if(!dataFile.exists() ){
                             Downloader.download(context
                                 , "https://www.dropbox.com/s/fhb584qhofibl94/data0.zip?dl=1");
-                            part1File = new File(context.getFilesDir() + "/data0.zip");
-                            if (part1File.exists())
+                            dataFile = new File(context.getFilesDir() + "/data0.zip");
+                            if (dataFile.exists())
                                 try {
-                                    Decompress.unzip(part1File, context.getFilesDir());
+                                    Decompress.unzip(dataFile, context.getFilesDir());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
 
                         }
-                        /*if(!part3File.exists()) {
-                            Downloader.download(context
-                                    , "https://www.dropbox.com/s/vwqse77bvaflker/part3.zip?dl=1");
-                            part3File = new File(context.getFilesDir() + "/part3.zip");
-                            if (part3File.exists()) {
-                                try {
-                                    Decompress.unzip(part3File, context.getFilesDir());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }*/
                     }else{
                         return false;
                     }

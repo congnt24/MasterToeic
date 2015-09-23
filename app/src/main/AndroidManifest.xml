@@ -23,6 +23,12 @@
         <activity
             android:name=".Part1Activity"
             android:label="Part 1" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
         </activity>
         <activity
             android:name=".Part2Activity"
@@ -31,6 +37,10 @@
         <activity
             android:name=".Part3Activity"
             android:label="Part 3" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
         </activity>
         <activity
             android:name=".ResultActivity"

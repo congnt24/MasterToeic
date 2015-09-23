@@ -3,4 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_search" android:title="Search"
+        android:orderInCategory="101"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always"
+        android:actionViewClass="android.widget.SearchView" />
 </menu>

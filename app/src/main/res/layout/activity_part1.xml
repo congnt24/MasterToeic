@@ -9,30 +9,32 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"/>
-    <TableLayout
-        android:id="@+id/group_button"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:stretchColumns="1">
-        <TableRow>
-            <Button
-                android:id="@+id/btn_prev"
-                android:layout_width="wrap_content"
-                android:layout_height="60dip"
-                android:text="Lùi"/>
-            <Button
-                android:id="@+id/btn_finish"
-                android:layout_width="wrap_content"
-                android:layout_height="60dip"
-                android:text="Kết thúc"/>
-            <Button
-                android:id="@+id/btn_next"
-                android:layout_width="wrap_content"
-                android:layout_height="60dip"
-                android:text="Tiếp"/>
-        </TableRow>
-    </TableLayout>
+        android:layout_height="50sp"
+        android:id="@+id/group_button"
+        android:background="@color/my_primary_light"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/btn_prev"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/prev"/>
+        <Button
+            android:id="@+id/btn_finish"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/finish"
+            android:layout_weight="4"/>
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/next"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_above="@id/group_button"
@@ -46,19 +48,20 @@
         android:layout_above="@id/player_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/my_primary_light"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tv_cau"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:text="Cau 1:"/>
         <RadioGroup
             android:id="@+id/group_radio"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="50dip"
+            android:layout_height="50sp"
             android:weightSum="4"
             android:gravity="center">
             <RadioButton
@@ -98,16 +101,15 @@
         android:layout_above="@+id/parent_group"
         android:layout_below="@+id/toolbar" />
 
-    <TextView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:text="Time"
+    <Chronometer
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/chronometer"
+        android:layout_below="@+id/toolbar"
         android:textSize="20dp"
         android:textColor="@android:color/holo_red_dark"
-        android:id="@+id/tv_time"
         android:background="@drawable/circle"
         android:gravity="center"
-        android:layout_below="@+id/toolbar"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 

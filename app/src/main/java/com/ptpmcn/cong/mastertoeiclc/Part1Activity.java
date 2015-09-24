@@ -1,19 +1,17 @@
 package com.ptpmcn.cong.mastertoeiclc;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Parcelable;
+import android.os.SystemClock;
 import android.provider.BaseColumns;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -22,8 +20,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +34,8 @@ import com.ptpmcn.cong.dbhandler.SQLiteHelper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import adapter.PagerAdapter;
 import fragments.QuestionFragment;
@@ -48,28 +50,25 @@ import model.Question;
  */
 public class Part1Activity extends AppCompatActivity {
 
-    private Button btnprev;
-    private Button btnfinish;
-    private Button btnnext;
-    private TextView tvcau;
-    private LinearLayout playercontainer;
-    private RadioGroup groupradio;
-    private ViewPager viewPager;
-    private Toolbar toolbar;
-    private List<Integer> listRadioButton = new ArrayList<>();
-    //private LinearLayout imagecontainer;
-    private List<Question> list = new ArrayList<>();
+     Button btnprev, btnfinish, btnnext;
+     TextView tvcau;
+     LinearLayout playercontainer;
+     RadioGroup groupradio;
+     ViewPager viewPager;
+     Toolbar toolbar;
+     List<Integer> listRadioButton = new ArrayList<>();
+     List<Question> list = new ArrayList<>();
     private int count = 0;
     Context context;
-    private boolean imgDisplay=true;
     private String[] listResult = new String[10];
     PagerAdapter pagerAdapter;
-    private LinearLayout parentgroup;
     private SimpleCursorAdapter mAdapter;
-    //private int sentenceCount=0;
+    //Review mode
+    private boolean isReviewMode = false;
+
+    SearchView searchView;
     EditText ed_searchView;
     private boolean mSearchCheck;
-    public static final String TEXT_FRAGMENT = "TEXT_FRAGMENT";
     public static final String CITY_NAME = "cityName";
     private static final String[] COUNTRIES = {
             "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica",
@@ -98,6 +97,7 @@ public class Part1Activity extends AppCompatActivity {
             "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands (British)", "Virgin Islands (U.S.)",
             "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe"
     };
+    private Chronometer chrono;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,12 +106,24 @@ public class Part1Activity extends AppCompatActivity {
         context = getApplicationContext();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
+//        ActionBar ab = getSupportActionBar();
+        //Enable Icon on actionbar
 //        ab.setHomeAsUpIndicator(R.mipmap.ic_launcher);
 //        ab.setDisplayHomeAsUpEnabled(true);
-        initialize();
-        initdata();
-        loadHints();
+        //Handle Review mode or test mode
+        if (getIntent()!=null) {
+            Bundle b = getIntent().getExtras();
+            if(b!=null){//review mode
+                if( b.getBoolean("reviewmode", false)){
+                    isReviewMode = true;
+                    listResult = b.getStringArray("result");
+                }
+            }
+        }
+            initialize();
+            initdata();
+            loadHints();
+
     }
 
     private void loadHints() {
@@ -125,17 +137,13 @@ public class Part1Activity extends AppCompatActivity {
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
     }
 
-
     @Override
     protected void onPause() {
         super.onPause();
         AudioCong.getInstance().pause();
     }
 
-
     public void initialize(){
-
-        //this.imagecontainer = (LinearLayout) findViewById(R.id.image_container);
         this.groupradio = (RadioGroup) findViewById(R.id.group_radio);
         this.playercontainer = (LinearLayout) findViewById(R.id.player_container);
         this.btnnext = (Button) findViewById(R.id.btn_next);
@@ -148,6 +156,14 @@ public class Part1Activity extends AppCompatActivity {
        /* AudioCong.getInstance().setOnlyImageUi(imagecontainer, getLayoutInflater());*/
         btnprev.setOnClickListener(onPrev);
         btnnext.setOnClickListener(onNext);
+        if (!isReviewMode){
+            initTestMode();
+            chrono = (Chronometer) findViewById(R.id.chronometer);
+            chrono.setBase(SystemClock.elapsedRealtime());
+            chrono.start();
+        }
+    }
+    public void initTestMode(){
         btnfinish.setOnClickListener(onFinish);
         groupradio.setOnCheckedChangeListener(onChecked);
         listRadioButton.add(R.id.radioA);
@@ -175,6 +191,11 @@ public class Part1Activity extends AppCompatActivity {
                         , context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg" //Question: img path
                         , ""+list.get(count).getTranscript());  //transcript
                 viewPager.setAdapter(pagerAdapter);
+                if (isReviewMode){
+                    Log.d("A", "AAAAAAAAAA "+isReviewMode);
+                    autoCheckRadioButton(count);
+                }
+                cs.close();
             }catch (Exception e){
                 Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
             }
@@ -183,6 +204,25 @@ public class Part1Activity extends AppCompatActivity {
         }
     }
 
+    public void autoCheckRadioButton(int i){
+        Log.d("A", "AAAAAAAAAA " + (int)listResult[i].charAt(0));
+        int check = (int)listResult[i].charAt(0)-65;
+        groupradio.check(check);
+        switch (check){
+            case 0:
+                ((RadioButton)findViewById(R.id.radioA)).setChecked(true);
+                break;
+            case 1:
+                ((RadioButton)findViewById(R.id.radioB)).setChecked(true);
+                break;
+            case 2:
+                ((RadioButton)findViewById(R.id.radioC)).setChecked(true);
+                break;
+            case 3:
+                ((RadioButton)findViewById(R.id.radioD)).setChecked(true);
+                break;
+        }
+    }
     /**
      * Using when user wanna change question
      */
@@ -192,6 +232,9 @@ public class Part1Activity extends AppCompatActivity {
             AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".mp3"));
             QuestionFragment.getInstance().setImageView(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg");
             TranscriptFragment.getInstance().setTranscript("" + list.get(count).getTranscript());
+            if (isReviewMode){
+                autoCheckRadioButton(count);
+            }
         }catch (Exception e){
             Toast.makeText(Part1Activity.this, "Image not found", Toast.LENGTH_SHORT).show();
         }
@@ -251,14 +294,9 @@ public class Part1Activity extends AppCompatActivity {
         b.putInt("total", 10);
         intent.putExtras(b);
         startActivity(intent);
+        chrono.stop();
     }
-    public String[] ListToArray(List<String> list){
-        String[] tmp = new String[10];
-        for (int i = 0; i < list.size(); i++) {
-            tmp[i] = list.get(i);
-        }
-        return tmp;
-    }
+
     public String getResult(int checkedId){
         String result = "X";
         switch (checkedId){
@@ -284,19 +322,10 @@ public class Part1Activity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        // Associate searchable configuration with the SearchView
-
-        //SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        /*SearchView searchView = (SearchView) menu.findItem(R.id.search)
-                .getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));*/
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
+        searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
         searchView.setQueryHint(this.getString(R.string.search_hint));
-
         ed_searchView = ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
-        ed_searchView.setHintTextColor(getResources().getColor(R.color.my_primary_dark));
+        ed_searchView.setHintTextColor(getResources().getColor(R.color.my_primary_light));
 
 
         searchView.setSuggestionsAdapter(mAdapter);
@@ -342,7 +371,18 @@ public class Part1Activity extends AppCompatActivity {
         @Override
         public boolean onSuggestionClick(int position) {
             mAdapter.getCursor().moveToPosition(position);
-            ed_searchView.setText(""+mAdapter.getCursor().getString(1));
+            ed_searchView.setText("" + mAdapter.getCursor().getString(1));
+            searchView.clearFocus();
+            //Hiding input
+            /*InputMethodManager inputManager = (InputMethodManager) this
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            //check if no view has focus:
+            View v=this.getCurrentFocus();
+            if(v==null)
+                return;
+
+            inputManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWA*/
             return false;
         }
     };

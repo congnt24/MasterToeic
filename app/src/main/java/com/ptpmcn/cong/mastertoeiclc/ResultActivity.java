@@ -98,7 +98,25 @@ public class ResultActivity extends AppCompatActivity {
         btnxemlai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                switch(part){
+                    case 1:
+                        Intent intent = new Intent(ResultActivity.this, Part1Activity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean("reviewmode", true);
+                        bundle.putStringArray("result", result);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        startActivity(new Intent(ResultActivity.this, Part3Activity.class));
+                        break;
+                    case 3:
+                        startActivity(new Intent(ResultActivity.this, Part3Activity.class));
+                        break;
+                    case 4:
+                        startActivity(new Intent(ResultActivity.this, Part3Activity.class));
+                        break;
+                }
             }
         });
         btnktlai.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +127,7 @@ public class ResultActivity extends AppCompatActivity {
                         startActivity(new Intent(ResultActivity.this, Part1Activity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                         break;
                     case 2:
-                        startActivity(new Intent(ResultActivity.this, Part2Activity.class));
+                        startActivity(new Intent(ResultActivity.this, Part3Activity.class));
                         break;
                     case 3:
                         startActivity(new Intent(ResultActivity.this, Part3Activity.class));

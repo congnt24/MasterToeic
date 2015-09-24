@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -48,11 +50,16 @@ public class Part3Activity extends AppCompatActivity {
     private String[] listResult = new String[QUESTIONNUMBER];
     private PagerAdapter pagerAdapter;
     private ViewPager viewPager;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_part3);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
         if (getIntent()!=null) {
             Bundle b = getIntent().getExtras();
             if (b.getInt("part") == 3){//Part 3

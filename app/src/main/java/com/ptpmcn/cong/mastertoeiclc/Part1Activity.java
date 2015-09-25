@@ -1,9 +1,17 @@
 package com.ptpmcn.cong.mastertoeiclc;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.SystemClock;
@@ -22,6 +30,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -34,8 +43,6 @@ import com.ptpmcn.cong.dbhandler.SQLiteHelper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import adapter.PagerAdapter;
 import fragments.QuestionFragment;
@@ -50,7 +57,7 @@ import model.Question;
  */
 public class Part1Activity extends AppCompatActivity {
 
-     Button btnprev, btnfinish, btnnext;
+     Button btnfinish, btnprev, btnnext;
      TextView tvcau;
      LinearLayout playercontainer;
      RadioGroup groupradio;
@@ -65,6 +72,7 @@ public class Part1Activity extends AppCompatActivity {
     private SimpleCursorAdapter mAdapter;
     //Review mode
     private boolean isReviewMode = false;
+    String time="";// Store time
 
     SearchView searchView;
     EditText ed_searchView;
@@ -98,6 +106,10 @@ public class Part1Activity extends AppCompatActivity {
             "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe"
     };
     private Chronometer chrono;
+    private RadioButton radioA;
+    private RadioButton radioB;
+    private RadioButton radioC;
+    private RadioButton radioD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +129,8 @@ public class Part1Activity extends AppCompatActivity {
                 if( b.getBoolean("reviewmode", false)){
                     isReviewMode = true;
                     listResult = b.getStringArray("result");
+                    list = b.getParcelableArrayList("question");
+                    time = b.getString("time");
                 }
             }
         }
@@ -150,21 +164,27 @@ public class Part1Activity extends AppCompatActivity {
         this.btnfinish = (Button) findViewById(R.id.btn_finish);
         this.btnprev = (Button) findViewById(R.id.btn_prev);
         this.tvcau = (TextView) findViewById(R.id.tv_cau);
+        this.radioD = (RadioButton) findViewById(R.id.radioD);
+        this.radioC = (RadioButton) findViewById(R.id.radioC);
+        this.radioB = (RadioButton) findViewById(R.id.radioB);
+        this.radioA = (RadioButton) findViewById(R.id.radioA);
+        chrono = (Chronometer) findViewById(R.id.chronometer);
         this.viewPager = (ViewPager) findViewById(R.id.view_pager);
         tvcau.setText("Câu 1:");
         AudioCong.getInstance().setDefaultUi(playercontainer, getLayoutInflater());
        /* AudioCong.getInstance().setOnlyImageUi(imagecontainer, getLayoutInflater());*/
         btnprev.setOnClickListener(onPrev);
         btnnext.setOnClickListener(onNext);
+        btnfinish.setOnClickListener(onFinish);
         if (!isReviewMode){
             initTestMode();
-            chrono = (Chronometer) findViewById(R.id.chronometer);
             chrono.setBase(SystemClock.elapsedRealtime());
             chrono.start();
+        }else{
+            chrono.setText(time);
         }
     }
     public void initTestMode(){
-        btnfinish.setOnClickListener(onFinish);
         groupradio.setOnCheckedChangeListener(onChecked);
         listRadioButton.add(R.id.radioA);
         listRadioButton.add(R.id.radioB);
@@ -175,15 +195,18 @@ public class Part1Activity extends AppCompatActivity {
      * Initialize data for part from database sqlite
      */
     private void initdata() {
-        if (SQLiteHelper.sqLiteDatabase != null) {
+        if (SQLiteHelper.getInstance(context) != null) {
             try {
-                Cursor cs = SQLiteHelper.sqLiteDatabase.query("part1", null, null, null, null, null, null);
-                while (cs.moveToNext()) {
-                    Question q = new Question();
-                    q.setAudio(cs.getString(1));
-                    q.setAnswer(cs.getString(2));
-                    q.setTranscript(cs.getString(3));
-                    list.add(q);
+                if (!isReviewMode) {
+                    Cursor cs = SQLiteHelper.getInstance(context).queryRandom("part1", 10);
+                    while (cs.moveToNext()) {
+                        Question q = new Question();
+                        q.setAudio(cs.getString(1));
+                        q.setAnswer(cs.getString(2));
+                        q.setTranscript(cs.getString(3));
+                        list.add(q);
+                    }
+                    cs.close();
                 }
                 AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".mp3"));
                 pagerAdapter = new PagerAdapter(getSupportFragmentManager()
@@ -192,10 +215,8 @@ public class Part1Activity extends AppCompatActivity {
                         , ""+list.get(count).getTranscript());  //transcript
                 viewPager.setAdapter(pagerAdapter);
                 if (isReviewMode){
-                    Log.d("A", "AAAAAAAAAA "+isReviewMode);
                     autoCheckRadioButton(count);
                 }
-                cs.close();
             }catch (Exception e){
                 Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
             }
@@ -203,25 +224,53 @@ public class Part1Activity extends AppCompatActivity {
             Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
         }
     }
-
     public void autoCheckRadioButton(int i){
-        Log.d("A", "AAAAAAAAAA " + (int)listResult[i].charAt(0));
-        int check = (int)listResult[i].charAt(0)-65;
-        groupradio.check(check);
+        removeAllButtonDrawable();
+        int usercheck = (int)listResult[i].charAt(0)-65;
+        int correct = (int)list.get(i).getAnswer().toUpperCase().charAt(0) - 65;
+        groupradio.check(usercheck);
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_action_check_circle);
+        drawable.setColorFilter(new LightingColorFilter(Color.GREEN, Color.GREEN));
+        Drawable drawableIncorrect = getResources().getDrawable(R.drawable.ic_action_cancel);
+        drawableIncorrect.setColorFilter(new LightingColorFilter(Color.RED, Color.RED));
+        if (correct != usercheck){
+            changeButtonDrawable(usercheck, drawableIncorrect);
+        }
+        changeButtonDrawable(correct, drawable);
+        denyCheckRadioButton();
+    }
+
+    public void denyCheckRadioButton() {
+        radioA.setClickable(false);
+        radioB.setClickable(false);
+        radioC.setClickable(false);
+        radioD.setClickable(false);
+    }
+    public void changeButtonDrawable(int check, Drawable drawable){
         switch (check){
             case 0:
-                ((RadioButton)findViewById(R.id.radioA)).setChecked(true);
+                radioA.setChecked(true);
+                radioA.setButtonDrawable(drawable);
                 break;
             case 1:
-                ((RadioButton)findViewById(R.id.radioB)).setChecked(true);
+                radioB.setChecked(true);
+                radioB.setButtonDrawable(drawable);
                 break;
             case 2:
-                ((RadioButton)findViewById(R.id.radioC)).setChecked(true);
+                radioC.setChecked(true);
+                radioC.setButtonDrawable(drawable);
                 break;
             case 3:
-                ((RadioButton)findViewById(R.id.radioD)).setChecked(true);
+                radioD.setChecked(true);
+                radioD.setButtonDrawable(drawable);
                 break;
         }
+    }
+    public void removeAllButtonDrawable(){
+        radioA.setButtonDrawable(android.R.drawable.btn_radio);
+        radioB.setButtonDrawable(android.R.drawable.btn_radio);
+        radioC.setButtonDrawable(android.R.drawable.btn_radio);
+        radioD.setButtonDrawable(android.R.drawable.btn_radio);
     }
     /**
      * Using when user wanna change question
@@ -235,8 +284,9 @@ public class Part1Activity extends AppCompatActivity {
             if (isReviewMode){
                 autoCheckRadioButton(count);
             }
+            AudioCong.getInstance().play();
         }catch (Exception e){
-            Toast.makeText(Part1Activity.this, "Image not found", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(Part1Activity.this, "Image not found", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -244,10 +294,10 @@ public class Part1Activity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (count>0){
-                count--;
-                tvcau.setText("Câu "+(count+1)+":");
-                initQuestion();
                 groupradio.clearCheck();
+                count--;
+                tvcau.setText("Câu " + (count + 1) + ":");
+                initQuestion();
             }
         }
     };
@@ -255,10 +305,10 @@ public class Part1Activity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (count<9){
+                groupradio.clearCheck();
                 count++;
                 tvcau.setText("Câu "+(count+1)+":");
                 initQuestion();
-                groupradio.clearCheck();
             }
             else {//neu tra loi het 10 cau thi tu ket thuc khi chon next
                 finishTest();
@@ -275,8 +325,12 @@ public class Part1Activity extends AppCompatActivity {
     private RadioGroup.OnCheckedChangeListener onChecked = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
-            if (listRadioButton.contains(checkedId) ) {
-                listResult[count] = getResult(checkedId);
+            RadioButton btn= (RadioButton) findViewById(checkedId);
+            try{
+                if (btn.getText()!=null)
+                    listResult[count] = String.valueOf(btn.getText());
+            }catch (Exception e){
+
             }
         }
     };
@@ -289,32 +343,16 @@ public class Part1Activity extends AppCompatActivity {
         Intent intent = new Intent(context, ResultActivity.class);
         Bundle b = new Bundle();
         b.putInt("part", 1);
+        b.putString("time", chrono.getText().toString());
         b.putStringArray("result", listResult);
         b.putParcelableArrayList("question", (ArrayList<? extends Parcelable>) list);
         b.putInt("total", 10);
         intent.putExtras(b);
         startActivity(intent);
-        chrono.stop();
+        if (chrono!=null)
+            chrono.stop();
     }
 
-    public String getResult(int checkedId){
-        String result = "X";
-        switch (checkedId){
-            case R.id.radioA:
-                result = "A";
-                break;
-            case R.id.radioB:
-                result = "B";
-                break;
-            case R.id.radioC:
-                result = "C";
-                break;
-            case R.id.radioD:
-                result = "D";
-                break;
-        }
-        return result;
-    }
 
     //Menu
 
@@ -326,7 +364,6 @@ public class Part1Activity extends AppCompatActivity {
         searchView.setQueryHint(this.getString(R.string.search_hint));
         ed_searchView = ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
         ed_searchView.setHintTextColor(getResources().getColor(R.color.my_primary_light));
-
 
         searchView.setSuggestionsAdapter(mAdapter);
         searchView.setOnQueryTextListener(onQuerySearchView);

@@ -14,13 +14,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="6"
-            android:src="@android:drawable/ic_media_play" />
+            android:src="@drawable/ic_action_play_circle_outline" />
         <ImageView
             android:id="@+id/pause"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="6"
-            android:src="@android:drawable/ic_media_pause"
+            android:src="@drawable/ic_action_pause_circle_outline"
             android:visibility="gone" />
         <FrameLayout
             android:layout_width="match_parent"

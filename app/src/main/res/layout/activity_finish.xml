@@ -6,6 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
         android:layout_above="@+id/linearLayout">
         <TextView
             android:layout_width="match_parent"
@@ -20,8 +22,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dip"
-            android:textSize="23dip"
             android:text="Time"
             android:gravity="center"
             android:id="@+id/tv_time"
@@ -30,30 +30,60 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dip"
-            android:textSize="23dip"
             android:text="Correct Num"
             android:gravity="center"
             android:id="@+id/tv_correct"
             android:layout_centerHorizontal="true" />
-
-        <TextView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dip"
-            android:textSize="23dip"
-            android:text="Answer"
-            android:id="@+id/tv_resultanswer"
-            android:layout_centerHorizontal="true" />
+            android:layout_height="match_parent">
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000000">
+                <TableRow
+                    android:background="#92C94A"
+                    android:layout_marginBottom="5dp">
+                    <TextView
+                        android:text="STT"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:layout_weight="1" />
+                    <TextView
+                        android:text="Answer"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:layout_weight="2"/>
+                    <TextView
+                        android:text="Correct"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:layout_weight="2"/>
+                </TableRow>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dip"
-            android:textSize="23dip"
-            android:text="Correct"
-            android:id="@+id/tv_correctanswer"
-            android:layout_centerHorizontal="true" />
+                <TableRow
+                    android:background="@color/LightSteelBlue">
+                    <TextView
+                        android:text="1\n2"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:id="@+id/tv_stt"/>
+                    <TextView
+                        android:text=""
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:id="@+id/tv_resultanswer"/>
+                    <TextView
+                        android:text=""
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:id="@+id/tv_correctanswer"/>
+                </TableRow>
+            </TableLayout>
+        </ScrollView>
     </LinearLayout>
 
 

@@ -63,7 +63,7 @@ public class Part5Activity extends AppCompatActivity {
 
 
     private void initdata() {
-        if (SQLiteHelper.sqLiteDatabase != null) {
+       /* if (SQLiteHelper.sqLiteDatabase != null) {
             try {
                 Cursor cs = SQLiteHelper.sqLiteDatabase.query("part5", null, null, null, null, null, null);
                 while (cs.moveToNext()) {
@@ -80,7 +80,7 @@ public class Part5Activity extends AppCompatActivity {
             }
         }else{
             Toast.makeText(this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
     private void initQuestion() {

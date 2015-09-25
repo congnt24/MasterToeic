@@ -2,6 +2,7 @@ package com.ptpmcn.cong.mastertoeiclc;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +31,7 @@ public class ResultActivity extends AppCompatActivity {
     private List<Question> list;
     private List<Integer> listcorrect = new ArrayList<>();
     private int part;
+    private String time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +41,13 @@ public class ResultActivity extends AppCompatActivity {
         if (getIntent() != null) {
             Bundle b = getIntent().getExtras();
             part = b.getInt("part");
+            time = b.getString("time");
             result = b.getStringArray("result");
             list = b.getParcelableArrayList("question");
             Log.d("Result", "Result: "+result+ " - List Question"+list);
             Toast.makeText(ResultActivity.this,"Result: "+result.length+ " - List Question"+list.size(), Toast.LENGTH_SHORT).show();
             tvResult.setText("Kết Quả Part " + part);
-            tvtime.setText("Thời gian: "+ b.getInt("time"));
+            tvtime.setText("Thời gian: " + time);
             tvcorrect.setText("Số câu đúng: "+KiemTraKetQua(result, list));
         }
     }
@@ -52,34 +55,32 @@ public class ResultActivity extends AppCompatActivity {
 
     private int KiemTraKetQua(String[] list1, List<Question> list2) {
         int countCorrect = 0;
-        tv_correctanswer.setText("Correct: ");
-        tv_resultanswer.setText("Answer: ");
         if (list1.length < 30){
             for (int i = 0; i < list1.length; i++) {
                 if (list1[i] != null) {
-                    tv_resultanswer.append(list1[i] + " ");
+                    tv_resultanswer.append(list1[i] + "\n");
                     if (list1[i].equalsIgnoreCase(list2.get(i).getAnswer())) {
                         listcorrect.add(i);
                         countCorrect++;
                     }
                 } else {
-                    tv_resultanswer.append("X ");
+                    tv_resultanswer.append("X\n");
                 }
-                tv_correctanswer.append(list2.get(i).getAnswer() + " ");
+                tv_correctanswer.append(list2.get(i).getAnswer() + "\n");
             }
         }
         else{
             for (int i = 0; i < list1.length; i++) {
                 if (list1[i] != null) {
-                    tv_resultanswer.append(list1[i] + " ");
-                    if (list1[i].equalsIgnoreCase(list2.get(i/3+i%3).getAnswer())) {
+                    tv_resultanswer.append(list1[i] + "\n");
+                    if (list1[i].equalsIgnoreCase(list2.get(i/3).getAnswer().substring(i%3, i%3))) {
                         listcorrect.add(i);
                         countCorrect++;
                     }
                 } else {
-                    tv_resultanswer.append("X ");
+                    tv_resultanswer.append("X\n");
                 }
-                tv_correctanswer.append(list2.get(i/3+i%3).getAnswer() + " ");
+                tv_correctanswer.append(list2.get(i/3).getAnswer().substring(i%3, i%3) + "\n");
             }
         }
         return  countCorrect;
@@ -104,6 +105,8 @@ public class ResultActivity extends AppCompatActivity {
                         Bundle bundle = new Bundle();
                         bundle.putBoolean("reviewmode", true);
                         bundle.putStringArray("result", result);
+                        bundle.putString("time", time);
+                        bundle.putParcelableArrayList("question", (ArrayList<? extends Parcelable>) list);
                         intent.putExtras(bundle);
                         startActivity(intent);
                         break;

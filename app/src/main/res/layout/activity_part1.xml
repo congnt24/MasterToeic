@@ -11,9 +11,9 @@
         android:background="?attr/colorPrimary"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50sp"
+        android:layout_height="wrap_content"
         android:id="@+id/group_button"
-        android:background="@color/my_primary_light"
+        android:background="@color/LightSteelBlue"
         android:layout_alignParentBottom="true">
 
         <Button
@@ -21,18 +21,23 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_action_fast_rewind"
+            android:textColor="@color/my_primary_dark"
             android:text="@string/prev"/>
         <Button
             android:id="@+id/btn_finish"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:textColor="@color/my_primary_dark"
             android:text="@string/finish"
-            android:layout_weight="4"/>
+            android:layout_weight="3"/>
         <Button
             android:id="@+id/btn_next"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/next"
+            android:drawableRight="@drawable/ic_action_fast_forward"
+            android:textColor="@color/my_primary_dark"
             android:layout_weight="1"/>
     </LinearLayout>
 
@@ -41,6 +46,7 @@
         android:id="@+id/player_container"
         android:orientation="vertical"
         android:layout_width="match_parent"
+        android:background="@color/LightSteelBlue"
         android:layout_height="wrap_content">
     </LinearLayout>
     <LinearLayout
@@ -48,7 +54,7 @@
         android:layout_above="@id/player_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/my_primary_light"
+        android:background="@color/LightSteelBlue"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tv_cau"
@@ -71,6 +77,7 @@
                 android:id="@+id/radioA"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:button="@android:drawable/btn_radio"
                 android:text="A"/>
             <RadioButton
                 android:layout_weight="1"
@@ -78,6 +85,7 @@
                 android:id="@+id/radioB"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:button="@android:drawable/btn_radio"
                 android:text="B"/>
             <RadioButton
                 android:layout_weight="1"
@@ -85,12 +93,14 @@
                 android:id="@+id/radioC"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:button="@android:drawable/btn_radio"
                 android:text="C"/>
             <RadioButton
                 android:layout_centerHorizontal="true"
                 android:id="@+id/radioD"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:button="@android:drawable/btn_radio"
                 android:text="D"/>
         </RadioGroup>
     </LinearLayout>

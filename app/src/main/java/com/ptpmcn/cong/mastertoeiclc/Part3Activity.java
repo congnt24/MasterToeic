@@ -104,9 +104,9 @@ public class Part3Activity extends AppCompatActivity {
 //        groupradio3.setOnCheckedChangeListener(onChecked3);
     }
     private void initdata() {
-        if (SQLiteHelper.sqLiteDatabase != null) {
+        if (SQLiteHelper.getInstance(context) != null) {
             try {
-                Cursor cs = SQLiteHelper.sqLiteDatabase.query("part"+part, null, null, null, null, null, null);
+                Cursor cs = SQLiteHelper.getInstance(context).queryRandom("part"+part, 10);
                 while (cs.moveToNext()) {
                     cs.getColumnCount();
                     Question q = new Question();

@@ -81,7 +81,7 @@ public class Part2Activity extends AppCompatActivity {
     }
 
     private void initdata() {
-        if (SQLiteHelper.sqLiteDatabase != null) {
+       /* if (SQLiteHelper.sqLiteDatabase != null) {
             Cursor cs = SQLiteHelper.sqLiteDatabase.query("part2", null, null, null, null, null, null);
             while (cs.moveToNext()) {
                 list.add(new String[]{cs.getString(1), cs.getString(2)});
@@ -89,7 +89,7 @@ public class Part2Activity extends AppCompatActivity {
             initQuestion();
         } else {
             Toast.makeText(Part2Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
     private void initQuestion() {

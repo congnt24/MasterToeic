@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         this.btnpart2 = (Button) findViewById(R.id.btn_part2);
         this.btnpart1 = (Button) findViewById(R.id.btn_part1);
         this.tvTitle = (TextView) findViewById(R.id.tv_Title);
-        new SQLiteHelper(getApplicationContext()).openDatabase("data.db");
+        SQLiteHelper.getInstance(getApplicationContext()).openDatabase("data.db");
         btnpart1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

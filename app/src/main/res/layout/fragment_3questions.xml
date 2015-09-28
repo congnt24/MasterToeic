@@ -22,6 +22,7 @@
                     android:id="@+id/tv_q1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/Black"
                     android:text="Cau 1"/>
                 <RadioButton
                     android:id="@+id/radio1A"
@@ -57,6 +58,7 @@
                     android:id="@+id/tv_q2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/Black"
                     android:text="Cau 2"/>
                 <RadioButton
                     android:id="@+id/radio2A"
@@ -92,6 +94,7 @@
                     android:id="@+id/tv_q3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/Black"
                     android:text="Cau 3"/>
                 <RadioButton
                     android:id="@+id/radio3A"

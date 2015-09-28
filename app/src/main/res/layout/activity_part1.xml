@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/group_button"
-        android:background="@color/MediumSeaGreen"
+        android:background="@color/DarkCyan"
         android:weightSum="5"
         android:layout_alignParentBottom="true">
 
@@ -47,7 +47,7 @@
         android:id="@+id/player_container"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:background="@color/LightSteelBlue"
+        android:background="@color/DarkCyan"
         android:layout_height="wrap_content">
     </LinearLayout>
     <LinearLayout
@@ -55,7 +55,7 @@
         android:layout_above="@id/player_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/MediumSeaGreen"
+        android:background="@color/DarkCyan"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tv_cau"
@@ -82,7 +82,7 @@
                 android:id="@+id/radioB"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="B"/>
+                android:text="B" />
             <RadioButton
                 android:layout_weight="1"
                 android:id="@+id/radioC"

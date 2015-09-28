@@ -25,12 +25,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                switch (part){
-                    case 1:
-                        return QuestionFragment.newInstance(1, question);
-                    default:
-                        return QuestionFragment.newInstance(3, question);
-                }
+                return QuestionFragment.newInstance(part, question);
             case 1:
                 return TranscriptFragment.newInstance(transcript);
         }

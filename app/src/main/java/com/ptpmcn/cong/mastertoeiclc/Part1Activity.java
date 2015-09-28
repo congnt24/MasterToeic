@@ -63,7 +63,6 @@ public class Part1Activity extends AppCompatActivity {
      RadioGroup groupradio;
      ViewPager viewPager;
      Toolbar toolbar;
-     List<Integer> listRadioButton = new ArrayList<>();
      List<Question> list = new ArrayList<>();
     private int count = 0;
     Context context;
@@ -186,10 +185,6 @@ public class Part1Activity extends AppCompatActivity {
     }
     public void initTestMode(){
         groupradio.setOnCheckedChangeListener(onChecked);
-        listRadioButton.add(R.id.radioA);
-        listRadioButton.add(R.id.radioB);
-        listRadioButton.add(R.id.radioC);
-        listRadioButton.add(R.id.radioD);
     }
     /**
      * Initialize data for part from database sqlite
@@ -224,54 +219,7 @@ public class Part1Activity extends AppCompatActivity {
             Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
         }
     }
-    public void autoCheckRadioButton(int i){
-        removeAllButtonDrawable();
-        int usercheck = (int)listResult[i].charAt(0)-65;
-        int correct = (int)list.get(i).getAnswer().toUpperCase().charAt(0) - 65;
-        groupradio.check(usercheck);
-        Drawable drawable = getResources().getDrawable(R.drawable.ic_action_check_circle);
-        drawable.setColorFilter(new LightingColorFilter(Color.GREEN, Color.GREEN));
-        Drawable drawableIncorrect = getResources().getDrawable(R.drawable.ic_action_cancel);
-        drawableIncorrect.setColorFilter(new LightingColorFilter(Color.RED, Color.RED));
-        if (correct != usercheck){
-            changeButtonDrawable(usercheck, drawableIncorrect);
-        }
-        changeButtonDrawable(correct, drawable);
-        denyCheckRadioButton();
-    }
 
-    public void denyCheckRadioButton() {
-        radioA.setClickable(false);
-        radioB.setClickable(false);
-        radioC.setClickable(false);
-        radioD.setClickable(false);
-    }
-    public void changeButtonDrawable(int check, Drawable drawable){
-        switch (check){
-            case 0:
-                radioA.setChecked(true);
-                radioA.setButtonDrawable(drawable);
-                break;
-            case 1:
-                radioB.setChecked(true);
-                radioB.setButtonDrawable(drawable);
-                break;
-            case 2:
-                radioC.setChecked(true);
-                radioC.setButtonDrawable(drawable);
-                break;
-            case 3:
-                radioD.setChecked(true);
-                radioD.setButtonDrawable(drawable);
-                break;
-        }
-    }
-    public void removeAllButtonDrawable(){
-        radioA.setButtonDrawable(android.R.drawable.btn_radio);
-        radioB.setButtonDrawable(android.R.drawable.btn_radio);
-        radioC.setButtonDrawable(android.R.drawable.btn_radio);
-        radioD.setButtonDrawable(android.R.drawable.btn_radio);
-    }
     /**
      * Using when user wanna change question
      */
@@ -289,6 +237,90 @@ public class Part1Activity extends AppCompatActivity {
             //Toast.makeText(Part1Activity.this, "Image not found", Toast.LENGTH_SHORT).show();
         }
     }
+
+    /**
+     * After finish testting, user can't review all the test they just taking. In this review mode,
+     * this method will be used to check the corrects answer and the answer what user choosed
+     * @param i: the count = id of question
+     */
+    public void autoCheckRadioButton(int i){
+        denyCheckRadioButton();
+        removeAllButtonDrawable();
+        int usercheck = (int)listResult[i].charAt(0)-65;
+        int correct = (int)list.get(i).getAnswer().toUpperCase().charAt(0) - 65;
+        //groupradio.check(usercheck);
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_action_check_circle);
+        drawable.setColorFilter(new LightingColorFilter(Color.GREEN, Color.GREEN));
+        if (correct != usercheck){//User check
+            changeButtonDrawable(usercheck);
+        }
+        changeButtonDrawable(correct, drawable); //Correct answer
+    }
+
+    /**
+     * In review mode, we'll deny all checkable of radio button
+     */
+    public void denyCheckRadioButton() {
+        radioA.setClickable(false);
+        radioB.setClickable(false);
+        radioC.setClickable(false);
+        radioD.setClickable(false);
+    }
+    public void changeButtonDrawable(int check, Drawable drawable){
+        switch (check){
+            case 0:
+                radioA.setButtonDrawable(drawable);
+                radioA.setTextColor(Color.GREEN);
+                break;
+            case 1:
+                radioB.setButtonDrawable(drawable);
+                radioB.setTextColor(Color.GREEN);
+                break;
+            case 2:
+                radioC.setButtonDrawable(drawable);
+                radioC.setTextColor(Color.GREEN);
+                break;
+            case 3:
+                radioD.setButtonDrawable(drawable);
+                radioD.setTextColor(Color.GREEN);
+                break;
+        }
+    }
+    public void changeButtonDrawable(int check){
+        switch (check){
+            case 0:
+                radioA.setChecked(true);
+                radioA.setTextColor(Color.RED);
+                break;
+            case 1:
+                radioB.setChecked(true);
+                radioB.setTextColor(Color.RED);
+                break;
+            case 2:
+                radioC.setChecked(true);
+                radioC.setTextColor(Color.RED);
+                break;
+            case 3:
+                radioD.setChecked(true);
+                radioD.setTextColor(Color.RED);
+                break;
+        }
+    }
+
+    /**
+     * Set all radio Button to default drawable
+     */
+    public void removeAllButtonDrawable(){
+        radioA.setButtonDrawable(R.drawable.default_radio_button);
+        radioB.setButtonDrawable(R.drawable.default_radio_button);
+        radioC.setButtonDrawable(R.drawable.default_radio_button);
+        radioD.setButtonDrawable(R.drawable.default_radio_button);
+        radioA.setTextColor(Color.BLACK);
+        radioB.setTextColor(Color.BLACK);
+        radioC.setTextColor(Color.BLACK);
+        radioD.setTextColor(Color.BLACK);
+    }
+
 
     private View.OnClickListener onPrev = new View.OnClickListener(){
         @Override
@@ -364,7 +396,6 @@ public class Part1Activity extends AppCompatActivity {
         searchView.setQueryHint(this.getString(R.string.search_hint));
         ed_searchView = ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
         ed_searchView.setHintTextColor(getResources().getColor(R.color.my_primary_light));
-
         searchView.setSuggestionsAdapter(mAdapter);
         searchView.setOnQueryTextListener(onQuerySearchView);
         searchView.setOnSuggestionListener(onQuerySuggestion);

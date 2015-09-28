@@ -4,6 +4,14 @@
     android:layout_height="match_parent"
     android:padding="10dp">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Transcript"
+        android:gravity="center"
+        android:textColor="@color/my_primary" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,4 +23,5 @@
             android:textSize="20dp"
             android:id="@+id/tv_transcript"/>
     </ScrollView>
+
 </LinearLayout>

@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/group_button"
-        android:background="@color/LightSteelBlue"
+        android:background="@color/MediumSeaGreen"
+        android:weightSum="5"
         android:layout_alignParentBottom="true">
 
         <Button
@@ -54,53 +55,45 @@
         android:layout_above="@id/player_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/LightSteelBlue"
+        android:background="@color/MediumSeaGreen"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tv_cau"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="20dp"
             android:textStyle="bold"
             android:text="Cau 1:"/>
         <RadioGroup
             android:id="@+id/group_radio"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="50sp"
+            android:layout_height="wrap_content"
             android:weightSum="4"
             android:gravity="center">
             <RadioButton
                 android:layout_weight="1"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="end"
                 android:id="@+id/radioA"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:button="@android:drawable/btn_radio"
                 android:text="A"/>
             <RadioButton
                 android:layout_weight="1"
-                android:layout_centerHorizontal="true"
                 android:id="@+id/radioB"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:button="@android:drawable/btn_radio"
                 android:text="B"/>
             <RadioButton
                 android:layout_weight="1"
-                android:layout_centerHorizontal="true"
                 android:id="@+id/radioC"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:button="@android:drawable/btn_radio"
                 android:text="C"/>
             <RadioButton
-                android:layout_centerHorizontal="true"
+                android:layout_weight="1"
                 android:id="@+id/radioD"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:button="@android:drawable/btn_radio"
                 android:text="D"/>
         </RadioGroup>
     </LinearLayout>

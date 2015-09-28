@@ -1,13 +1,17 @@
 package com.ptpmcn.cong.mastertoeiclc;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,15 +27,16 @@ public class ResultActivity extends AppCompatActivity {
 
     private TextView tvResult;
     private TextView tvtime;
-    private TextView tvcorrect, tv_correctanswer, tv_resultanswer;
+    private TextView tvcorrect;
     private ImageView ivBanner;
     private Button btnktlai;
     private Button btnxemlai;
     private String[] result;
     private List<Question> list;
     private List<Integer> listcorrect = new ArrayList<>();
-    private int part;
+    private int part, total;
     private String time;
+    private LinearLayout historyContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,49 +45,61 @@ public class ResultActivity extends AppCompatActivity {
         initialize();
         if (getIntent() != null) {
             Bundle b = getIntent().getExtras();
-            part = b.getInt("part");
+            part = b.getInt("part", 0);
             time = b.getString("time");
             result = b.getStringArray("result");
+            total = b.getInt("total", 0);
             list = b.getParcelableArrayList("question");
-            Log.d("Result", "Result: "+result+ " - List Question"+list);
+            Log.d("Result", "Result: " + result + " - List Question" + list);
             Toast.makeText(ResultActivity.this,"Result: "+result.length+ " - List Question"+list.size(), Toast.LENGTH_SHORT).show();
             tvResult.setText("Kết Quả Part " + part);
             tvtime.setText("Thời gian: " + time);
-            tvcorrect.setText("Số câu đúng: "+KiemTraKetQua(result, list));
+            tvcorrect.setText("Số câu đúng: " + KiemTraKetQua(result, list));
         }
     }
 
 
     private int KiemTraKetQua(String[] list1, List<Question> list2) {
         int countCorrect = 0;
-        if (list1.length < 30){
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             for (int i = 0; i < list1.length; i++) {
-                if (list1[i] != null) {
-                    tv_resultanswer.append(list1[i] + "\n");
-                    if (list1[i].equalsIgnoreCase(list2.get(i).getAnswer())) {
-                        listcorrect.add(i);
-                        countCorrect++;
+                View row = inflater.inflate(R.layout.result_row, null);
+                TextView stt = (TextView) row.findViewById(R.id.tv_stt2);
+                TextView answer = (TextView) row.findViewById(R.id.tv_resultanswer);
+                stt.setText(i+"");
+                if (list1.length < 30) {
+                    ((TextView) row.findViewById(R.id.tv_correctanswer)).setText(list2.get(i).getAnswer());
+                    if (list1[i] != null) {
+                        answer.setText(list1[i]);
+                        if (list1[i].equalsIgnoreCase(list2.get(i).getAnswer())) {
+                            listcorrect.add(i);
+                            countCorrect++;
+                            answer.setTextColor(Color.GREEN);
+                        } else {
+                            answer.setTextColor(Color.RED);
+                        }
+                    } else {
+                        answer.setText("X");
+                        answer.setTextColor(Color.RED);
                     }
-                } else {
-                    tv_resultanswer.append("X\n");
-                }
-                tv_correctanswer.append(list2.get(i).getAnswer() + "\n");
-            }
-        }
-        else{
-            for (int i = 0; i < list1.length; i++) {
-                if (list1[i] != null) {
-                    tv_resultanswer.append(list1[i] + "\n");
-                    if (list1[i].equalsIgnoreCase(list2.get(i/3).getAnswer().substring(i%3, i%3))) {
-                        listcorrect.add(i);
-                        countCorrect++;
+                }else{
+                    ((TextView) row.findViewById(R.id.tv_correctanswer)).setText(list2.get(i/3).getAnswer().substring(i % 3, i % 3 + 1));
+                    if (list1[i] != null) {
+                        answer.setText(list1[i]);
+                        if (list1[i].equalsIgnoreCase(list2.get(i /3).getAnswer().substring(i % 3, i % 3 + 1))) {
+                            listcorrect.add(i);
+                            countCorrect++;
+                            answer.setTextColor(Color.GREEN);
+                        } else {
+                            answer.setTextColor(Color.RED);
+                        }
+                    } else {
+                        answer.setText("X");
+                        answer.setTextColor(Color.RED);
                     }
-                } else {
-                    tv_resultanswer.append("X\n");
                 }
-                tv_correctanswer.append(list2.get(i/3).getAnswer().substring(i%3, i%3) + "\n");
+                historyContainer.addView(row);
             }
-        }
         return  countCorrect;
     }
 
@@ -93,16 +110,15 @@ public class ResultActivity extends AppCompatActivity {
         this.tvcorrect = (TextView) findViewById(R.id.tv_correct);
         this.tvtime = (TextView) findViewById(R.id.tv_time);
         this.tvResult = (TextView) findViewById(R.id.tv_Result);
-        this.tv_correctanswer = (TextView) findViewById(R.id.tv_correctanswer);
-        this.tv_resultanswer = (TextView) findViewById(R.id.tv_resultanswer);
-
+        historyContainer = (LinearLayout) findViewById(R.id.group_result_row);
         btnxemlai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent;
+                Bundle bundle = new Bundle();
                 switch(part){
                     case 1:
-                        Intent intent = new Intent(ResultActivity.this, Part1Activity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        Bundle bundle = new Bundle();
+                        intent = new Intent(ResultActivity.this, Part1Activity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         bundle.putBoolean("reviewmode", true);
                         bundle.putStringArray("result", result);
                         bundle.putString("time", time);
@@ -110,14 +126,15 @@ public class ResultActivity extends AppCompatActivity {
                         intent.putExtras(bundle);
                         startActivity(intent);
                         break;
-                    case 2:
-                        startActivity(new Intent(ResultActivity.this, Part3Activity.class));
-                        break;
-                    case 3:
-                        startActivity(new Intent(ResultActivity.this, Part3Activity.class));
-                        break;
-                    case 4:
-                        startActivity(new Intent(ResultActivity.this, Part3Activity.class));
+                    default:
+                        intent = new Intent(ResultActivity.this, Part3Activity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        bundle.putBoolean("reviewmode", true);
+                        bundle.putStringArray("result", result);
+                        bundle.putString("time", time);
+                        bundle.putInt("part", part);
+                        bundle.putParcelableArrayList("question", (ArrayList<? extends Parcelable>) list);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
                         break;
                 }
             }
@@ -125,18 +142,18 @@ public class ResultActivity extends AppCompatActivity {
         btnktlai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent;
+                Bundle bundle = new Bundle();
                 switch(part){
                     case 1:
-                        startActivity(new Intent(ResultActivity.this, Part1Activity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                        intent = new Intent(ResultActivity.this, Part1Activity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                         break;
-                    case 2:
-                        startActivity(new Intent(ResultActivity.this, Part3Activity.class));
-                        break;
-                    case 3:
-                        startActivity(new Intent(ResultActivity.this, Part3Activity.class));
-                        break;
-                    case 4:
-                        startActivity(new Intent(ResultActivity.this, Part3Activity.class));
+                    default:
+                        intent = new Intent(ResultActivity.this, Part3Activity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        bundle.putInt("part", part);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
                         break;
                 }
 

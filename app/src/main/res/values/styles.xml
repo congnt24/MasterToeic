@@ -19,11 +19,13 @@
 
         <item name="android:windowBackground">@color/window_background</item>
         <!-- Customize your theme here. -->
-        <item name="android:buttonStyle">@style/ButtonStyle</item>
+        <item name="android:radioButtonStyle">@style/RadioStyle</item>
     </style>
 
-    <style name="ButtonStyle" parent="Base.Widget.AppCompat.Button">
+    <style name="RadioStyle" parent="android:Widget.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/default_radio_button</item>
         <item name="android:textColor">@color/my_primary_dark</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
     <style name="Divider">
         <item name="android:layout_width">1dip</item>

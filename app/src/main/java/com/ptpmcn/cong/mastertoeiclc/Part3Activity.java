@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.SystemClock;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -27,6 +29,7 @@ import java.util.List;
 
 import adapter.PagerAdapter;
 import fragments.QuestionFragment;
+import fragments.TranscriptFragment;
 import model.Question;
 
 /**
@@ -37,45 +40,61 @@ public class Part3Activity extends AppCompatActivity {
 
 
     public static final int QUESTIONNUMBER = 30;
-    private List<Question> list = new ArrayList<>();
-    private int count = 0;
+    public List<Question> list = new ArrayList<>();
+    public int count = 0;
     Context context;
     int part=3;
     private Button btnprev;
     private Button btnfinish;
     private Button btnnext;
-    private TableLayout groupbutton;
     private LinearLayout playercontainer;
-    private LinearLayout chooselayout;
-    private String[] listResult = new String[QUESTIONNUMBER];
+    //private String[] listResult = new String[QUESTIONNUMBER];
     private PagerAdapter pagerAdapter;
     private ViewPager viewPager;
     private Toolbar toolbar;
+    private static Part3Activity instance;
+    private Chronometer chrono;
+    public boolean isReviewMode = false;
+    private String time;
+    public String[] listResult;
 
+    public static Part3Activity getInstance(){
+        if (instance == null)
+            instance = new Part3Activity();
+        return instance;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_part3);
-
+        instance = this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
-        if (getIntent()!=null) {
-            Bundle b = getIntent().getExtras();
-            if (b.getInt("part") == 3){//Part 3
-                part = 3;
-                getSupportActionBar().setTitle("Part 3");
-            }else if (b.getInt("part") == 4){//Part 4
-                part = 4;
-                getSupportActionBar().setTitle("Part 4");
-            }else if (b.getInt("part") == 2){//Part 4
-                part = 2;
-                getSupportActionBar().setTitle("Part 2");
-            }
-        }
-
         context = getApplicationContext();
         initialize();
+        if (getIntent()!=null) {
+            Bundle b = getIntent().getExtras();
+            if(b!=null) {
+                if (b.getInt("part", 0) !=0) {//Part 2,3 or 4
+                    part = b.getInt("part");
+                    getSupportActionBar().setTitle("Part "+part);
+                }
+                if( b.getBoolean("reviewmode", false)){//review mode
+                    isReviewMode = true;
+                    listResult = b.getStringArray("result");
+                    list = b.getParcelableArrayList("question");
+                    time = b.getString("time");
+                }
+            }
+        }
+        if (!isReviewMode){
+            initTestMode();
+            chrono.setBase(SystemClock.elapsedRealtime());
+            chrono.start();
+        }else{//Revire mode
+            chrono.setText(time);
+        }
         initdata();
     }
 
@@ -87,39 +106,59 @@ public class Part3Activity extends AppCompatActivity {
     }
 
     public void initialize(){
-
-        this.chooselayout = (LinearLayout) findViewById(R.id.choose_layout);
         this.playercontainer = (LinearLayout) findViewById(R.id.player_container);
-        this.groupbutton = (TableLayout) findViewById(R.id.group_button);
         this.btnnext = (Button) findViewById(R.id.btn_next);
         this.btnfinish = (Button) findViewById(R.id.btn_finish);
         this.btnprev = (Button) findViewById(R.id.btn_prev);
         this.viewPager = (ViewPager) findViewById(R.id.view_pager);
+        chrono = (Chronometer) findViewById(R.id.chronometer);
         AudioCong.getInstance().setDefaultUi(playercontainer, getLayoutInflater());
+
         btnprev.setOnClickListener(onPrev);
         btnnext.setOnClickListener(onNext);
         btnfinish.setOnClickListener(onFinish);
-//        groupradio1.setOnCheckedChangeListener(onChecked1);
-//        groupradio2.setOnCheckedChangeListener(onChecked2);
-//        groupradio3.setOnCheckedChangeListener(onChecked3);
     }
+
+    private void initTestMode() {
+
+    }
+
     private void initdata() {
         if (SQLiteHelper.getInstance(context) != null) {
             try {
-                Cursor cs = SQLiteHelper.getInstance(context).queryRandom("part"+part, 10);
-                while (cs.moveToNext()) {
-                    cs.getColumnCount();
-                    Question q = new Question();
-                    q.setAudio(cs.getString(1));
-                    q.setQuestion(cs.getString(2));
-                    q.setAnswer(cs.getString(3));
-                    q.setTranscript(cs.getString(4));
-                    list.add(q);
+                if (!isReviewMode){
+                    Cursor cs = SQLiteHelper.getInstance(context).queryRandom("part" + part, 10);
+                    while (cs.moveToNext()) {
+                        cs.getColumnCount();
+                        Question q = new Question();
+                        q.setAudio(cs.getString(1));
+                        q.setQuestion(part!=2?cs.getString(2):"1).\n" +
+                                "-----------\n" +
+                                "-----------\n" +
+                                "-----------\n" +
+                                "-----------\n" +
+                                "2).\n" +
+                                "-----------\n" +
+                                "-----------\n" +
+                                "-----------\n" +
+                                "-----------\n" +
+                                "3).\n" +
+                                "-----------\n" +
+                                "-----------\n" +
+                                "-----------\n" +
+                                "-----------\n" +
+                                "-----------" //Question:
+                        );
+                        q.setAnswer(cs.getString(3));
+                        q.setTranscript(cs.getString(4));
+                        list.add(q);
+                    }
+                    cs.close();
                 }
                 AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part" + part + "/" + list.get(count).getAudio() + ".mp3"));
                 pagerAdapter = new PagerAdapter(getSupportFragmentManager()
-                        , 3//part
-                        , list.get(count).getQuestion() //Question:
+                        , part//part
+                        , list.get(count).getQuestion()
                         , ""+list.get(count).getTranscript());  //transcript
                 viewPager.setAdapter(pagerAdapter);
             }catch (Exception e){
@@ -132,59 +171,24 @@ public class Part3Activity extends AppCompatActivity {
     private void initQuestion(){
         try {
             AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part" + part + "/" + list.get(count).getAudio() + ".mp3"));
+            AudioCong.getInstance().pause();
             String[] questions = list.get(count).getQuestion().replaceAll("(?m)^\\s", "").split("\\n");
-            QuestionFragment.getInstance().setQuestion(questions);
+            QuestionFragment.getInstance().initQuestion(questions, count);
+            TranscriptFragment.getInstance().setTranscript("" + list.get(count).getTranscript());
+            AudioCong.getInstance().play();
         } catch (Exception e) {
 
         }
     }
 
-    private RadioGroup.OnCheckedChangeListener onChecked1 = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-            listResult[count*3] = getResult(checkedId);
-        }
-    };
-    private RadioGroup.OnCheckedChangeListener onChecked2 = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-            listResult[count*3+1] = getResult(checkedId);
-        }
-    };
-    private RadioGroup.OnCheckedChangeListener onChecked3 = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-            listResult[count*3+2] = getResult(checkedId);
-        }
-    };
-    public String getResult(int checkedId){
-        String result = "X";
-        switch (checkedId){
-            case R.id.radioA:
-                result = "A";
-                break;
-            case R.id.radioB:
-                result = "B";
-                break;
-            case R.id.radioC:
-                result = "C";
-                break;
-            case R.id.radioD:
-                result = "D";
-                break;
-        }
-        return result;
-    }
 
     View.OnClickListener onPrev = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
             if (count>0){
+                QuestionFragment.getInstance().clearGroupCheck();
                 count--;
                 initQuestion();
-//                groupradio1.clearCheck();
-//                groupradio2.clearCheck();
-//                groupradio3.clearCheck();
             }
         }
     };
@@ -192,11 +196,9 @@ public class Part3Activity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (count<9){
+                QuestionFragment.getInstance().clearGroupCheck();
                 count++;
                 initQuestion();
-//                groupradio1.clearCheck();
-//                groupradio2.clearCheck();
-//                groupradio3.clearCheck();
             }
             else {//neu tra loi het 10 cau thi tu ket thuc khi chon next
                 finishTest();
@@ -214,15 +216,17 @@ public class Part3Activity extends AppCompatActivity {
      * Finish test method, show the result activity of current test
      */
     private void finishTest(){
-        //Count correct answer
         Intent intent = new Intent(context, ResultActivity.class);
         Bundle b = new Bundle();
         b.putInt("part", part);
-        b.putStringArray("result", listResult);
+        b.putString("time", chrono.getText().toString());
+        b.putStringArray("result", QuestionFragment.getInstance().listResult);
         b.putParcelableArrayList("question", (ArrayList<? extends Parcelable>) list);
         b.putInt("total", QUESTIONNUMBER);
         intent.putExtras(b);
         startActivity(intent);
+        if (chrono!=null)
+            chrono.stop();
     }
 
 }

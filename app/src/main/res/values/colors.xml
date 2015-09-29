@@ -9,7 +9,8 @@
     <color name="my_secondary_text">#CC000000</color>
     <color name="my_icons">#FFFFFF</color>
     <color name="my_divider">#B6B6B6</color>
-
+    <color name="background_red">#85232A</color>
+    <color name="tile_red">#CC2934</color>
     <color name="apptheme_color">#33b5e5</color>
     <!--Vasic colors-->
     <color name="White">#FFFFFF</color>
@@ -43,6 +44,10 @@
     <color name="Fuchsia">#FF00FF</color>
     <color name="Magenta">#FF00FF</color>
     <color name="Red">#FF0000</color>
+    <color name="MaterialRed">#e94043</color>
+    <color name="MaterialBlue">#426FC5</color>
+    <color name="MaterialGreen">#00897b</color>
+    <color name="MaterialOrange">#f6774f</color>
     <color name="OldLace">#FDF5E6</color>
     <color name="LightGoldenrodYellow">#FAFAD2</color>
     <color name="Linen">#FAF0E6</color>

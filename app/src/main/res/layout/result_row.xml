@@ -2,8 +2,8 @@
 <TableRow
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/LightSteelBlue"
     android:layout_marginBottom="1dp"
+    android:background="@color/tile_red"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <TextView
         android:text="1"

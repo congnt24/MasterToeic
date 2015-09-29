@@ -197,8 +197,9 @@ public class Part1Activity extends AppCompatActivity {
                     while (cs.moveToNext()) {
                         Question q = new Question();
                         q.setAudio(cs.getString(1));
-                        q.setAnswer(cs.getString(2));
-                        q.setTranscript(cs.getString(3));
+                        q.setQuestion(cs.getString(2));
+                        q.setAnswer(cs.getString(3));
+                        q.setTranscript(cs.getString(4));
                         list.add(q);
                     }
                     cs.close();
@@ -207,7 +208,7 @@ public class Part1Activity extends AppCompatActivity {
                 pagerAdapter = new PagerAdapter(getSupportFragmentManager()
                         , 1//part 1
                         , context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg" //Question: img path
-                        , ""+list.get(count).getTranscript());  //transcript
+                        , list.get(count).getQuestion()+"\n"+list.get(count).getTranscript());  //transcript
                 viewPager.setAdapter(pagerAdapter);
                 if (isReviewMode){
                     autoCheckRadioButton(count);
@@ -228,7 +229,7 @@ public class Part1Activity extends AppCompatActivity {
             viewPager.setCurrentItem(0, true);
             AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".mp3"));
             QuestionFragment.getInstance().setImageView(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg");
-            TranscriptFragment.getInstance().setTranscript("" + list.get(count).getTranscript());
+            TranscriptFragment.getInstance().setTranscript(list.get(count).getQuestion()+"\n"+list.get(count).getTranscript());
             if (isReviewMode){
                 autoCheckRadioButton(count);
             }

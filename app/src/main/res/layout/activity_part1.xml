@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/group_button"
-        android:background="@color/DarkCyan"
+        android:background="@color/MaterialRed"
         android:weightSum="5"
         android:layout_alignParentBottom="true">
 
@@ -47,7 +47,7 @@
         android:id="@+id/player_container"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:background="@color/DarkCyan"
+        android:background="@color/MaterialRed"
         android:layout_height="wrap_content">
     </LinearLayout>
     <LinearLayout
@@ -55,7 +55,7 @@
         android:layout_above="@id/player_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/DarkCyan"
+        android:background="@color/MaterialRed"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tv_cau"
@@ -110,7 +110,8 @@
         android:id="@+id/chronometer"
         android:layout_below="@+id/toolbar"
         android:textSize="20dp"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
         android:background="@drawable/circle"
         android:gravity="center"
         android:layout_alignParentRight="true"

@@ -67,7 +67,7 @@ public class ResultActivity extends AppCompatActivity {
                 TextView stt = (TextView) row.findViewById(R.id.tv_stt2);
                 TextView answer = (TextView) row.findViewById(R.id.tv_resultanswer);
                 stt.setText(i+"");
-                if (list1.length < 30) {
+                if (list1.length < 30) {//Part1
                     ((TextView) row.findViewById(R.id.tv_correctanswer)).setText(list2.get(i).getAnswer());
                     if (list1[i] != null) {
                         answer.setText(list1[i]);
@@ -82,7 +82,7 @@ public class ResultActivity extends AppCompatActivity {
                         answer.setText("X");
                         answer.setTextColor(Color.RED);
                     }
-                }else{
+                }else{//Part2,3,4
                     ((TextView) row.findViewById(R.id.tv_correctanswer)).setText(list2.get(i/3).getAnswer().substring(i % 3, i % 3 + 1));
                     if (list1[i] != null) {
                         answer.setText(list1[i]);

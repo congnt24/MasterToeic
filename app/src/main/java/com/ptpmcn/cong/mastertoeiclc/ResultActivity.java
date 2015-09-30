@@ -55,8 +55,6 @@ public class ResultActivity extends AppCompatActivity {
             tvcorrect.setText("Số câu đúng: " + KiemTraKetQua(result, list));
         }
     }
-
-
     private int KiemTraKetQua(String[] list1, List<Question> list2) {
         int countCorrect = 0;
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);

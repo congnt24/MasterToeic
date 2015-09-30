@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/MaterialRed"
     android:padding="10dp">
 
     <TextView
@@ -11,13 +10,15 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Transcript"
         android:gravity="center"
-        android:textColor="@color/White" />
+        android:textColor="@color/Black" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/scrollView">
         <TextView
+
+            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Transcription"

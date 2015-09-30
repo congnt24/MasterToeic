@@ -24,7 +24,7 @@
 
     <style name="RadioStyle" parent="android:Widget.CompoundButton.RadioButton">
         <item name="android:button">@drawable/default_radio_button</item>
-        <item name="android:textColor">@color/my_primary_dark</item>
+        <item name="android:textColor">@color/Black</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
     <style name="Divider">

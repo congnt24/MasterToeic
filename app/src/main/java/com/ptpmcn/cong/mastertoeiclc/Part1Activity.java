@@ -26,6 +26,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -156,6 +157,12 @@ public class Part1Activity extends AppCompatActivity {
         AudioCong.getInstance().pause();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
     public void initialize(){
         this.groupradio = (RadioGroup) findViewById(R.id.group_radio);
         this.playercontainer = (LinearLayout) findViewById(R.id.player_container);
@@ -250,7 +257,12 @@ public class Part1Activity extends AppCompatActivity {
         int usercheck = (int)listResult[i].charAt(0)-65;
         int correct = (int)list.get(i).getAnswer().toUpperCase().charAt(0) - 65;
         //groupradio.check(usercheck);
-        Drawable drawable = getResources().getDrawable(R.drawable.ic_action_check_circle);
+        Drawable drawable = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            drawable = getResources().getDrawable(R.drawable.ic_action_check_circle, getTheme());
+        }else{
+            drawable = getResources().getDrawable(R.drawable.ic_action_check_circle);
+        }
         drawable.setColorFilter(new LightingColorFilter(Color.GREEN, Color.GREEN));
         if (correct != usercheck){//User check
             changeButtonDrawable(usercheck);
@@ -363,7 +375,7 @@ public class Part1Activity extends AppCompatActivity {
                 if (btn.getText()!=null)
                     listResult[count] = String.valueOf(btn.getText());
             }catch (Exception e){
-
+                Log.e("onFinish","Unknown exception");
             }
         }
     };
@@ -387,24 +399,7 @@ public class Part1Activity extends AppCompatActivity {
     }
 
 
-    //Menu
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
-        searchView.setQueryHint(this.getString(R.string.search_hint));
-        ed_searchView = ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
-        ed_searchView.setHintTextColor(getResources().getColor(R.color.my_primary_light));
-        searchView.setSuggestionsAdapter(mAdapter);
-        searchView.setOnQueryTextListener(onQuerySearchView);
-        searchView.setOnSuggestionListener(onQuerySuggestion);
-        menu.findItem(R.id.search).setVisible(true);
-
-        mSearchCheck = false;
-        return true;
-    }
 
     private SearchView.OnQueryTextListener onQuerySearchView = new SearchView.OnQueryTextListener() {
         @Override
@@ -431,6 +426,24 @@ public class Part1Activity extends AppCompatActivity {
         }
         mAdapter.changeCursor(cursor);
     }
+    //Menu
+/*
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
+        searchView.setQueryHint(this.getString(R.string.search_hint));
+        ed_searchView = ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
+        ed_searchView.setHintTextColor(getResources().getColor(R.color.my_primary_light));
+        searchView.setSuggestionsAdapter(mAdapter);
+        searchView.setOnQueryTextListener(onQuerySearchView);
+        searchView.setOnSuggestionListener(onQuerySuggestion);
+        menu.findItem(R.id.search).setVisible(true);
+
+        mSearchCheck = false;
+        return true;
+    }
     private SearchView.OnSuggestionListener onQuerySuggestion = new SearchView.OnSuggestionListener() {
         @Override
         public boolean onSuggestionSelect(int position) {
@@ -443,7 +456,7 @@ public class Part1Activity extends AppCompatActivity {
             ed_searchView.setText("" + mAdapter.getCursor().getString(1));
             searchView.clearFocus();
             //Hiding input
-            /*InputMethodManager inputManager = (InputMethodManager) this
+            *//*InputMethodManager inputManager = (InputMethodManager) this
                     .getSystemService(Context.INPUT_METHOD_SERVICE);
 
             //check if no view has focus:
@@ -451,7 +464,7 @@ public class Part1Activity extends AppCompatActivity {
             if(v==null)
                 return;
 
-            inputManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWA*/
+            inputManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWA*//*
             return false;
         }
     };
@@ -467,6 +480,6 @@ public class Part1Activity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
 }

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    android:layout_height="match_parent">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -13,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/group_button"
-        android:background="@color/MaterialRed"
         android:weightSum="5"
+        android:background="@color/DarkCyan"
         android:layout_alignParentBottom="true">
 
         <Button
@@ -47,7 +45,6 @@
         android:id="@+id/player_container"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:background="@color/MaterialRed"
         android:layout_height="wrap_content">
     </LinearLayout>
     <LinearLayout
@@ -55,7 +52,6 @@
         android:layout_above="@id/player_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/MaterialRed"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tv_cau"

@@ -50,8 +50,6 @@ public class ResultActivity extends AppCompatActivity {
             result = b.getStringArray("result");
             total = b.getInt("total", 0);
             list = b.getParcelableArrayList("question");
-            Log.d("Result", "Result: " + result + " - List Question" + list);
-            Toast.makeText(ResultActivity.this,"Result: "+result.length+ " - List Question"+list.size(), Toast.LENGTH_SHORT).show();
             tvResult.setText("Kết Quả Part " + part);
             tvtime.setText("Thời gian: " + time);
             tvcorrect.setText("Số câu đúng: " + KiemTraKetQua(result, list));
@@ -66,7 +64,7 @@ public class ResultActivity extends AppCompatActivity {
                 View row = inflater.inflate(R.layout.result_row, null);
                 TextView stt = (TextView) row.findViewById(R.id.tv_stt2);
                 TextView answer = (TextView) row.findViewById(R.id.tv_resultanswer);
-                stt.setText(i+"");
+                stt.setText(i + "");
                 if (list1.length < 30) {//Part1
                     ((TextView) row.findViewById(R.id.tv_correctanswer)).setText(list2.get(i).getAnswer());
                     if (list1[i] != null) {
@@ -83,22 +81,27 @@ public class ResultActivity extends AppCompatActivity {
                         answer.setTextColor(Color.RED);
                     }
                 }else{//Part2,3,4
-                    ((TextView) row.findViewById(R.id.tv_correctanswer)).setText(list2.get(i/3).getAnswer().substring(i % 3, i % 3 + 1));
-                    if (list1[i] != null) {
-                        answer.setText(list1[i]);
-                        if (list1[i].equalsIgnoreCase(list2.get(i /3).getAnswer().substring(i % 3, i % 3 + 1))) {
-                            listcorrect.add(i);
-                            countCorrect++;
-                            answer.setTextColor(Color.GREEN);
+                    try {
+                        ((TextView) row.findViewById(R.id.tv_correctanswer)).setText(list2.get(i / 3).getAnswer().substring(i % 3, i % 3 + 1));
+                        if (list1[i] != null) {
+                            answer.setText(list1[i]);
+                            if (list1[i].equalsIgnoreCase(list2.get(i /3).getAnswer().substring(i % 3, i % 3 + 1))) {
+                                listcorrect.add(i);
+                                countCorrect++;
+                                answer.setTextColor(Color.GREEN);
+                            } else {
+                                answer.setTextColor(Color.RED);
+                            }
                         } else {
+                            answer.setText("X");
                             answer.setTextColor(Color.RED);
                         }
-                    } else {
-                        answer.setText("X");
-                        answer.setTextColor(Color.RED);
+                    }catch (Exception e){
+                        Log.d("ERROR", "Unknown exception");
                     }
                 }
                 historyContainer.addView(row);
+
             }
         return  countCorrect;
     }
@@ -118,7 +121,7 @@ public class ResultActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 switch(part){
                     case 1:
-                        intent = new Intent(ResultActivity.this, Part1Activity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent = new Intent(ResultActivity.this, Part1Activity.class);
                         bundle.putBoolean("reviewmode", true);
                         bundle.putStringArray("result", result);
                         bundle.putString("time", time);
@@ -127,7 +130,7 @@ public class ResultActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     default:
-                        intent = new Intent(ResultActivity.this, Part3Activity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent = new Intent(ResultActivity.this, Part3Activity.class);
                         bundle.putBoolean("reviewmode", true);
                         bundle.putStringArray("result", result);
                         bundle.putString("time", time);

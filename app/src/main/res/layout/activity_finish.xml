@@ -69,7 +69,7 @@
                         android:id="@+id/group_result_row"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/MaterialRed"
+                        android:background="#92C94A"
                         android:orientation="vertical">
                     </LinearLayout>
 

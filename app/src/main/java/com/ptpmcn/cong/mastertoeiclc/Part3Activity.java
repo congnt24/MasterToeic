@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -78,7 +79,11 @@ public class Part3Activity extends AppCompatActivity {
             if(b!=null) {
                 if (b.getInt("part", 0) !=0) {//Part 2,3 or 4
                     part = b.getInt("part");
-                    getSupportActionBar().setTitle("Part "+part);
+                    try {
+                        getSupportActionBar().setTitle("Part "+part);
+                    }catch (NullPointerException e){
+                        Log.e("ActionBar", "No ActionBar");
+                    }
                 }
                 if( b.getBoolean("reviewmode", false)){//review mode
                     isReviewMode = true;
@@ -104,7 +109,11 @@ public class Part3Activity extends AppCompatActivity {
         super.onPause();
         AudioCong.getInstance().pause();
     }
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class));
+    }
     public void initialize(){
         this.playercontainer = (LinearLayout) findViewById(R.id.player_container);
         this.btnnext = (Button) findViewById(R.id.btn_next);
@@ -177,7 +186,7 @@ public class Part3Activity extends AppCompatActivity {
             TranscriptFragment.getInstance().setTranscript("" + list.get(count).getTranscript());
             AudioCong.getInstance().play();
         } catch (Exception e) {
-
+            Log.e("InitQuestion", "Error initialize Question");
         }
     }
 

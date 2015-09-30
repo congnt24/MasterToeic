@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.nguyentrungcong.createfilefromassets.CreateFileFromAssets;
+import com.googlecode.tesseract.android.TessBaseAPI;
 import com.ptpmcn.cong.downloader.Downloader;
 import com.ptpmcn.cong.unzip.Decompress;
 
@@ -23,6 +25,8 @@ import java.io.IOException;
  */
 public class LoadingActivity extends AppCompatActivity {
     Context context;
+    public static TessBaseAPI baseApi;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +68,20 @@ public class LoadingActivity extends AppCompatActivity {
                 startActivity(new Intent(context, MainActivity.class));
             }
         }.execute("");
+        initialize();
+    }
+
+    private void initialize() {
+        //Init TessTwoApi
+        File dir = new File(getFilesDir().getPath()+"/tessdata");
+        if(!dir.exists()){
+            dir.mkdir();
+        }
+        CreateFileFromAssets.getInstance().initialize(this).CreateFileFromPath("tessdata");
+        File f = new File(getFilesDir().getPath()+"/tessdata/eng.traineddata");
+        Log.d("TAg,", getFilesDir().getPath() + "/tessdata/eng.traineddata");
+        baseApi = new TessBaseAPI();
+        baseApi.init(getFilesDir().getPath(), "eng");
     }
 
 

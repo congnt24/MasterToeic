@@ -1,14 +1,14 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/my_primary</item>
 
         <!--   darker variant for the status bar and contextual app bars -->
         <item name="colorPrimaryDark">@color/my_primary_dark</item>
 
         <!--   theme UI controls like checkboxes and text fields e.g. FloatActionButton -->
-        <item name="colorAccent">@color/my_accent</item>
+        <item name="colorAccent">@color/MaterialGreen</item>
 
         <!-- Title Text Color -->
         <item name="android:textColorPrimary">@color/my_primary_text</item>

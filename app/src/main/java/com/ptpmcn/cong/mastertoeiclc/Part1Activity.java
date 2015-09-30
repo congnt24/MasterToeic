@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
@@ -16,6 +18,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.provider.BaseColumns;
+import android.provider.MediaStore;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.CursorAdapter;
@@ -24,6 +27,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -58,7 +62,8 @@ import model.Question;
  */
 public class Part1Activity extends AppCompatActivity {
 
-     Button btnfinish, btnprev, btnnext;
+    private static final int REQUEST_IMAGE_CAPTURE = 10;
+    Button btnfinish, btnprev, btnnext;
      TextView tvcau;
      LinearLayout playercontainer;
      RadioGroup groupradio;
@@ -137,7 +142,6 @@ public class Part1Activity extends AppCompatActivity {
             initialize();
             initdata();
             loadHints();
-
     }
 
     private void loadHints() {
@@ -426,8 +430,23 @@ public class Part1Activity extends AppCompatActivity {
         }
         mAdapter.changeCursor(cursor);
     }
+    //Context Menu
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+//        super.onCreateContextMenu(menu, v, menuInfo);
+        //user has long pressed your TextView
+        menu.add(0, v.getId(), 0, "text that you want to show in the context menu - I use simply Copy");
+
+        //cast the received View to TextView so that you can get its text
+        TextView yourTextView = (TextView) v;
+
+        //place your TextView's text in clipboard
+        Toast.makeText(Part1Activity.this, yourTextView.getText(), Toast.LENGTH_SHORT).show();
+    }
+
     //Menu
-/*
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -456,7 +475,7 @@ public class Part1Activity extends AppCompatActivity {
             ed_searchView.setText("" + mAdapter.getCursor().getString(1));
             searchView.clearFocus();
             //Hiding input
-            *//*InputMethodManager inputManager = (InputMethodManager) this
+            /*InputMethodManager inputManager = (InputMethodManager) this
                     .getSystemService(Context.INPUT_METHOD_SERVICE);
 
             //check if no view has focus:
@@ -464,7 +483,7 @@ public class Part1Activity extends AppCompatActivity {
             if(v==null)
                 return;
 
-            inputManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWA*//*
+            inputManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWA*/
             return false;
         }
     };
@@ -472,7 +491,16 @@ public class Part1Activity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.showLyric) {
+        if (id == R.id.cameracapture) {
+            Toast.makeText(Part1Activity.this, "Camera", Toast.LENGTH_SHORT).show();
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+            return true;
+        }
+        if (id == R.id.galleryselect){
+            Toast.makeText(Part1Activity.this, "Gallery", Toast.LENGTH_SHORT).show();
             return true;
         }
         if (id == R.id.search){
@@ -480,6 +508,15 @@ public class Part1Activity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            byte[] datas = data.getExtras().getByteArray("data");
+            LoadingActivity.baseApi.setImage(BitmapFactory.decodeByteArray(datas, 0, datas.length));
+            String text = LoadingActivity.baseApi.getUTF8Text();
+            Toast.makeText(Part1Activity.this, text, Toast.LENGTH_SHORT).show();
+        }
+    }
 }

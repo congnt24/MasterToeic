@@ -1,1 +1,1 @@
-include ':app', ':audiocong', ':unzip', ':downloader', ':dbhandler', ':jsonconfig'
+include ':app', ':audiocong', ':unzip', ':downloader', ':dbhandler', ':jsonconfig', ':createfilefromassets', ':tess-two'

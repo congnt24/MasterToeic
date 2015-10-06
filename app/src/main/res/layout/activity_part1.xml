@@ -12,22 +12,22 @@
         android:layout_height="wrap_content"
         android:id="@+id/group_button"
         android:weightSum="5"
-        android:background="@color/DarkCyan"
         android:layout_alignParentBottom="true">
-
         <Button
             android:id="@+id/btn_prev"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:drawableLeft="@drawable/ic_action_fast_rewind"
-            android:textColor="@color/my_primary_dark"
+            android:textColor="@color/White"
+            android:background="@drawable/flat_selector"
             android:text="@string/prev"/>
         <Button
             android:id="@+id/btn_finish"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textColor="@color/my_primary_dark"
+            android:textColor="@color/White"
+            android:background="@drawable/flat_selector"
             android:text="@string/finish"
             android:layout_weight="3"/>
         <Button
@@ -36,7 +36,8 @@
             android:layout_height="match_parent"
             android:text="@string/next"
             android:drawableRight="@drawable/ic_action_fast_forward"
-            android:textColor="@color/my_primary_dark"
+            android:textColor="@color/White"
+            android:background="@drawable/flat_selector"
             android:layout_weight="1"/>
     </LinearLayout>
 
@@ -58,6 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20dp"
+            android:textColor="@color/Black"
             android:textStyle="bold"
             android:text="Cau 1:"/>
         <RadioGroup

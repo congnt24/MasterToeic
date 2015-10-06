@@ -43,6 +43,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cong.audiocong.AudioCong;
+import com.googlecode.tesseract.android.TessBaseAPI;
 import com.ptpmcn.cong.dbhandler.SQLiteHelper;
 
 import java.io.File;
@@ -62,6 +63,7 @@ import model.Question;
  */
 public class Part1Activity extends AppCompatActivity {
 
+    public static TessBaseAPI baseApi;
     private static final int REQUEST_IMAGE_CAPTURE = 10;
     Button btnfinish, btnprev, btnnext;
      TextView tvcau;
@@ -193,6 +195,9 @@ public class Part1Activity extends AppCompatActivity {
         }else{
             chrono.setText(time);
         }
+        //
+        baseApi = new TessBaseAPI();
+        baseApi.init(getFilesDir().getPath(), "eng");
     }
     public void initTestMode(){
         groupradio.setOnCheckedChangeListener(onChecked);
@@ -514,9 +519,9 @@ public class Part1Activity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             byte[] datas = data.getExtras().getByteArray("data");
-            LoadingActivity.baseApi.setImage(BitmapFactory.decodeByteArray(datas, 0, datas.length));
-            String text = LoadingActivity.baseApi.getUTF8Text();
-            Toast.makeText(Part1Activity.this, text, Toast.LENGTH_SHORT).show();
+            baseApi.setImage(BitmapFactory.decodeByteArray(datas, 0, datas.length));
+            String text = baseApi.getUTF8Text();
+            Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
         }
     }
 }

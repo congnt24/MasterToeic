@@ -23,6 +23,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Black"
+                    android:textStyle="bold"
                     android:text="Cau 1"/>
                 <RadioButton
                     android:id="@+id/radio1A"
@@ -59,6 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Black"
+                    android:textStyle="bold"
                     android:text="Cau 2"/>
                 <RadioButton
                     android:id="@+id/radio2A"
@@ -95,6 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Black"
+                    android:textStyle="bold"
                     android:text="Cau 3"/>
                 <RadioButton
                     android:id="@+id/radio3A"

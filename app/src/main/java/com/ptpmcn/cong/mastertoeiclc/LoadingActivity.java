@@ -25,7 +25,6 @@ import java.io.IOException;
  */
 public class LoadingActivity extends AppCompatActivity {
     Context context;
-    public static TessBaseAPI baseApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +79,6 @@ public class LoadingActivity extends AppCompatActivity {
         CreateFileFromAssets.getInstance().initialize(this).CreateFileFromPath("tessdata");
         File f = new File(getFilesDir().getPath()+"/tessdata/eng.traineddata");
         Log.d("TAg,", getFilesDir().getPath() + "/tessdata/eng.traineddata");
-        baseApi = new TessBaseAPI();
-        baseApi.init(getFilesDir().getPath(), "eng");
     }
 
 

@@ -12,6 +12,8 @@
     <color name="background_red">#85232A</color>
     <color name="tile_red">#CC2934</color>
     <color name="apptheme_color">#33b5e5</color>
+    <color name="blue_pressed">@android:color/holo_blue_dark</color>
+    <color name="blue_normal">@android:color/holo_blue_light</color>
     <!--Vasic colors-->
     <color name="White">#FFFFFF</color>
     <color name="Ivory">#FFFFF0</color>

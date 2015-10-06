@@ -23,6 +23,7 @@
             android:layout_height="match_parent"
             android:text="Transcription"
             android:textSize="20dp"
+            android:textColor="@color/Black"
             android:id="@+id/tv_transcript"/>
     </ScrollView>
 

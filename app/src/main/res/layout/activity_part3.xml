@@ -22,13 +22,15 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:drawableLeft="@drawable/ic_action_fast_rewind"
-            android:textColor="@color/my_primary_dark"
+            android:background="@drawable/flat_selector"
+            android:textColor="@color/White"
             android:text="@string/prev"/>
         <Button
             android:id="@+id/btn_finish"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textColor="@color/my_primary_dark"
+            android:background="@drawable/flat_selector"
+            android:textColor="@color/White"
             android:text="@string/finish"
             android:layout_weight="3"/>
         <Button
@@ -37,7 +39,8 @@
             android:layout_height="match_parent"
             android:text="@string/next"
             android:drawableRight="@drawable/ic_action_fast_forward"
-            android:textColor="@color/my_primary_dark"
+            android:background="@drawable/flat_selector"
+            android:textColor="@color/White"
             android:layout_weight="1"/>
     </LinearLayout>
 
@@ -63,7 +66,7 @@
         android:id="@+id/chronometer"
         android:layout_below="@+id/toolbar"
         android:textSize="20dp"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@color/White"
         android:background="@drawable/circle"
         android:gravity="center"
         android:layout_alignParentRight="true"

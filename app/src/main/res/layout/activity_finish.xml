@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/DarkRed">
+    android:background="@color/DarkCyan">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,7 +42,7 @@
                 android:layout_height="match_parent"
                 android:background="#000000">
                 <TableRow
-                    android:background="#92C94A"
+                    android:background="@color/MaterialRed"
                     android:layout_marginBottom="5dp">
                     <TextView
                         android:text="STT"
@@ -69,7 +69,7 @@
                         android:id="@+id/group_result_row"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#92C94A"
+                        android:background="@color/White"
                         android:orientation="vertical">
                     </LinearLayout>
 
@@ -88,20 +88,25 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:weightSum="2"
         android:id="@+id/linearLayout">
         <Button
             android:layout_weight="1"
-            style="@android:style/Widget.Button"
             android:id="@+id/btn_ktlai"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="KT Lai"/>
+            android:background="@drawable/flat_selector"
+            android:textColor="@color/White"
+            android:textSize="20dp"
+            android:text="Again"/>
         <Button
             android:layout_weight="1"
             android:id="@+id/btn_xemlai"
-            style="@android:style/Widget.Button"
+            android:background="@drawable/flat_selector"
+            android:textColor="@color/White"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Xem Lai"/>
+            android:textSize="20dp"
+            android:text="Review"/>
     </LinearLayout>
 </RelativeLayout>

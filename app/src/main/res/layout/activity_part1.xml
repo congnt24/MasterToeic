@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -48,6 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/parent_group"
         android:layout_above="@id/player_container"
@@ -62,38 +64,14 @@
             android:textColor="@color/Black"
             android:textStyle="bold"
             android:text="Cau 1:"/>
-        <RadioGroup
-            android:id="@+id/group_radio"
-            android:orientation="horizontal"
+        <apv.congnt.customview.AnswerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="4"
-            android:gravity="center">
-            <RadioButton
-                android:layout_weight="1"
-                android:id="@+id/radioA"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="A"/>
-            <RadioButton
-                android:layout_weight="1"
-                android:id="@+id/radioB"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="B" />
-            <RadioButton
-                android:layout_weight="1"
-                android:id="@+id/radioC"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="C"/>
-            <RadioButton
-                android:layout_weight="1"
-                android:id="@+id/radioD"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="D"/>
-        </RadioGroup>
+            android:id="@+id/answer_view"
+            app:aw_NumberOfAnswers="4"
+            app:aw_ShowTextWhenActive="true"
+            app:aw_canCancelAnswer="false"
+            android:layout_above="@+id/parent_group"/>
     </LinearLayout>
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"

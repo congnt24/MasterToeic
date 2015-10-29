@@ -39,4 +39,5 @@ dependencies {
     }
     compile project(':createfilefromassets')
     compile project(':tess-two')
+    compile project(':customview')
 }

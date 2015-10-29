@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.PagerAdapter;
+import apv.congnt.customview.AnswerView;
 import fragments.QuestionFragment;
 import fragments.TranscriptFragment;
 import model.Question;
@@ -68,7 +69,6 @@ public class Part1Activity extends AppCompatActivity {
     Button btnfinish, btnprev, btnnext;
      TextView tvcau;
      LinearLayout playercontainer;
-     RadioGroup groupradio;
      ViewPager viewPager;
      Toolbar toolbar;
      List<Question> list = new ArrayList<>();
@@ -113,10 +113,7 @@ public class Part1Activity extends AppCompatActivity {
             "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe"
     };
     private Chronometer chrono;
-    private RadioButton radioA;
-    private RadioButton radioB;
-    private RadioButton radioC;
-    private RadioButton radioD;
+    private AnswerView answerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,21 +167,23 @@ public class Part1Activity extends AppCompatActivity {
     }
 
     public void initialize(){
-        this.groupradio = (RadioGroup) findViewById(R.id.group_radio);
+        answerView = (AnswerView) findViewById(R.id.answer_view);
+        answerView.setOnAnswerChange(new AnswerView.OnAnswerChange() {
+            @Override
+            public void onAnswerChange(AnswerView view, int index) {
+                Toast.makeText(Part1Activity.this, "Choose: "+index, Toast.LENGTH_SHORT).show();
+                listResult[count] = String.valueOf((char) (((int) 'A') + index));//ABCD
+            }
+        });
         this.playercontainer = (LinearLayout) findViewById(R.id.player_container);
         this.btnnext = (Button) findViewById(R.id.btn_next);
         this.btnfinish = (Button) findViewById(R.id.btn_finish);
         this.btnprev = (Button) findViewById(R.id.btn_prev);
         this.tvcau = (TextView) findViewById(R.id.tv_cau);
-        this.radioD = (RadioButton) findViewById(R.id.radioD);
-        this.radioC = (RadioButton) findViewById(R.id.radioC);
-        this.radioB = (RadioButton) findViewById(R.id.radioB);
-        this.radioA = (RadioButton) findViewById(R.id.radioA);
         chrono = (Chronometer) findViewById(R.id.chronometer);
         this.viewPager = (ViewPager) findViewById(R.id.view_pager);
         tvcau.setText("Câu 1:");
         AudioCong.getInstance().setDefaultUi(playercontainer, getLayoutInflater());
-       /* AudioCong.getInstance().setOnlyImageUi(imagecontainer, getLayoutInflater());*/
         btnprev.setOnClickListener(onPrev);
         btnnext.setOnClickListener(onNext);
         btnfinish.setOnClickListener(onFinish);
@@ -200,7 +199,7 @@ public class Part1Activity extends AppCompatActivity {
         baseApi.init(getFilesDir().getPath(), "eng");
     }
     public void initTestMode(){
-        groupradio.setOnCheckedChangeListener(onChecked);
+        //groupradio.setOnCheckedChangeListener(onChecked);
     }
     /**
      * Initialize data for part from database sqlite
@@ -227,6 +226,7 @@ public class Part1Activity extends AppCompatActivity {
                         , list.get(count).getQuestion()+"\n"+list.get(count).getTranscript());  //transcript
                 viewPager.setAdapter(pagerAdapter);
                 if (isReviewMode){
+                    answerView.clearAll();
                     autoCheckRadioButton(count);
                 }
             }catch (Exception e){
@@ -261,86 +261,11 @@ public class Part1Activity extends AppCompatActivity {
      * @param i: the count = id of question
      */
     public void autoCheckRadioButton(int i){
-        denyCheckRadioButton();
-        removeAllButtonDrawable();
+        answerView.disableAll();
         int usercheck = (int)listResult[i].charAt(0)-65;
         int correct = (int)list.get(i).getAnswer().toUpperCase().charAt(0) - 65;
-        //groupradio.check(usercheck);
-        Drawable drawable = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            drawable = getResources().getDrawable(R.drawable.ic_action_check_circle, getTheme());
-        }else{
-            drawable = getResources().getDrawable(R.drawable.ic_action_check_circle);
-        }
-        drawable.setColorFilter(new LightingColorFilter(Color.GREEN, Color.GREEN));
-        if (correct != usercheck){//User check
-            changeButtonDrawable(usercheck);
-        }
-        changeButtonDrawable(correct, drawable); //Correct answer
-    }
-
-    /**
-     * In review mode, we'll deny all checkable of radio button
-     */
-    public void denyCheckRadioButton() {
-        radioA.setClickable(false);
-        radioB.setClickable(false);
-        radioC.setClickable(false);
-        radioD.setClickable(false);
-    }
-    public void changeButtonDrawable(int check, Drawable drawable){
-        switch (check){
-            case 0:
-                radioA.setButtonDrawable(drawable);
-                radioA.setTextColor(Color.GREEN);
-                break;
-            case 1:
-                radioB.setButtonDrawable(drawable);
-                radioB.setTextColor(Color.GREEN);
-                break;
-            case 2:
-                radioC.setButtonDrawable(drawable);
-                radioC.setTextColor(Color.GREEN);
-                break;
-            case 3:
-                radioD.setButtonDrawable(drawable);
-                radioD.setTextColor(Color.GREEN);
-                break;
-        }
-    }
-    public void changeButtonDrawable(int check){
-        switch (check){
-            case 0:
-                radioA.setChecked(true);
-                radioA.setTextColor(Color.RED);
-                break;
-            case 1:
-                radioB.setChecked(true);
-                radioB.setTextColor(Color.RED);
-                break;
-            case 2:
-                radioC.setChecked(true);
-                radioC.setTextColor(Color.RED);
-                break;
-            case 3:
-                radioD.setChecked(true);
-                radioD.setTextColor(Color.RED);
-                break;
-        }
-    }
-
-    /**
-     * Set all radio Button to default drawable
-     */
-    public void removeAllButtonDrawable(){
-        radioA.setButtonDrawable(R.drawable.default_radio_button);
-        radioB.setButtonDrawable(R.drawable.default_radio_button);
-        radioC.setButtonDrawable(R.drawable.default_radio_button);
-        radioD.setButtonDrawable(R.drawable.default_radio_button);
-        radioA.setTextColor(Color.BLACK);
-        radioB.setTextColor(Color.BLACK);
-        radioC.setTextColor(Color.BLACK);
-        radioD.setTextColor(Color.BLACK);
+        answerView.setActiveIndex(usercheck);
+        answerView.setTrueAnswer(correct);
     }
 
 
@@ -348,9 +273,9 @@ public class Part1Activity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (count>0){
-                groupradio.clearCheck();
                 count--;
                 tvcau.setText("Câu " + (count + 1) + ":");
+                answerView.clearAll();
                 initQuestion();
             }
         }
@@ -359,9 +284,9 @@ public class Part1Activity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (count<9){
-                groupradio.clearCheck();
                 count++;
-                tvcau.setText("Câu "+(count+1)+":");
+                tvcau.setText("Câu "+(count +1)+":");
+                answerView.clearAll();
                 initQuestion();
             }
             else {//neu tra loi het 10 cau thi tu ket thuc khi chon next
@@ -373,19 +298,6 @@ public class Part1Activity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             finishTest();
-        }
-    };
-
-    private RadioGroup.OnCheckedChangeListener onChecked = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-            RadioButton btn= (RadioButton) findViewById(checkedId);
-            try{
-                if (btn.getText()!=null)
-                    listResult[count] = String.valueOf(btn.getText());
-            }catch (Exception e){
-                Log.e("onFinish","Unknown exception");
-            }
         }
     };
 

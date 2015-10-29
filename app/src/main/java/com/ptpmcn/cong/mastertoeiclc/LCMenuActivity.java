@@ -22,18 +22,16 @@ public class LCMenuActivity extends AppCompatActivity {
     private Button btnpart2;
     private Button btnpart3;
     private Button btnpart4;
-    private Button btnabout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_lcmenu);
         initialize();
     }
 
     public void initialize(){
 
-        this.btnabout = (Button) findViewById(R.id.btn_about);
         this.btnpart4 = (Button) findViewById(R.id.btn_part4);
         this.btnpart3 = (Button) findViewById(R.id.btn_part3);
         this.btnpart2 = (Button) findViewById(R.id.btn_part2);
@@ -74,12 +72,6 @@ public class LCMenuActivity extends AppCompatActivity {
                 b.putInt("part", 4);
                 intent.putExtras(b);
                 startActivity(intent);
-            }
-        });
-        btnabout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), About_Activity.class));
             }
         });
     }

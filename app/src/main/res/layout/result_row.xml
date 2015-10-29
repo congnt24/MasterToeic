@@ -9,6 +9,7 @@
         android:layout_weight="2.65"
         android:gravity="center"
         android:textStyle="bold"
+        android:textColor="@color/Black"
         android:id="@+id/tv_stt2"/>
     <TextView
         android:text=""
@@ -17,9 +18,10 @@
         android:textStyle="bold"
         android:id="@+id/tv_resultanswer"/>
     <TextView
-        android:text=""
+        android:text="A"
         android:layout_weight="2"
         android:gravity="center"
         android:textStyle="bold"
+        android:textColor="@color/LimeGreen"
         android:id="@+id/tv_correctanswer"/>
 </TableRow>

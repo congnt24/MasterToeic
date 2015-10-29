@@ -13,7 +13,7 @@
         android:text="@string/app_name_title2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
+        android:textSize="50dp"
         android:gravity="center"
         android:textStyle="bold"
         android:textColor="@color/White"
@@ -24,16 +24,15 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:orientation="vertical"
-        android:paddingTop="10dp">
+        android:paddingTop="40dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="horizontal">
-            <Button
+            <apv.congnt.customview.SquarButton
                 android:layout_margin="3dp"
                 android:id="@+id/btn_part1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_gravity="center"
@@ -42,10 +41,10 @@
                 android:textStyle="bold"
                 android:textSize="30dp"
                 android:textColor="@color/White"/>
-            <Button
+            <apv.congnt.customview.SquarButton
                 android:layout_margin="3dp"
                 android:id="@+id/btn_part2"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_gravity="center"
@@ -58,12 +57,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="horizontal">
-            <Button
+            <apv.congnt.customview.SquarButton
                 android:layout_margin="3dp"
                 android:id="@+id/btn_part3"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_gravity="center"
@@ -72,10 +70,10 @@
                 android:textStyle="bold"
                 android:textSize="30dp"
                 android:textColor="@color/White"/>
-            <Button
+            <apv.congnt.customview.SquarButton
                 android:layout_margin="3dp"
                 android:id="@+id/btn_part4"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_gravity="center"
@@ -85,18 +83,6 @@
                 android:textSize="30dp"
                 android:textColor="@color/White"/>
         </LinearLayout>
-        <Button
-            android:layout_margin="3dp"
-            android:id="@+id/btn_about"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:text="About"
-            android:background="@color/SaddleBrown"
-            android:layout_weight="0.5"
-            android:textStyle="bold"
-            android:textSize="30dp"
-            android:textColor="@color/White"/>
 
     </LinearLayout>
 

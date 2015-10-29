@@ -53,6 +53,7 @@ public class ResultActivity extends AppCompatActivity {
             tvResult.setText("Kết Quả Part " + part);
             tvtime.setText("Thời gian: " + time);
             tvcorrect.setText("Số câu đúng: " + KiemTraKetQua(result, list));
+            Log.d("LIST", "LIST: "+list);
         }
     }
     private int KiemTraKetQua(String[] list1, List<Question> list2) {
@@ -129,6 +130,7 @@ public class ResultActivity extends AppCompatActivity {
                         break;
                     default:
                         intent = new Intent(ResultActivity.this, Part3Activity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         bundle.putBoolean("reviewmode", true);
                         bundle.putStringArray("result", result);
                         bundle.putString("time", time);

@@ -68,6 +68,7 @@ public class Part3Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_part3);
+        Log.d("LOG", "ACTIVITY PART 3: ");
         instance = this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -90,6 +91,7 @@ public class Part3Activity extends AppCompatActivity {
                     listResult = b.getStringArray("result");
                     list = b.getParcelableArrayList("question");
                     time = b.getString("time");
+                    count = 0;
                 }
             }
         }

@@ -25,6 +25,8 @@ import com.ptpmcn.cong.mastertoeiclc.R;
 
 import java.io.File;
 
+import apv.congnt.customview.AnswerView;
+
 /**
  * Created by cong on 9/22/2015.
  */
@@ -32,8 +34,8 @@ public class QuestionFragment extends Fragment {
     private static final int QUESTIONNUMBER = 30;
     private ImageView imageView;
     private android.widget.TextView tvq1;
-    private RadioButton radioes[][] = new RadioButton[3][4];
-    private RadioGroup groupradio[] = new RadioGroup[3];
+    private TextView radioes[][] = new TextView[3][4];
+    private AnswerView answerViews[] = new AnswerView[3];
     private android.widget.TextView tvq2;
     private android.widget.TextView tvq3;
     public static QuestionFragment instance;
@@ -88,23 +90,23 @@ public class QuestionFragment extends Fragment {
                 break;
             default:
                 LinearLayout subLayout = (LinearLayout) inflater.inflate(R.layout.fragment_3questions, container, false);
-                this.groupradio[2] = (RadioGroup) subLayout.findViewById(R.id.group_radio3);
-                this.radioes[2][3] = (RadioButton) subLayout.findViewById(R.id.radio3D);
-                this.radioes[2][2] = (RadioButton) subLayout.findViewById(R.id.radio3C);
-                this.radioes[2][1] = (RadioButton) subLayout.findViewById(R.id.radio3B);
-                this.radioes[2][0] = (RadioButton) subLayout.findViewById(R.id.radio3A);
+                answerViews[0] = (AnswerView) subLayout.findViewById(R.id.answer_view1);
+                answerViews[1] = (AnswerView) subLayout.findViewById(R.id.answer_view2);
+                answerViews[2] = (AnswerView) subLayout.findViewById(R.id.answer_view3);
+                this.radioes[2][3] = (TextView) subLayout.findViewById(R.id.radio3D);
+                this.radioes[2][2] = (TextView) subLayout.findViewById(R.id.radio3C);
+                this.radioes[2][1] = (TextView) subLayout.findViewById(R.id.radio3B);
+                this.radioes[2][0] = (TextView) subLayout.findViewById(R.id.radio3A);
                 this.tvq3 = (TextView) subLayout.findViewById(R.id.tv_q3);
-                this.groupradio[1] = (RadioGroup) subLayout.findViewById(R.id.group_radio2);
-                this.radioes[1][3] = (RadioButton) subLayout.findViewById(R.id.radio2D);
-                this.radioes[1][2] = (RadioButton) subLayout.findViewById(R.id.radio2C);
-                this.radioes[1][1] = (RadioButton) subLayout.findViewById(R.id.radio2B);
-                this.radioes[1][0] = (RadioButton) subLayout.findViewById(R.id.radio2A);
+                this.radioes[1][3] = (TextView) subLayout.findViewById(R.id.radio2D);
+                this.radioes[1][2] = (TextView) subLayout.findViewById(R.id.radio2C);
+                this.radioes[1][1] = (TextView) subLayout.findViewById(R.id.radio2B);
+                this.radioes[1][0] = (TextView) subLayout.findViewById(R.id.radio2A);
                 this.tvq2 = (TextView) subLayout.findViewById(R.id.tv_q2);
-                this.groupradio[0] = (RadioGroup) subLayout.findViewById(R.id.group_radio1);
-                this.radioes[0][3] = (RadioButton) subLayout.findViewById(R.id.radio1D);
-                this.radioes[0][2] = (RadioButton) subLayout.findViewById(R.id.radio1C);
-                this.radioes[0][1] = (RadioButton) subLayout.findViewById(R.id.radio1B);
-                this.radioes[0][0] = (RadioButton) subLayout.findViewById(R.id.radio1A);
+                this.radioes[0][3] = (TextView) subLayout.findViewById(R.id.radio1D);
+                this.radioes[0][2] = (TextView) subLayout.findViewById(R.id.radio1C);
+                this.radioes[0][1] = (TextView) subLayout.findViewById(R.id.radio1B);
+                this.radioes[0][0] = (TextView) subLayout.findViewById(R.id.radio1A);
                 this.tvq1 = (TextView) subLayout.findViewById(R.id.tv_q1);
                 //If PART 2: remove D answer
                 if (part==2){
@@ -114,59 +116,36 @@ public class QuestionFragment extends Fragment {
                     radioes[2][3].setVisibility(View.GONE);
                 }
                 layout.addView(subLayout, matchParams);
-                Log.d("InitQuestion", "Q: "+question+ "- COunt: "+ Part3Activity.getInstance().count);
                 initQuestion(question.replaceAll("(?m)^\\s", "").split("\\n"), Part3Activity.getInstance().count);
                 //If test, we will able to check answer
                 if (!Part3Activity.getInstance().isReviewMode) {//Is test mode
-                    groupradio[0].setOnCheckedChangeListener(onChecked);
-                    groupradio[1].setOnCheckedChangeListener(onChecked2);
-                    groupradio[2].setOnCheckedChangeListener(onChecked3);
-                }else{
+                    answerViews[0].setOnAnswerChange(new AnswerView.OnAnswerChange() {
+                        @Override
+                        public void onAnswerChange(AnswerView view, int index) {
+                            listResult[Part3Activity.getInstance().count*3] = String.valueOf((char) (((int) 'A') + index));
+                        }
+                    });
+                    answerViews[1].setOnAnswerChange(new AnswerView.OnAnswerChange() {
+                        @Override
+                        public void onAnswerChange(AnswerView view, int index) {
+                            listResult[Part3Activity.getInstance().count*3+1] = String.valueOf((char) (((int) 'A') + index));
+                        }
+                    });
+                    answerViews[2].setOnAnswerChange(new AnswerView.OnAnswerChange() {
+                        @Override
+                        public void onAnswerChange(AnswerView view, int index) {
+                            listResult[Part3Activity.getInstance().count*3+2] = String.valueOf((char) (((int) 'A') + index));
+                        }
+                    });
+                }else{//review mode
                     listResult = Part3Activity.getInstance().listResult;
                     autoCheckRadioButton(Part3Activity.getInstance().count);
                 }
+
                 break;
         }
         return rootView;
     }
-
-    private RadioGroup.OnCheckedChangeListener onChecked = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-            RadioButton btn= (RadioButton) rootView.findViewById(checkedId);
-            try{
-                if (btn.getText()!=null)
-                    listResult[Part3Activity.getInstance().count*3] = String.valueOf(btn.getText().charAt(0));
-                Log.d("Part3: ", "Part3: "+String.valueOf(btn.getText().charAt(0)));
-            }catch (Exception e){
-
-            }
-        }
-    };
-    private RadioGroup.OnCheckedChangeListener onChecked2 = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-            RadioButton btn= (RadioButton) rootView.findViewById(checkedId);
-            try{
-                if (btn.getText()!=null)
-                    listResult[Part3Activity.getInstance().count*3+1] = String.valueOf(btn.getText().charAt(0));
-            }catch (Exception e){
-
-            }
-        }
-    };
-    private RadioGroup.OnCheckedChangeListener onChecked3 = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-            RadioButton btn= (RadioButton) rootView.findViewById(checkedId);
-            try{
-                if (btn.getText()!=null)
-                    listResult[Part3Activity.getInstance().count*3+2] = String.valueOf(btn.getText().charAt(0));
-            }catch (Exception e){
-
-            }
-        }
-    };
 
     public void setImageView(String path){
         File file = new File(path);
@@ -184,9 +163,7 @@ public class QuestionFragment extends Fragment {
             tvq1.setText(questions[0]);
             tvq2.setText(questions[5]);
             tvq3.setText(questions[10]);
-            groupradio[0].clearCheck();
-            groupradio[1].clearCheck();
-            groupradio[2].clearCheck();
+            clearAllAnswer();
             if (Part3Activity.getInstance().isReviewMode){
                 autoCheckRadioButton(count);
             }
@@ -196,9 +173,7 @@ public class QuestionFragment extends Fragment {
     }
     public void clearGroupCheck(){
         try {
-            groupradio[0].clearCheck();
-            groupradio[1].clearCheck();
-            groupradio[2].clearCheck();
+            clearAllAnswer();
         }catch (Exception e){
             Log.d("Exeption", QuestionFragment.class.getName());
         }
@@ -209,33 +184,19 @@ public class QuestionFragment extends Fragment {
      * @param i: the count = id of question
      */
     public void autoCheckRadioButton(int i){
-        removeAllButtonDrawable();
-        Drawable drawable = getResources().getDrawable(R.drawable.ic_action_check_circle);
-        drawable.setColorFilter(new LightingColorFilter(Color.GREEN, Color.GREEN));
         for (int j = 0; j < 3; j++) {
+            answerViews[j].disableAll();
             int correct = (int) Part3Activity.getInstance().list.get(i).getAnswer().toUpperCase().charAt(j) - 65;
             if (listResult[i * 3 + j] != null) {
                 int usercheck = (int) listResult[i * 3 + j].charAt(0) - 65;// 012
-                if (correct != usercheck) {
-                    radioes[j][usercheck].setChecked(true);
-                    radioes[j][usercheck].setTextColor(Color.RED);
-                }
+                answerViews[j].setActiveIndex(usercheck);
             }
-            radioes[j][correct].setButtonDrawable(drawable);
-            radioes[j][correct].setTextColor(Color.GREEN);
+            answerViews[j].setTrueAnswer(correct);
         }
     }
-    /**
-     * Set all radio Button to default drawable
-     */
-    public void removeAllButtonDrawable(){
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < answerAmount; j++) {
-                radioes[i][j].setButtonDrawable(R.drawable.default_radio_button);
-                radioes[i][j].setClickable(false);
-                radioes[i][j].setTextColor(Color.BLACK);
-            }
-        }
+    public void clearAllAnswer(){
+        answerViews[0].clearAll();
+        answerViews[1].clearAll();
+        answerViews[2].clearAll();
     }
-
 }

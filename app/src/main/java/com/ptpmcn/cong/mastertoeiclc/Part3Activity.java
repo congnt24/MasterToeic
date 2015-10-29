@@ -15,10 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TableLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cong.audiocong.AudioCong;
@@ -112,7 +108,7 @@ public class Part3Activity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, LCMenuActivity.class));
     }
     public void initialize(){
         this.playercontainer = (LinearLayout) findViewById(R.id.player_container);

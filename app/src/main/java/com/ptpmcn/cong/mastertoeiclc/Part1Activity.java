@@ -1,6 +1,5 @@
 package com.ptpmcn.cong.mastertoeiclc;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,12 +7,9 @@ import android.database.MatrixCursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.LightingColorFilter;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.SystemClock;
@@ -30,12 +26,10 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -47,10 +41,12 @@ import com.googlecode.tesseract.android.TessBaseAPI;
 import com.ptpmcn.cong.dbhandler.SQLiteHelper;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 import adapter.PagerAdapter;
+import dialogs.DialogDict;
 import fragments.QuestionFragment;
 import fragments.TranscriptFragment;
 import model.Question;
@@ -65,6 +61,7 @@ public class Part1Activity extends AppCompatActivity {
 
     public static TessBaseAPI baseApi;
     private static final int REQUEST_IMAGE_CAPTURE = 10;
+    private static final int REQUEST_SELECT_PHOTO= 11;
     Button btnfinish, btnprev, btnnext;
      TextView tvcau;
      LinearLayout playercontainer;
@@ -166,7 +163,7 @@ public class Part1Activity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, LCMenuActivity.class));
     }
 
     public void initialize(){
@@ -407,34 +404,6 @@ public class Part1Activity extends AppCompatActivity {
             chrono.stop();
     }
 
-
-
-
-    private SearchView.OnQueryTextListener onQuerySearchView = new SearchView.OnQueryTextListener() {
-        @Override
-        public boolean onQueryTextSubmit(String query) {
-            mSearchCheck = false;
-            return false;
-        }
-
-        @Override
-        public boolean onQueryTextChange(String query) {
-            //if (mSearchCheck) {
-                // implement your search here
-                giveSuggestions(query);
-            //}
-            return false;
-        }
-    };
-
-    private void giveSuggestions(String query) {
-        final MatrixCursor cursor = new MatrixCursor(new String[]{BaseColumns._ID, CITY_NAME});
-        for (int i = 0; i < COUNTRIES.length; i++) {
-            if (COUNTRIES[i].toLowerCase().contains(query.toLowerCase()))
-                cursor.addRow(new Object[]{i, COUNTRIES[i]});
-        }
-        mAdapter.changeCursor(cursor);
-    }
     //Context Menu
 
     @Override
@@ -460,6 +429,7 @@ public class Part1Activity extends AppCompatActivity {
         searchView.setQueryHint(this.getString(R.string.search_hint));
         ed_searchView = ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
         ed_searchView.setHintTextColor(getResources().getColor(R.color.my_primary_light));
+        searchView.setIconifiedByDefault(true);
         searchView.setSuggestionsAdapter(mAdapter);
         searchView.setOnQueryTextListener(onQuerySearchView);
         searchView.setOnSuggestionListener(onQuerySuggestion);
@@ -467,6 +437,32 @@ public class Part1Activity extends AppCompatActivity {
 
         mSearchCheck = false;
         return true;
+    }
+
+    private SearchView.OnQueryTextListener onQuerySearchView = new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            mSearchCheck = false;
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String query) {
+            //if (mSearchCheck) {
+            // implement your search here
+            giveSuggestions(query);
+            //}
+            return false;
+        }
+    };
+
+    private void giveSuggestions(String query) {
+        final MatrixCursor cursor = new MatrixCursor(new String[]{BaseColumns._ID, CITY_NAME});
+        for (int i = 0; i < COUNTRIES.length; i++) {
+            if (COUNTRIES[i].toLowerCase().contains(query.toLowerCase()))
+                cursor.addRow(new Object[]{i, COUNTRIES[i]});
+        }
+        mAdapter.changeCursor(cursor);
     }
     private SearchView.OnSuggestionListener onQuerySuggestion = new SearchView.OnSuggestionListener() {
         @Override
@@ -479,6 +475,8 @@ public class Part1Activity extends AppCompatActivity {
             mAdapter.getCursor().moveToPosition(position);
             ed_searchView.setText("" + mAdapter.getCursor().getString(1));
             searchView.clearFocus();
+            //Show Dialog
+            DialogDict.getInstance().showDialog(Part1Activity.this, ""+mAdapter.getCursor().getString(1), "Define of "+mAdapter.getCursor().getString(1));
             //Hiding input
             /*InputMethodManager inputManager = (InputMethodManager) this
                     .getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -497,7 +495,6 @@ public class Part1Activity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.cameracapture) {
-            Toast.makeText(Part1Activity.this, "Camera", Toast.LENGTH_SHORT).show();
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -505,7 +502,9 @@ public class Part1Activity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.galleryselect){
-            Toast.makeText(Part1Activity.this, "Gallery", Toast.LENGTH_SHORT).show();
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            galleryIntent.setType("image/*");
+            startActivityForResult(Intent.createChooser(galleryIntent, "SELECT PHOTO"), REQUEST_SELECT_PHOTO);
             return true;
         }
         if (id == R.id.search){
@@ -518,10 +517,22 @@ public class Part1Activity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            byte[] datas = data.getExtras().getByteArray("data");
-            baseApi.setImage(BitmapFactory.decodeByteArray(datas, 0, datas.length));
+
+            Bundle extras = data.getExtras();
+            baseApi.setImage((Bitmap) extras.get("data"));
             String text = baseApi.getUTF8Text();
             Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+        }else
+        if (requestCode == REQUEST_SELECT_PHOTO && resultCode == RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            try {
+                Bitmap bm = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImageUri));
+                baseApi.setImage(bm);
+                String text = baseApi.getUTF8Text();
+                Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+            } catch (FileNotFoundException e) {
+                Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

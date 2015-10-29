@@ -31,12 +31,13 @@ dependencies {
     compile project(':downloader')
     compile project(':dbhandler')
     compile project(':jsonconfig')
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.android.support:design:23.0.1'
-    compile 'com.jakewharton:butterknife:7.0.1'
     compile('com.afollestad.material-dialogs:commons:0.8.1.0@aar') {
         transitive = true
     }
     compile project(':createfilefromassets')
     compile project(':tess-two')
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:design:23.0.1'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.android.support:support-v4:23.0.1'
 }

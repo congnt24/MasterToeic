@@ -1,32 +1,92 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:background="#0099cc"
-    tools:context="com.ptpmcn.cong.mastertoeiclc.MainActivity">
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@color/DarkCyan"
+    tools:context=".MainActivity">
 
-    <!-- The primary full-screen view. This can be replaced with whatever view
-         is needed to present your content, e.g. VideoView, SurfaceView,
-         TextureView, etc. -->
-    <TextView android:id="@+id/fullscreen_content" android:layout_width="match_parent"
-        android:layout_height="match_parent" android:keepScreenOn="true" android:textColor="#33b5e5"
-        android:textStyle="bold" android:textSize="50sp" android:gravity="center"
-        android:text="@string/dummy_content" />
-
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
-    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
-
-        <LinearLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay" android:orientation="horizontal"
-            tools:ignore="UselessParent">
-
-            <Button android:id="@+id/dummy_button" style="?metaButtonBarButtonStyle"
-                android:layout_width="0dp" android:layout_height="wrap_content"
-                android:layout_weight="1" android:text="@string/dummy_button" />
-
+    <TextView
+        android:id="@+id/tv_Title"
+        android:text="Master TOEIC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/White"
+        android:layout_centerHorizontal="true"/>
+    <LinearLayout
+        android:layout_below="@id/tv_Title"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:weightSum="2"
+            android:orientation="horizontal">
+            <Button
+                android:layout_margin="3dp"
+                android:id="@+id/btn_lc"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:background="@color/SaddleBrown"
+                android:text="LC"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:textColor="@color/White"/>
+            <Button
+                android:layout_margin="3dp"
+                android:id="@+id/btn_rc"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:background="@color/SaddleBrown"
+                android:text="RC"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:textColor="@color/White"/>
         </LinearLayout>
-    </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <Button
+                android:layout_margin="3dp"
+                android:id="@+id/btn_dict"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:background="@color/SaddleBrown"
+                android:text="Dict"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:textColor="@color/White"/>
+            <Button
+                android:layout_margin="3dp"
+                android:id="@+id/btn_about"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:background="@color/SaddleBrown"
+                android:text="About"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:textColor="@color/White"/>
+        </LinearLayout>
 
-</FrameLayout>
+    </LinearLayout>
+
+</RelativeLayout>

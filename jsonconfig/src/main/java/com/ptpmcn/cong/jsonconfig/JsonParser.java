@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +15,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by cong on 8/29/2015.
@@ -21,9 +25,6 @@ import java.io.InputStreamReader;
 public class JsonParser {
 
     public JsonModel JsonModel = new JsonModel();
-
-
-
     private String jsonData;
     //private Context context;
     private static JsonParser ourInstance = new JsonParser();
@@ -58,17 +59,32 @@ public class JsonParser {
 
         return this;
     }
+    JSONObject jsonObject;
     public JsonParser ParseData(){
         try {
-            JSONObject jsonObject = new JSONObject(jsonData);
-            JSONObject appConfig = jsonObject.getJSONObject("AppConfig");
-            JsonModel.AppConfig.setValue(appConfig.getString("AppName"), appConfig.getString("Version")
-                    , appConfig.getString("ReleaseDate"), appConfig.getString("Developers"));
+            jsonObject  = new JSONObject(jsonData);
+            Iterator<String> keys = jsonObject.keys();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         return this;
+    }
+
+    private void ParseJsonObject(String objName) {
+        Object appConfig = null;
+        try {
+            appConfig = jsonObject.get(objName);
+            List<Object> listValues = new ArrayList<>();
+            if(appConfig instanceof JSONObject){
+                Iterator<String> keys = ((JSONObject)appConfig).keys();
+                while (keys.hasNext()){
+                    listValues.add(((JSONObject)appConfig).get(keys.next()));
+                }
+            }
+            JsonModel.setValue(objName, listValues);
+        } catch (JSONException e) {
+            //If
+        }
     }
     public JsonParser LoadJson(Context context, String fname){
         ReadJsonFile(context, fname).ParseData();

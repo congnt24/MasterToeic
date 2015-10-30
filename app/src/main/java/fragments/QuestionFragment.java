@@ -16,10 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.cong.audiocong.AudioCong;
-import com.ptpmcn.cong.mastertoeiclc.MainActivity;
 import com.ptpmcn.cong.mastertoeiclc.Part3Activity;
 import com.ptpmcn.cong.mastertoeiclc.R;
 

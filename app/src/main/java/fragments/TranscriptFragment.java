@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.ptpmcn.cong.mastertoeiclc.R;
 
+import dialogs.DialogDict;
+
 /**
  * Created by cong on 9/22/2015.
  */
@@ -89,12 +91,7 @@ public class TranscriptFragment extends Fragment{
                         // Perform your definition lookup with the selected text
                         final CharSequence selectedText = tvtranscript.getText().subSequence(min, max);
 
-                        new MaterialDialog.Builder(getActivity())
-                                .title(R.string.dictionary)
-                                .content(selectedText)
-                                .iconRes(R.drawable.ic_action_play_circle_outline)
-                                .neutralText("AAAAAAAAAAAAAA")
-                                .show();
+                        DialogDict.getInstance().showDialog(getActivity(), ""+selectedText, "Define of "+selectedText);
                         //Toast.makeText(getActivity(), selectedText, Toast.LENGTH_SHORT).show();
                         // Finish and close the ActionMode
                         mode.finish();

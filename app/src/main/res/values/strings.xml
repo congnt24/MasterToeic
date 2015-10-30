@@ -10,4 +10,8 @@
     <string name="app_name_title">LISTENING COMPREHENSION</string>
     <string name="dictionary">Dictionary</string>
     <string name="app_name_title2">TOEIC TEST</string>
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

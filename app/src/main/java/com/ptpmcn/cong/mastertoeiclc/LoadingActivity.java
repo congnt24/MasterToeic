@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.nguyentrungcong.createfilefromassets.CreateFileFromAssets;
-import com.googlecode.tesseract.android.TessBaseAPI;
 import com.ptpmcn.cong.downloader.Downloader;
 import com.ptpmcn.cong.unzip.Decompress;
 
@@ -64,7 +62,7 @@ public class LoadingActivity extends AppCompatActivity {
                     Toast.makeText(LoadingActivity.this, "Internet is not available", Toast.LENGTH_SHORT).show();
                 }
                 //Toast.makeText(context, "Download Complete", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(context, MainActivity.class));
+                startActivity(new Intent(context, LCMenuActivity.class));
             }
         }.execute("");
         initialize();
@@ -147,7 +145,7 @@ public class LoadingActivity extends AppCompatActivity {
             if (!aVoid){
                 Toast.makeText(LoadingActivity.this, "Internet is not available", Toast.LENGTH_SHORT).show();
             }
-            startActivity(new Intent(context, MainActivity.class));
+            startActivity(new Intent(context, LCMenuActivity.class));
         }
     }
 }

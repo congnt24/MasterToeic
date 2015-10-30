@@ -34,6 +34,10 @@ public class CreateFileFromAssets {
         InputStream inputStream = null;
         OutputStream outputStream = null;
         AssetManager assetManager = context.getAssets();
+        File dir = new File(context.getFilesDir().getPath()+"/"+path);
+        if (!dir.exists()){
+            dir.mkdir();
+        }
         try {
             String[] listFile = assetManager.list(path);
 

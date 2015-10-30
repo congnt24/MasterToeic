@@ -185,8 +185,9 @@ public class QuestionFragment extends Fragment {
             answerViews[j].disableAll();
             int correct = (int) Part3Activity.getInstance().list.get(i).getAnswer().toUpperCase().charAt(j) - 65;
             if (listResult[i * 3 + j] != null) {
-                int usercheck = (int) listResult[i * 3 + j].charAt(0) - 65;// 012
-                answerViews[j].setActiveIndex(usercheck);
+                int usercheck = listResult[i * 3 + j]==null?-1:(int) listResult[i * 3 + j].charAt(0) - 65;// 012
+                if (usercheck!=-1)
+                    answerViews[j].setActiveIndex(usercheck);
             }
             answerViews[j].setTrueAnswer(correct);
         }

@@ -43,4 +43,8 @@ public class MainActivity extends Activity {
     public void openAboutActivity(){
         startActivity(new Intent(getApplicationContext(), About_Activity.class));
     }
+    @OnClick(R.id.btn_rc)
+    public void openPart5Activity(){
+        startActivity(new Intent(getApplicationContext(), Part5Activity.class));
+    }
 }

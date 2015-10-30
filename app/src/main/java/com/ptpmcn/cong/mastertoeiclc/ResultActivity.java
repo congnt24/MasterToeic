@@ -128,6 +128,16 @@ public class ResultActivity extends AppCompatActivity {
                         intent.putExtras(bundle);
                         startActivity(intent);
                         break;
+                    case 5:
+                        intent = new Intent(ResultActivity.this, Part5Activity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        bundle.putBoolean("reviewmode", true);
+                        bundle.putStringArray("result", result);
+                        bundle.putString("time", time);
+                        bundle.putParcelableArrayList("question", (ArrayList<? extends Parcelable>) list);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        break;
                     default:
                         intent = new Intent(ResultActivity.this, Part3Activity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -150,6 +160,10 @@ public class ResultActivity extends AppCompatActivity {
                 switch(part){
                     case 1:
                         intent = new Intent(ResultActivity.this, Part1Activity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        break;
+                    case 5:
+                        intent = new Intent(ResultActivity.this, Part5Activity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         break;
                     default:

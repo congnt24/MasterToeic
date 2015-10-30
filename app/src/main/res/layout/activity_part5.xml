@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/group_button"
+        android:weightSum="5"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/btn_prev"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_action_fast_rewind"
+            android:textColor="@color/White"
+            android:background="@drawable/flat_selector"
+            android:text="Prev"/>
+        <Button
+            android:id="@+id/btn_finish"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/White"
+            android:background="@drawable/flat_selector"
+            android:text="Finish"
+            android:layout_weight="3"/>
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Next"
+            android:drawableRight="@drawable/ic_action_fast_forward"
+            android:textColor="@color/White"
+            android:background="@drawable/flat_selector"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/parent_group"
+        android:layout_above="@id/group_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_cau"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="@color/Black"
+            android:textStyle="bold"
+            android:text="Cau 1:"/>
+        <apv.congnt.customview.AnswerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/answer_view"
+            app:aw_NumberOfAnswers="4"
+            app:aw_ShowTextWhenActive="true"
+            app:aw_canCancelAnswer="false"
+            android:layout_above="@+id/parent_group"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/question"
+        android:text=":D"
+        android:textSize="24dp"
+        android:padding="20dp"
+        android:textColor="@color/Black"
+        android:layout_above="@+id/parent_group"
+        android:layout_below="@+id/toolbar" />
+
+    <Chronometer
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/chronometer"
+        android:layout_below="@+id/toolbar"
+        android:textSize="20dp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:background="@drawable/circle"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

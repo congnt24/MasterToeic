@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="SquarButton">
-        <attr name="showTextInButton" format="boolean" />
+        <attr name="ratioWidth" format="integer" />
+        <attr name="ratioHeigh" format="integer" />
     </declare-styleable>
 
 

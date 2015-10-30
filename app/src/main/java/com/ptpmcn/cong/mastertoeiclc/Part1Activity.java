@@ -13,6 +13,7 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.LightingColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -47,11 +48,13 @@ import com.googlecode.tesseract.android.TessBaseAPI;
 import com.ptpmcn.cong.dbhandler.SQLiteHelper;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 import adapter.PagerAdapter;
 import apv.congnt.customview.AnswerView;
+import dialogs.DialogDict;
 import fragments.QuestionFragment;
 import fragments.TranscriptFragment;
 import model.Question;
@@ -66,6 +69,7 @@ public class Part1Activity extends AppCompatActivity {
 
     public static TessBaseAPI baseApi;
     private static final int REQUEST_IMAGE_CAPTURE = 10;
+    private static final int REQUEST_SELECT_PHOTO= 11;
     Button btnfinish, btnprev, btnnext;
      TextView tvcau;
      LinearLayout playercontainer;
@@ -212,7 +216,7 @@ public class Part1Activity extends AppCompatActivity {
                     while (cs.moveToNext()) {
                         Question q = new Question();
                         q.setAudio(cs.getString(1));
-                        q.setQuestion(cs.getString(2));
+                        q.setQuestion(cs.getString(2).split("\\)", 2)[1].trim());
                         q.setAnswer(cs.getString(3));
                         q.setTranscript(cs.getString(4));
                         list.add(q);
@@ -262,9 +266,10 @@ public class Part1Activity extends AppCompatActivity {
      */
     public void autoCheckRadioButton(int i){
         answerView.disableAll();
-        int usercheck = (int)listResult[i].charAt(0)-65;
+        int usercheck = listResult[i]==null?-1:(int)listResult[i].charAt(0)-65;
         int correct = (int)list.get(i).getAnswer().toUpperCase().charAt(0) - 65;
-        answerView.setActiveIndex(usercheck);
+        if (usercheck!=-1)
+            answerView.setActiveIndex(usercheck);
         answerView.setTrueAnswer(correct);
     }
 
@@ -391,6 +396,9 @@ public class Part1Activity extends AppCompatActivity {
             mAdapter.getCursor().moveToPosition(position);
             ed_searchView.setText("" + mAdapter.getCursor().getString(1));
             searchView.clearFocus();
+            //Show Dialog
+            DialogDict.getInstance().showDialog(Part1Activity.this, "" + mAdapter.getCursor().getString(1), "Define of " + mAdapter.getCursor().getString(1));
+
             //Hiding input
             /*InputMethodManager inputManager = (InputMethodManager) this
                     .getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -409,7 +417,6 @@ public class Part1Activity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.cameracapture) {
-            Toast.makeText(Part1Activity.this, "Camera", Toast.LENGTH_SHORT).show();
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -417,7 +424,9 @@ public class Part1Activity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.galleryselect){
-            Toast.makeText(Part1Activity.this, "Gallery", Toast.LENGTH_SHORT).show();
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            galleryIntent.setType("image/*");
+            startActivityForResult(Intent.createChooser(galleryIntent, "SELECT PHOTO"), REQUEST_SELECT_PHOTO);
             return true;
         }
         if (id == R.id.search){
@@ -430,10 +439,22 @@ public class Part1Activity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            byte[] datas = data.getExtras().getByteArray("data");
-            baseApi.setImage(BitmapFactory.decodeByteArray(datas, 0, datas.length));
+
+            Bundle extras = data.getExtras();
+            baseApi.setImage((Bitmap) extras.get("data"));
             String text = baseApi.getUTF8Text();
             Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+        }else
+        if (requestCode == REQUEST_SELECT_PHOTO && resultCode == RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            try {
+                Bitmap bm = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImageUri));
+                baseApi.setImage(bm);
+                String text = baseApi.getUTF8Text();
+                Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+            } catch (FileNotFoundException e) {
+                Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

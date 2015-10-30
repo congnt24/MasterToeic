@@ -62,7 +62,7 @@ public class LoadingActivity extends AppCompatActivity {
                     Toast.makeText(LoadingActivity.this, "Internet is not available", Toast.LENGTH_SHORT).show();
                 }
                 //Toast.makeText(context, "Download Complete", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(context, LCMenuActivity.class));
+                startActivity(new Intent(context, MainActivity.class));
             }
         }.execute("");
         initialize();
@@ -70,10 +70,7 @@ public class LoadingActivity extends AppCompatActivity {
 
     private void initialize() {
         //Init TessTwoApi
-        File dir = new File(getFilesDir().getPath()+"/tessdata");
-        if(!dir.exists()){
-            dir.mkdir();
-        }
+        CreateFileFromAssets.getInstance().initialize(this).CreateFileFromPath("data");
         CreateFileFromAssets.getInstance().initialize(this).CreateFileFromPath("tessdata");
         File f = new File(getFilesDir().getPath()+"/tessdata/eng.traineddata");
         Log.d("TAg,", getFilesDir().getPath() + "/tessdata/eng.traineddata");
@@ -145,7 +142,7 @@ public class LoadingActivity extends AppCompatActivity {
             if (!aVoid){
                 Toast.makeText(LoadingActivity.this, "Internet is not available", Toast.LENGTH_SHORT).show();
             }
-            startActivity(new Intent(context, LCMenuActivity.class));
+            startActivity(new Intent(context, MainActivity.class));
         }
     }
 }

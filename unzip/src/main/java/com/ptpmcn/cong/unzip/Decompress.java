@@ -43,7 +43,7 @@ public class Decompress {
             */
             }
             //Delete file zip after decompress
-            //zipFile.delete();
+            zipFile.delete();
         } finally {
             zis.close();
         }

@@ -209,7 +209,6 @@ public class AudioCong implements View.OnTouchListener {
     //---------Playautio from File
     public AudioCong init(Context context, File file){
         Uri uri=Uri.fromFile(file);
-        Log.d("xxxxxxxxx", "yyyyyyyyyyy "+uri.toString());
         if (uri==null){
             throw new NullPointerException("Uri cannot be null");
         }

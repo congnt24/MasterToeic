@@ -47,4 +47,8 @@ public class MainActivity extends Activity {
     public void openPart5Activity(){
         startActivity(new Intent(getApplicationContext(), Part5Activity.class));
     }
+    @OnClick(R.id.btn_dict)
+    public void openDictActivity(){
+        startActivity(new Intent(getApplicationContext(), DictActivity.class));
+    }
 }

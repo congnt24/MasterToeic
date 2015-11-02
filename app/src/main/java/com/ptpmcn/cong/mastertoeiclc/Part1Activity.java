@@ -1,20 +1,12 @@
 package com.ptpmcn.cong.mastertoeiclc;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.LightingColorFilter;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.SystemClock;
@@ -27,25 +19,20 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cong.audiocong.AudioCong;
 import com.googlecode.tesseract.android.TessBaseAPI;
-import com.ptpmcn.cong.dbhandler.SQLiteHelper;
+import com.ptpmcn.cong.dbhandler.SQLiteHelper2;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -54,7 +41,7 @@ import java.util.List;
 
 import adapter.PagerAdapter;
 import apv.congnt.customview.AnswerView;
-import dialogs.DialogDict;
+import com.ptpmcn.cong.dictionary.DialogDict;
 import fragments.QuestionFragment;
 import fragments.TranscriptFragment;
 import model.Question;
@@ -209,10 +196,10 @@ public class Part1Activity extends AppCompatActivity {
      * Initialize data for part from database sqlite
      */
     private void initdata() {
-        if (SQLiteHelper.getInstance(context) != null) {
+        if (SQLiteHelper2.getInstance(context) != null) {
             try {
                 if (!isReviewMode) {
-                    Cursor cs = SQLiteHelper.getInstance(context).queryRandom("part1", 10);
+                    Cursor cs = SQLiteHelper2.getInstance(context).queryRandom("part1", 10);
                     while (cs.moveToNext()) {
                         Question q = new Question();
                         q.setAudio(cs.getString(1));

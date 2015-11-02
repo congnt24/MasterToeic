@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.cong.audiocong.AudioCong;
-import com.ptpmcn.cong.dbhandler.SQLiteHelper;
+import com.ptpmcn.cong.dbhandler.SQLiteHelper2;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -131,10 +131,10 @@ public class Part3Activity extends AppCompatActivity {
     }
 
     private void initdata() {
-        if (SQLiteHelper.getInstance(context) != null) {
+        if (SQLiteHelper2.getInstance(context) != null) {
             try {
                 if (!isReviewMode){
-                    Cursor cs = SQLiteHelper.getInstance(context).queryRandom("part" + part, 10);
+                    Cursor cs = SQLiteHelper2.getInstance(context).queryRandom("part" + part, 10);
                     while (cs.moveToNext()) {
                         cs.getColumnCount();
                         Question q = new Question();

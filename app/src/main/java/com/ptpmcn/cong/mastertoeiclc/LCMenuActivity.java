@@ -9,9 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.nguyentrungcong.createfilefromassets.CreateFileFromAssets;
-import com.ptpmcn.cong.dbhandler.SQLiteHelper;
-import com.ptpmcn.cong.jsonconfig.About_Activity;
+import com.ptpmcn.cong.dbhandler.SQLiteHelper2;
 
 public class LCMenuActivity extends AppCompatActivity {
 
@@ -35,7 +33,7 @@ public class LCMenuActivity extends AppCompatActivity {
         this.btnpart2 = (Button) findViewById(R.id.btn_part2);
         this.btnpart1 = (Button) findViewById(R.id.btn_part1);
         this.tvTitle = (TextView) findViewById(R.id.tv_Title);
-        SQLiteHelper.getInstance(getApplicationContext()).openDatabase("data.db");
+        SQLiteHelper2.getInstance(getApplicationContext()).openDatabase("data.db");
         btnpart1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

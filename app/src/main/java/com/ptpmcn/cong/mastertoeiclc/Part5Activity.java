@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ptpmcn.cong.dbhandler.SQLiteHelper;
+import com.ptpmcn.cong.dbhandler.SQLiteHelper2;
 import java.util.ArrayList;
 
 import apv.congnt.customview.AnswerView;
@@ -48,7 +48,7 @@ public class Part5Activity extends AppCompatActivity {
         context = getApplicationContext();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        SQLiteHelper.getInstance(getApplicationContext()).openDatabase("data/data_reading.db");
+        SQLiteHelper2.getInstance(getApplicationContext()).openDatabase("data/data_reading.db");
        if (getIntent()!=null) {
             Bundle b = getIntent().getExtras();
             if(b!=null){//review mode
@@ -137,10 +137,10 @@ public class Part5Activity extends AppCompatActivity {
      * Initialize data for part from database sqlite
      */
     private void initdata() {
-        if (SQLiteHelper.getInstance(context) != null) {
+        if (SQLiteHelper2.getInstance(context) != null) {
             try {
                 if (!isReviewMode) {
-                    Cursor cs = SQLiteHelper.getInstance(context).queryRandom("part5", 10);
+                    Cursor cs = SQLiteHelper2.getInstance(context).queryRandom("part5", 10);
                     while (cs.moveToNext()) {
                         Question q = new Question();
                         q.setQuestion(cs.getString(1).split("\\)", 2)[1].trim()+"\n\n"+cs.getString(2)+"\n"+cs.getString(3)+"\n"+cs.getString(4)+"\n"+cs.getString(5));

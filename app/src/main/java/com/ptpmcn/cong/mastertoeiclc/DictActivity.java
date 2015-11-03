@@ -14,5 +14,6 @@ public class DictActivity extends Activity {
         setContentView(R.layout.activity_dict);
         dict_container = (FrameLayout) findViewById(R.id.dict_container);
         Dictionary.getInstance().init(getApplication()).setDefaultUi(dict_container, getLayoutInflater());
+
     }
 }

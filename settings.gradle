@@ -1,1 +1,1 @@
-include ':app', ':audiocong', ':unzip', ':downloader', ':jsonconfig', ':createfilefromassets', ':tess-two', ':customview', ':dbhandler', ':dictionary', ':utilities'
+include ':app', ':audiocong', ':jsonconfig', ':tess-two', ':customview', ':dictionary', ':android-utilities'

@@ -17,9 +17,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.ptpmcn.cong.dbhandler.BaseSQLiteHelper;
-import com.ptpmcn.cong.dbhandler.DictSQLiteHelper;
-import com.ptpmcn.cong.dbhandler.SQLiteFactory;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,1 +1,1 @@
-include ':app', ':audiocong', ':jsonconfig', ':tess-two', ':customview', ':dictionary', ':android-utilities'
+include ':app', ':jsonconfig', ':tess-two', ':dictionary'

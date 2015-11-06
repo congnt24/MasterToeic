@@ -29,19 +29,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.cong.audiocong.AudioCong;
 import com.googlecode.tesseract.android.TessBaseAPI;
-import com.ptpmcn.cong.dbhandler.SQLiteHelper2;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 import adapter.PagerAdapter;
-import apv.congnt.customview.AnswerView;
 import com.ptpmcn.cong.dictionary.DialogDict;
+
+import apv.congnt24.customviews.AnswerView;
+import apv.congnt24.customviews.AudioCong;
+import apv.congnt24.data.sqlite.SQLiteFactory;
 import fragments.QuestionFragment;
 import fragments.TranscriptFragment;
 import model.Question;
@@ -196,10 +195,10 @@ public class Part1Activity extends AppCompatActivity {
      * Initialize data for part from database sqlite
      */
     private void initdata() {
-        if (SQLiteHelper2.getInstance(context) != null) {
+        if (SQLiteFactory.getSQLiteHelper(context, "data.db") != null) {
             try {
                 if (!isReviewMode) {
-                    Cursor cs = SQLiteHelper2.getInstance(context).queryRandom("part1", 10);
+                    Cursor cs = SQLiteFactory.getSQLiteHelper(context, "data.db").queryRandom("part1", 10);
                     while (cs.moveToNext()) {
                         Question q = new Question();
                         q.setAudio(cs.getString(1));

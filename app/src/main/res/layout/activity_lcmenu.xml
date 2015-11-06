@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <apv.congnt.customview.SquarButton
+            <apv.congnt24.customviews.SquarButton
                 android:layout_margin="3dp"
                 android:id="@+id/btn_part1"
                 android:layout_width="0dp"
@@ -40,7 +40,7 @@
                 android:textStyle="bold"
                 android:textSize="30dp"
                 android:textColor="@color/White"/>
-            <apv.congnt.customview.SquarButton
+            <apv.congnt24.customviews.SquarButton
                 android:layout_margin="3dp"
                 android:id="@+id/btn_part2"
                 android:layout_width="0dp"
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <apv.congnt.customview.SquarButton
+            <apv.congnt24.customviews.SquarButton
                 android:layout_margin="3dp"
                 android:id="@+id/btn_part3"
                 android:layout_width="0dp"
@@ -69,7 +69,7 @@
                 android:textStyle="bold"
                 android:textSize="30dp"
                 android:textColor="@color/White"/>
-            <apv.congnt.customview.SquarButton
+            <apv.congnt24.customviews.SquarButton
                 android:layout_margin="3dp"
                 android:id="@+id/btn_part4"
                 android:layout_width="0dp"

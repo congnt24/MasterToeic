@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/Black"
                     android:text="A"/>
-                <apv.congnt.customview.AnswerView
+                <apv.congnt24.customviews.AnswerView
                     android:id="@+id/answer_view1"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/Black"
                     android:text="A"/>
-                <apv.congnt.customview.AnswerView
+                <apv.congnt24.customviews.AnswerView
                     android:id="@+id/answer_view2"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -139,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/Black"
                     android:text="A"/>
-                <apv.congnt.customview.AnswerView
+                <apv.congnt24.customviews.AnswerView
                     android:id="@+id/answer_view3"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"

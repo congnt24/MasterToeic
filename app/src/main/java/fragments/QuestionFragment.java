@@ -1,9 +1,6 @@
 package fragments;
 
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.LightingColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.ptpmcn.cong.mastertoeiclc.Part3Activity;
@@ -22,7 +17,7 @@ import com.ptpmcn.cong.mastertoeiclc.R;
 
 import java.io.File;
 
-import apv.congnt.customview.AnswerView;
+import apv.congnt24.customviews.AnswerView;
 
 /**
  * Created by cong on 9/22/2015.

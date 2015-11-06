@@ -7,7 +7,7 @@ import android.view.Window;
 
 import com.ptpmcn.cong.jsonconfig.About_Activity;
 
-import apv.congnt.customview.SquarButton;
+import apv.congnt24.customviews.SquarButton;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

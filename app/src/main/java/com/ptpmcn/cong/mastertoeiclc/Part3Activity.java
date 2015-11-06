@@ -3,6 +3,7 @@ package com.ptpmcn.cong.mastertoeiclc;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteFullException;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.SystemClock;
@@ -17,14 +18,14 @@ import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.cong.audiocong.AudioCong;
-import com.ptpmcn.cong.dbhandler.SQLiteHelper2;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import adapter.PagerAdapter;
+import apv.congnt24.customviews.AudioCong;
+import apv.congnt24.data.sqlite.SQLiteFactory;
 import fragments.QuestionFragment;
 import fragments.TranscriptFragment;
 import model.Question;
@@ -131,10 +132,10 @@ public class Part3Activity extends AppCompatActivity {
     }
 
     private void initdata() {
-        if (SQLiteHelper2.getInstance(context) != null) {
+        if (SQLiteFactory.getSQLiteHelper(context, "data.db") != null) {
             try {
                 if (!isReviewMode){
-                    Cursor cs = SQLiteHelper2.getInstance(context).queryRandom("part" + part, 10);
+                    Cursor cs = SQLiteFactory.getSQLiteHelper(context, "data.db").queryRandom("part" + part, 10);
                     while (cs.moveToNext()) {
                         cs.getColumnCount();
                         Question q = new Question();

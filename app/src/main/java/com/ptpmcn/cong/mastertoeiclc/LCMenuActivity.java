@@ -9,7 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.ptpmcn.cong.dbhandler.SQLiteHelper2;
+import apv.congnt24.data.sqlite.SQLiteFactory;
+import apv.congnt24.data.sqlite.SQLiteHelper;
 
 public class LCMenuActivity extends AppCompatActivity {
 
@@ -33,7 +34,7 @@ public class LCMenuActivity extends AppCompatActivity {
         this.btnpart2 = (Button) findViewById(R.id.btn_part2);
         this.btnpart1 = (Button) findViewById(R.id.btn_part1);
         this.tvTitle = (TextView) findViewById(R.id.tv_Title);
-        SQLiteHelper2.getInstance(getApplicationContext()).openDatabase("data.db");
+        SQLiteFactory.getSQLiteHelper(getApplicationContext(), "data.db").openDatabase("data.db");
         btnpart1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

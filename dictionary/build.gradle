@@ -23,4 +23,5 @@ dependencies {
     compile('com.afollestad.material-dialogs:commons:0.8.1.0@aar') {
         transitive = true
     }
+    compile 'apv.congnt24:android-utilities:0.0.4'
 }

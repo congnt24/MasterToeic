@@ -11,12 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.nguyentrungcong.createfilefromassets.CreateFileFromAssets;
-import com.ptpmcn.cong.downloader.Downloader;
-import com.ptpmcn.cong.unzip.Decompress;
 
 import java.io.File;
 import java.io.IOException;
+
+import apv.congnt24.data.CreateFileFromAssets;
+import apv.congnt24.data.Decompress;
+import apv.congnt24.network.Downloader;
 
 /**
  * Created by cong on 8/29/2015.
@@ -37,7 +38,7 @@ public class LoadingActivity extends AppCompatActivity {
 
                         if(!dataFile.exists() ){
                             Downloader.download(context
-                                , "https://www.dropbox.com/s/fhb584qhofibl94/data0.zip?dl=1");
+                                    , "https://www.dropbox.com/s/fhb584qhofibl94/data0.zip?dl=1");
                             dataFile = new File(context.getFilesDir() + "/data0.zip");
                             if (dataFile.exists())
                                 try {

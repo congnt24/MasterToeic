@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.ptpmcn.cong.dictionary.Dictionary;
-
 public class DictActivity extends Activity {
     FrameLayout dict_container;
     @Override

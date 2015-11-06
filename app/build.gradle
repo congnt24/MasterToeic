@@ -20,20 +20,18 @@ android {
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
 repositories {
-    jcenter()
+    jcenter();
+
+    maven { url "https://dl.bintray.com/congnt24/maven" }
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile project(':audiocong')
     compile project(':jsonconfig')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile project(':tess-two')
-    compile project(':customview')
     compile project(':dictionary')
-    compile project(':android-utilities')
-    compile 'apv.congnt24.utilities:android-utilities:0.0.2@aar'
-    compile (name:'android-utilities-0.0.2', ext:'aar')
+    compile 'apv.congnt24:android-utilities:0.0.7@aar'
 }

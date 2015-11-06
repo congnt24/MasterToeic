@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -20,6 +19,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import apv.congnt24.data.sqlite.BaseSQLiteHelper;
+import apv.congnt24.data.sqlite.SQLiteFactory;
+import apv.congnt24.data.sqlite.SQLiteHelper;
 
 /**
  * Created by cong on 11/1/2015.
@@ -32,7 +35,7 @@ public class Dictionary {
     private static Dictionary ourInstance = new Dictionary();
     private Context context;
 
-    BaseSQLiteHelper dictSQL;
+    SQLiteHelper dictSQL;
     ArrayAdapter<String> adapter, his_adapter;
     List<String> list, listHistory;
 
@@ -46,9 +49,9 @@ public class Dictionary {
     public Dictionary init(Context context){
         this.context = context;
 //Init database
-        dictSQL = SQLiteFactory.getInstance().setContext(context).getSQLiteHelper(DictSQLiteHelper.class);
+        dictSQL = (SQLiteHelper) SQLiteFactory.getSQLiteHelper(context, "dict.db");
         if (dictSQL.openDatabase("dict.db")){
-            ((DictSQLiteHelper)dictSQL).createHistoryTable();
+            dictSQL.createHistoryTable();
             Toast.makeText(context, "Ket noi thanh cong den CSDL", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(context, "Khong the ket noi den CSDL", Toast.LENGTH_SHORT).show();
@@ -107,7 +110,7 @@ public class Dictionary {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                list = dictSQL.getLikeWord("data", auto_search.getText().toString(), 15);
+                list = dictSQL.getLikeWord("data", "word", auto_search.getText().toString(), 15);
                 adapter.clear();
                 adapter.addAll(list);
                 adapter.notifyDataSetChanged();
@@ -147,7 +150,7 @@ public class Dictionary {
 
     public List<String> loadHistory(){
         List<String> tmp = new ArrayList<>();
-        Cursor c = ((DictSQLiteHelper)dictSQL).sqLiteDatabase.query("history", null, null, null, null, null, "id DESC");
+        Cursor c = dictSQL.queryAll("history");
         while (c.moveToNext()){
             tmp.add(c.getString(1));
         }

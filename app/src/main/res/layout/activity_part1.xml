@@ -64,7 +64,7 @@
             android:textColor="@color/Black"
             android:textStyle="bold"
             android:text="Cau 1:"/>
-        <apv.congnt.customview.AnswerView
+        <apv.congnt24.customviews.AnswerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/answer_view"

@@ -3,27 +3,28 @@ package com.ptpmcn.cong.mastertoeiclc;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteFullException;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.SystemClock;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import adapter.PagerAdapter;
+import apv.congnt24.customviews.AnswerView;
 import apv.congnt24.customviews.AudioCong;
 import apv.congnt24.data.sqlite.SQLiteFactory;
 import fragments.QuestionFragment;
@@ -46,7 +47,6 @@ public class Part3Activity extends AppCompatActivity {
     private Button btnfinish;
     private Button btnnext;
     private LinearLayout playercontainer;
-    //private String[] listResult = new String[QUESTIONNUMBER];
     private PagerAdapter pagerAdapter;
     private ViewPager viewPager;
     private Toolbar toolbar;
@@ -55,6 +55,7 @@ public class Part3Activity extends AppCompatActivity {
     public boolean isReviewMode = false;
     private String time;
     public String[] listResult;
+    DictSearchView searchView;
 
     public static Part3Activity getInstance(){
         if (instance == null)
@@ -65,7 +66,6 @@ public class Part3Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_part3);
-        Log.d("LOG", "ACTIVITY PART 3: ");
         instance = this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,7 +78,7 @@ public class Part3Activity extends AppCompatActivity {
                 if (b.getInt("part", 0) !=0) {//Part 2,3 or 4
                     part = b.getInt("part");
                     try {
-                        getSupportActionBar().setTitle("Part "+part);
+                        ab.setTitle("Part " + part);
                     }catch (NullPointerException e){
                         Log.e("ActionBar", "No ActionBar");
                     }
@@ -235,6 +235,28 @@ public class Part3Activity extends AppCompatActivity {
         startActivity(intent);
         if (chrono!=null)
             chrono.stop();
+    }
+
+
+    //Menu
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        searchView = (DictSearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
+        searchView.init(this);
+        menu.findItem(R.id.search).setVisible(true);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.search){
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

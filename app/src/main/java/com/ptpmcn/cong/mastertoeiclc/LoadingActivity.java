@@ -35,34 +35,30 @@ public class LoadingActivity extends AppCompatActivity {
             protected Boolean doInBackground(String... params) {
                 File dataFile = new File(context.getFilesDir()+"/data0.zip");
                     if (internetAvailable()) {
-
                         if(!dataFile.exists() ){
-                            Downloader.download(context
-                                    , "https://www.dropbox.com/s/fhb584qhofibl94/data0.zip?dl=1");
+                            CreateFileFromAssets.getInstance().initialize(getApplicationContext()).CreateOneFile("data0.zip");
+//                            Downloader.download(context
+//                                    , "https://www.dropbox.com/s/fhb584qhofibl94/data0.zip?dl=1");
                             dataFile = new File(context.getFilesDir() + "/data0.zip");
                             if (dataFile.exists())
                                 try {
                                     Decompress.unzip(dataFile, context.getFilesDir());
+                                    dataFile.createNewFile();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-
                         }
                     }else{
                         return false;
                     }
-
-
                 return true;
             }
-
             @Override
             protected void onPostExecute(Boolean aVoid) {
                 super.onPostExecute(aVoid);
                 if (!aVoid){
                     Toast.makeText(LoadingActivity.this, "Internet is not available", Toast.LENGTH_SHORT).show();
                 }
-                //Toast.makeText(context, "Download Complete", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(context, MainActivity.class));
             }
         }.execute("");
@@ -106,44 +102,5 @@ public class LoadingActivity extends AppCompatActivity {
 
     public void setPrefsDataDownloaded(int count){
         getPrefsDownloaded().edit().putBoolean("data" + count, true).commit();
-    }
-
-    public class DownloadData extends AsyncTask<String, Boolean, Boolean> {
-        @Override
-        protected Boolean doInBackground(String... params) {
-
-            File dataFile = new File(context.getFilesDir()+"/data.db");
-            if (internetAvailable()) {
-                if(!dataFile.exists()){
-                    Downloader.download(context, "https://www.dropbox.com/s/mdr3x4n149j4v0j/data.db?dl=1");
-                }
-                if (!getPrefsDownloaded().getBoolean("data0", false)){
-                    Downloader.download(context
-                            , "https://www.dropbox.com/s/xer7kzymso7x56c/part1.zip?dl=1");
-                    File part1File = new File(context.getFilesDir() + "/part1.zip");
-                    if (part1File.exists())
-                        try {
-                            Decompress.unzip(part1File, context.getFilesDir());
-                            setPrefsDataDownloaded(0);// mark data0 were downloaded and decompressed
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                }
-
-                return true;
-            }
-
-
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aVoid) {
-            super.onPostExecute(aVoid);
-            if (!aVoid){
-                Toast.makeText(LoadingActivity.this, "Internet is not available", Toast.LENGTH_SHORT).show();
-            }
-            startActivity(new Intent(context, MainActivity.class));
-        }
     }
 }

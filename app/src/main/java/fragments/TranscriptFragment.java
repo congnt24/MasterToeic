@@ -11,9 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ptpmcn.cong.dictionary.Dictionary;
 import com.ptpmcn.cong.mastertoeiclc.R;
 
-import com.ptpmcn.cong.dictionary.DialogDict;
 
 /**
  * Created by cong on 9/22/2015.
@@ -54,25 +54,16 @@ public class TranscriptFragment extends Fragment{
         tvtranscript.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                // Called when action mode is first created. The menu supplied
-                // will be used to generate action buttons for the action mode
-
-                // Here is an example MenuItem
-                menu.add(0, R.id.tv_transcript, 0, "Definition").setIcon(R.drawable.ic_action_play_circle_outline);
+                menu.add(0, R.id.tv_transcript, 0, "Dịch").setIcon(R.drawable.ic_action_play_circle_outline);
                 return true;
             }
-
             @Override
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                // Remove the "select all" option
                 menu.removeItem(android.R.id.selectAll);
-                // Remove the "cut" option
                 menu.removeItem(android.R.id.cut);
-                // Remove the "copy all" option
                 menu.removeItem(android.R.id.copy);
                 return true;
             }
-
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch (item.getItemId()) {
@@ -88,8 +79,7 @@ public class TranscriptFragment extends Fragment{
                         }
                         // Perform your definition lookup with the selected text
                         final CharSequence selectedText = tvtranscript.getText().subSequence(min, max);
-
-                        DialogDict.getInstance().showDialog(getActivity(), ""+selectedText, "Define of "+selectedText);
+                        Dictionary.getInstance().showDialogAndAddToHistory(getActivity(), selectedText+"");
                         //Toast.makeText(getActivity(), selectedText, Toast.LENGTH_SHORT).show();
                         // Finish and close the ActionMode
                         mode.finish();

@@ -20,8 +20,4 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.0'
-    compile('com.afollestad.material-dialogs:commons:0.8.1.0@aar') {
-        transitive = true
-    }
-    compile 'apv.congnt24:android-utilities:0.0.4'
 }

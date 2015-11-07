@@ -8,6 +8,7 @@ import android.view.Window;
 import com.ptpmcn.cong.jsonconfig.About_Activity;
 
 import apv.congnt24.customviews.SquarButton;
+import apv.congnt24.data.sqlite.SQLiteFactory;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -28,6 +29,8 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SQLiteFactory.getSQLiteHelper(getApplicationContext(), "data.db").openDatabase("data.db");
+        SQLiteFactory.getSQLiteHelper(getApplicationContext(), "dict.db").openDatabase("dict.db");
         ButterKnife.bind(this);
     }
 

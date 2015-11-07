@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.SystemClock;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -40,6 +42,7 @@ public class Part5Activity extends AppCompatActivity {
     private android.widget.Chronometer chrono;
     private int count=0;
     private String time;
+    private DictSearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,5 +215,18 @@ public class Part5Activity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+    }
+
+
+    //Menu
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        searchView = (DictSearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
+        searchView.init(this);
+        menu.findItem(R.id.search).setVisible(true);
+        return true;
     }
 }

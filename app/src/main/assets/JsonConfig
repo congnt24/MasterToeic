@@ -1,10 +1,10 @@
 {
   "AppConfig" : {
-    "AppName" : "Master Toeic LC",
+    "AppName" : "Master Toeic",
     "Version" : "1.0.0",
     "Publisher" : "Toeic BK Team",
-    "ReleaseDate" : "25/12/2015",
-    "Developers" : "Nguyễn Trung Công",
+    "ReleaseDate" : "20/11/2015",
+    "Developers" : "Nguyễn Trung Công \nNguyễn Đăng Nam",
     "StoreAndroid" : "https://play.google.com/store/apps/details?id=mastertoeiclc",
     "StoreIOS" : "https://itunes.apple.com/us/app/apple-store/id375380948?mt=8",
     "SupportEmail" : "trungcong24@gmail.com",

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <apv.congnt.customview.ClearableAutoCompleteTextView
+        <apv.congnt24.customviews.ClearableAutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/auto_search"

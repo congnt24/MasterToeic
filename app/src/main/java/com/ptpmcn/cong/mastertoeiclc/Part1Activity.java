@@ -3,21 +3,12 @@ package com.ptpmcn.cong.mastertoeiclc;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.SystemClock;
-import android.provider.BaseColumns;
-import android.provider.MediaStore;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -25,26 +16,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.googlecode.tesseract.android.TessBaseAPI;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-
 import adapter.PagerAdapter;
-import com.ptpmcn.cong.dictionary.DialogDict;
-
 import apv.congnt24.customviews.AnswerView;
 import apv.congnt24.customviews.AudioCong;
 import apv.congnt24.data.sqlite.SQLiteFactory;
 import fragments.QuestionFragment;
 import fragments.TranscriptFragment;
 import model.Question;
-
 
 /**
  * Created on 8/29/2015. This activity will display Part1 screen of TOEIC TEST
@@ -53,55 +37,20 @@ import model.Question;
  */
 public class Part1Activity extends AppCompatActivity {
 
-    public static TessBaseAPI baseApi;
-    private static final int REQUEST_IMAGE_CAPTURE = 10;
-    private static final int REQUEST_SELECT_PHOTO= 11;
     Button btnfinish, btnprev, btnnext;
-     TextView tvcau;
-     LinearLayout playercontainer;
-     ViewPager viewPager;
-     Toolbar toolbar;
-     List<Question> list = new ArrayList<>();
+    TextView tvcau;
+    LinearLayout playercontainer;
+    ViewPager viewPager;
+    Toolbar toolbar;
+    List<Question> list = new ArrayList<>();
     private int count = 0;
     Context context;
     private String[] listResult = new String[10];
     PagerAdapter pagerAdapter;
-    private SimpleCursorAdapter mAdapter;
     //Review mode
     private boolean isReviewMode = false;
     String time="";// Store time
-
-    SearchView searchView;
-    EditText ed_searchView;
-    private boolean mSearchCheck;
-    public static final String CITY_NAME = "cityName";
-    private static final String[] COUNTRIES = {
-            "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica",
-            "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados",
-            "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegowina", "Botswana", "Bouvet Island", "Brazil",
-            "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde",
-            "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros",
-            "Congo", "Congo, the Democratic Republic of the", "Cook Islands", "Costa Rica", "Cote d'Ivoire", "Croatia (Hrvatska)", "Cuba", "Cyprus",
-            "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea",
-            "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "France Metropolitan", "French Guiana",
-            "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada",
-            "Guadeloupe", "Guam", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard and Mc Donald Islands", "Holy See (Vatican City State)",
-            "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran (Islamic Republic of)", "Iraq", "Ireland", "Israel", "Italy", "Jamaica",
-            "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People's Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan",
-            "Lao, People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg",
-            "Macau", "Macedonia, The Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique",
-            "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montserrat", "Morocco",
-            "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria",
-            "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines",
-            "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia",
-            "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Seychelles", "Sierra Leone", "Singapore",
-            "Slovakia (Slovak Republic)", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "Spain", "Sri Lanka",
-            "St. Helena", "St. Pierre and Miquelon", "Sudan", "Suriname", "Svalbard and Jan Mayen Islands", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic",
-            "Taiwan, Province of China", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia",
-            "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States",
-            "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands (British)", "Virgin Islands (U.S.)",
-            "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe"
-    };
+    DictSearchView searchView;
     private Chronometer chrono;
     private AnswerView answerView;
 
@@ -112,10 +61,6 @@ public class Part1Activity extends AppCompatActivity {
         context = getApplicationContext();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        ActionBar ab = getSupportActionBar();
-        //Enable Icon on actionbar
-//        ab.setHomeAsUpIndicator(R.mipmap.ic_launcher);
-//        ab.setDisplayHomeAsUpEnabled(true);
         //Handle Review mode or test mode
         if (getIntent()!=null) {
             Bundle b = getIntent().getExtras();
@@ -130,18 +75,6 @@ public class Part1Activity extends AppCompatActivity {
         }
             initialize();
             initdata();
-            loadHints();
-    }
-
-    private void loadHints() {
-        final String[] from = new String[]{CITY_NAME};
-        final int[] to = new int[]{android.R.id.text1};
-        mAdapter = new SimpleCursorAdapter(getApplicationContext(),
-                R.layout.hint_row,
-                null,
-                from,
-                to,
-                CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
     }
 
     @Override
@@ -185,8 +118,6 @@ public class Part1Activity extends AppCompatActivity {
             chrono.setText(time);
         }
         //
-        baseApi = new TessBaseAPI();
-        baseApi.init(getFilesDir().getPath(), "eng");
     }
     public void initTestMode(){
         //groupradio.setOnCheckedChangeListener(onChecked);
@@ -309,35 +240,6 @@ public class Part1Activity extends AppCompatActivity {
         if (chrono!=null)
             chrono.stop();
     }
-
-
-
-
-    private SearchView.OnQueryTextListener onQuerySearchView = new SearchView.OnQueryTextListener() {
-        @Override
-        public boolean onQueryTextSubmit(String query) {
-            mSearchCheck = false;
-            return false;
-        }
-
-        @Override
-        public boolean onQueryTextChange(String query) {
-            //if (mSearchCheck) {
-                // implement your search here
-                giveSuggestions(query);
-            //}
-            return false;
-        }
-    };
-
-    private void giveSuggestions(String query) {
-        final MatrixCursor cursor = new MatrixCursor(new String[]{BaseColumns._ID, CITY_NAME});
-        for (int i = 0; i < COUNTRIES.length; i++) {
-            if (COUNTRIES[i].toLowerCase().contains(query.toLowerCase()))
-                cursor.addRow(new Object[]{i, COUNTRIES[i]});
-        }
-        mAdapter.changeCursor(cursor);
-    }
     //Context Menu
 
     @Override
@@ -359,88 +261,18 @@ public class Part1Activity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
-        searchView.setQueryHint(this.getString(R.string.search_hint));
-        ed_searchView = ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
-        ed_searchView.setHintTextColor(getResources().getColor(R.color.my_primary_light));
-        searchView.setSuggestionsAdapter(mAdapter);
-        searchView.setOnQueryTextListener(onQuerySearchView);
-        searchView.setOnSuggestionListener(onQuerySuggestion);
+        searchView = (DictSearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
+        searchView.init(this);
         menu.findItem(R.id.search).setVisible(true);
-
-        mSearchCheck = false;
         return true;
     }
-    private SearchView.OnSuggestionListener onQuerySuggestion = new SearchView.OnSuggestionListener() {
-        @Override
-        public boolean onSuggestionSelect(int position) {
-            return false;
-        }
-
-        @Override
-        public boolean onSuggestionClick(int position) {
-            mAdapter.getCursor().moveToPosition(position);
-            ed_searchView.setText("" + mAdapter.getCursor().getString(1));
-            searchView.clearFocus();
-            //Show Dialog
-            DialogDict.getInstance().showDialog(Part1Activity.this, "" + mAdapter.getCursor().getString(1), "Define of " + mAdapter.getCursor().getString(1));
-
-            //Hiding input
-            /*InputMethodManager inputManager = (InputMethodManager) this
-                    .getSystemService(Context.INPUT_METHOD_SERVICE);
-
-            //check if no view has focus:
-            View v=this.getCurrentFocus();
-            if(v==null)
-                return;
-
-            inputManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWA*/
-            return false;
-        }
-    };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.cameracapture) {
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            }
-            return true;
-        }
-        if (id == R.id.galleryselect){
-            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            galleryIntent.setType("image/*");
-            startActivityForResult(Intent.createChooser(galleryIntent, "SELECT PHOTO"), REQUEST_SELECT_PHOTO);
-            return true;
-        }
         if (id == R.id.search){
-            mSearchCheck = true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-
-            Bundle extras = data.getExtras();
-            baseApi.setImage((Bitmap) extras.get("data"));
-            String text = baseApi.getUTF8Text();
-            Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-        }else
-        if (requestCode == REQUEST_SELECT_PHOTO && resultCode == RESULT_OK) {
-            Uri selectedImageUri = data.getData();
-            try {
-                Bitmap bm = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImageUri));
-                baseApi.setImage(bm);
-                String text = baseApi.getUTF8Text();
-                Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-            } catch (FileNotFoundException e) {
-                Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 }

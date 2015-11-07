@@ -1,20 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
-    <item android:id="@+id/cameracapture"
-        android:title="Camera"
-        android:orderInCategory="100"
-        android:icon="@android:drawable/ic_menu_camera"
-        android:showAsAction="collapseActionView|ifRoom"/>
-    <item android:id="@+id/galleryselect"
-        android:title="Gallery"
-        android:orderInCategory="100"
-        android:icon="@android:drawable/ic_menu_gallery"
-        android:showAsAction="collapseActionView|ifRoom"/>
     <item android:id="@+id/search" android:title="Search"
         android:orderInCategory="101"
         android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="always"
-        app:actionViewClass="android.support.v7.widget.SearchView" />
+        app:actionViewClass="com.ptpmcn.cong.mastertoeiclc.DictSearchView" />
 
 </menu>

@@ -5,17 +5,24 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ptpmcn.cong.dictionary.Dictionary;
 import com.ptpmcn.cong.mastertoeiclc.Part3Activity;
 import com.ptpmcn.cong.mastertoeiclc.R;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
+
 
 import apv.congnt24.customviews.AnswerView;
 
@@ -35,7 +42,6 @@ public class QuestionFragment extends Fragment {
     public String[] listResult = new String[QUESTIONNUMBER];
     private int answerAmount=4;
     private int part;
-
     /**
      * Create new instance of Fragment class for call in PagerAdapter
      * @param part:     define part of test

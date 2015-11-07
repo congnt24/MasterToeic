@@ -26,6 +26,7 @@ import java.util.Locale;
 import apv.congnt24.data.sqlite.SQLiteFactory;
 import apv.congnt24.data.sqlite.SQLiteHelper;
 
+
 /**
  * Created by cong on 11/1/2015.
  */

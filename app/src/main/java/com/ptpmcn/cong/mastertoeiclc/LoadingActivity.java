@@ -17,7 +17,6 @@ import java.io.IOException;
 
 import apv.congnt24.data.CreateFileFromAssets;
 import apv.congnt24.data.Decompress;
-import apv.congnt24.network.Downloader;
 
 /**
  * Created by cong on 8/29/2015.
@@ -34,22 +33,16 @@ public class LoadingActivity extends AppCompatActivity {
             @Override
             protected Boolean doInBackground(String... params) {
                 File dataFile = new File(context.getFilesDir()+"/data0.zip");
-                    if (internetAvailable()) {
-                        if(!dataFile.exists() ){
-                            CreateFileFromAssets.getInstance().initialize(getApplicationContext()).CreateOneFile("data0.zip");
-//                            Downloader.download(context
-//                                    , "https://www.dropbox.com/s/fhb584qhofibl94/data0.zip?dl=1");
-                            dataFile = new File(context.getFilesDir() + "/data0.zip");
-                            if (dataFile.exists())
-                                try {
-                                    Decompress.unzip(dataFile, context.getFilesDir());
-                                    dataFile.createNewFile();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                        }
-                    }else{
-                        return false;
+                    if(!dataFile.exists() ){
+                        CreateFileFromAssets.getInstance().initialize(context).CreateOneFile("data0.zip");
+                        dataFile = new File(context.getFilesDir() + "/data0.zip");
+                        if (dataFile.exists())
+                            try {
+                                Decompress.unzip(dataFile, context.getFilesDir());
+                                dataFile.createNewFile();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                     }
                 return true;
             }
@@ -68,8 +61,10 @@ public class LoadingActivity extends AppCompatActivity {
     private void initialize() {
         //Init TessTwoApi
         CreateFileFromAssets.getInstance().initialize(this).CreateFileFromPath("data");
-        CreateFileFromAssets.getInstance().initialize(this).CreateFileFromPath("tessdata");
         File f = new File(getFilesDir().getPath()+"/tessdata/eng.traineddata");
+        if (!f.exists()){
+            CreateFileFromAssets.getInstance().initialize(this).CreateFileFromPath("tessdata");
+        }
         Log.d("TAg,", getFilesDir().getPath() + "/tessdata/eng.traineddata");
     }
 

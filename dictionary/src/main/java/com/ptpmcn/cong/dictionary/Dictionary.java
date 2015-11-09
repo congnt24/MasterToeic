@@ -39,6 +39,7 @@ public class Dictionary implements AdapterView.OnItemClickListener {
     private Context context;
     private Activity activity;
     private TextToSpeech textToSpeech;
+    private Dialog dialog;
 
     SQLiteHelper dictSQL;
     ArrayAdapter<String> adapter, his_adapter;
@@ -56,6 +57,17 @@ public class Dictionary implements AdapterView.OnItemClickListener {
         this.context = activity;
         this.activity = activity;
         this.dictionaryHandler = (IDictionaryHandler) activity;
+//Init database
+        dictSQL = (SQLiteHelper) SQLiteFactory.getSQLiteHelper(context, "dict.db");
+        if (dictSQL.openDatabase("dict.db")){
+            dictSQL.createHistoryTable();
+            Toast.makeText(context, "Ket noi thanh cong den CSDL", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(context, "Khong the ket noi den CSDL", Toast.LENGTH_SHORT).show();
+        }
+        return this;
+    }
+    public Dictionary initTextToSpeech(Activity activity){
         //Text to speech
         textToSpeech = new TextToSpeech(activity, new TextToSpeech.OnInitListener() {
             @Override
@@ -65,14 +77,6 @@ public class Dictionary implements AdapterView.OnItemClickListener {
                 }
             }
         });
-//Init database
-        dictSQL = (SQLiteHelper) SQLiteFactory.getSQLiteHelper(context, "dict.db");
-        if (dictSQL.openDatabase("dict.db")){
-            dictSQL.createHistoryTable();
-            Toast.makeText(context, "Ket noi thanh cong den CSDL", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(context, "Khong the ket noi den CSDL", Toast.LENGTH_SHORT).show();
-        }
         return this;
     }
     //---------Set Default View-----------
@@ -110,25 +114,26 @@ public class Dictionary implements AdapterView.OnItemClickListener {
             }
         });
     }
-
     public void setBtnPhotoceView(ImageButton btnPhotoceView) {
         this.btn_photo = btnPhotoceView;
         btn_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog dialog = new Dialog(activity);
+                dialog = new Dialog(activity);
                 dialog.setContentView(R.layout.select_image_dialog);
                 dialog.setTitle("ACTION");
                 dialog.findViewById(R.id.btn_camera).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dictionaryHandler.onClickCamera();
+                        dialog.dismiss();
                     }
                 });
                 dialog.findViewById(R.id.btn_gallery).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dictionaryHandler.onClickGallery();
+                        dialog.dismiss();
                     }
                 });
                 dialog.show();
@@ -227,6 +232,11 @@ public class Dictionary implements AdapterView.OnItemClickListener {
         if (c.moveToNext()) {
             showDialog(c, activity);
         }
+    }
+    public void setSearchView(String txt){
+        auto_search.setText(txt);
+        auto_search.clearFocus();
+        auto_search.showDropDown();
     }
     public void setSearchViewAndShowDialog(String txt){
         auto_search.setText(txt);

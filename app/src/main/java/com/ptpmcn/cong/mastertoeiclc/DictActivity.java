@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
@@ -36,12 +37,17 @@ public class DictActivity extends Activity implements IDictionaryHandler{
         initAPI();
         dict_container = (FrameLayout) findViewById(R.id.dict_container);
         dict = Dictionary.getInstance().init(this).setDefaultUi(dict_container, getLayoutInflater());
-
     }
 
     private void initAPI() {
-        baseApi = new TessBaseAPI();
-        baseApi.init(getFilesDir().getPath(), "eng");
+        new AsyncTask<Void, Void, Void>(){
+            @Override
+            protected Void doInBackground(Void... params) {
+                baseApi = new TessBaseAPI();
+                baseApi.init(getFilesDir().getPath(), "eng");
+                return null;
+            }
+        }.execute();
 
     }
 
@@ -88,7 +94,7 @@ public class DictActivity extends Activity implements IDictionaryHandler{
             Bundle extras = data.getExtras();
             baseApi.setImage((Bitmap) extras.get("data"));
             String text = baseApi.getUTF8Text();
-            Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+            Dictionary.getInstance().setSearchView(text);
         }else
         if (requestCode == REQUEST_SELECT_PHOTO && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
@@ -96,7 +102,7 @@ public class DictActivity extends Activity implements IDictionaryHandler{
                 Bitmap bm = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImageUri));
                 baseApi.setImage(bm);
                 String text = baseApi.getUTF8Text();
-                Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+                Dictionary.getInstance().setSearchView(text);
             } catch (FileNotFoundException e) {
                 Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();
             }
@@ -105,7 +111,7 @@ public class DictActivity extends Activity implements IDictionaryHandler{
             if (null != data) {
                 ArrayList<String> result = data
                         .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                dict.setSearchViewAndShowDialog(result.get(0));
+                dict.setSearchView(result.get(0));
             }
         }
     }

@@ -20,32 +20,32 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <TextView
+                <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
                     android:id="@+id/tv_q1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Black"
                     android:textStyle="bold"
                     android:text="Cau 1"/>
-                <TextView
+                <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
                     android:id="@+id/radio1A"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Black"
                     android:text="A"/>
-                <TextView
+                <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
                     android:id="@+id/radio1B"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Black"
                     android:text="A"/>
-                <TextView
+                <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
                     android:id="@+id/radio1C"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Black"
                     android:text="A"/>
-                <TextView
+                <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
                     android:id="@+id/radio1D"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <TextView
+                <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
                     android:id="@+id/tv_q2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -71,25 +71,25 @@
                     android:textStyle="bold"
                     android:text="Cau 2"/>
 
-                <TextView
+                <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
                     android:id="@+id/radio2A"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Black"
                     android:text="A"/>
-                <TextView
+                <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
                     android:id="@+id/radio2B"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Black"
                     android:text="A"/>
-                <TextView
+                <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
                     android:id="@+id/radio2C"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Black"
                     android:text="A"/>
-                <TextView
+                <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
                     android:id="@+id/radio2D"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <TextView
+                <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
                     android:id="@+id/tv_q3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -115,25 +115,25 @@
                     android:textStyle="bold"
                     android:text="Cau 3"/>
 
-                <TextView
+                <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
                     android:id="@+id/radio3A"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Black"
                     android:text="A"/>
-                <TextView
+                <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
                     android:id="@+id/radio3B"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Black"
                     android:text="A"/>
-                <TextView
+                <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
                     android:id="@+id/radio3C"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Black"
                     android:text="A"/>
-                <TextView
+                <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
                     android:id="@+id/radio3D"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

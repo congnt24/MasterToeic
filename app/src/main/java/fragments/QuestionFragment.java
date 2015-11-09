@@ -16,8 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ptpmcn.cong.dictionary.Dictionary;
+import com.ptpmcn.cong.mastertoeiclc.IMenuHandler;
 import com.ptpmcn.cong.mastertoeiclc.Part3Activity;
 import com.ptpmcn.cong.mastertoeiclc.R;
+import com.ptpmcn.cong.mastertoeiclc.SelectableTextView;
 
 import org.w3c.dom.Text;
 
@@ -29,14 +31,14 @@ import apv.congnt24.customviews.AnswerView;
 /**
  * Created by cong on 9/22/2015.
  */
-public class QuestionFragment extends Fragment {
+public class QuestionFragment extends Fragment implements IMenuHandler {
     private static final int QUESTIONNUMBER = 30;
     private ImageView imageView;
-    private android.widget.TextView tvq1;
-    private TextView radioes[][] = new TextView[3][4];
+    private SelectableTextView tvq1;
+    private SelectableTextView radioes[][] = new SelectableTextView[3][4];
     private AnswerView answerViews[] = new AnswerView[3];
-    private android.widget.TextView tvq2;
-    private android.widget.TextView tvq3;
+    private SelectableTextView tvq2;
+    private SelectableTextView tvq3;
     public static QuestionFragment instance;
     private View rootView;
     public String[] listResult = new String[QUESTIONNUMBER];
@@ -91,21 +93,31 @@ public class QuestionFragment extends Fragment {
                 answerViews[0] = (AnswerView) subLayout.findViewById(R.id.answer_view1);
                 answerViews[1] = (AnswerView) subLayout.findViewById(R.id.answer_view2);
                 answerViews[2] = (AnswerView) subLayout.findViewById(R.id.answer_view3);
-                this.radioes[2][3] = (TextView) subLayout.findViewById(R.id.radio3D);
-                this.radioes[2][2] = (TextView) subLayout.findViewById(R.id.radio3C);
-                this.radioes[2][1] = (TextView) subLayout.findViewById(R.id.radio3B);
-                this.radioes[2][0] = (TextView) subLayout.findViewById(R.id.radio3A);
-                this.tvq3 = (TextView) subLayout.findViewById(R.id.tv_q3);
-                this.radioes[1][3] = (TextView) subLayout.findViewById(R.id.radio2D);
-                this.radioes[1][2] = (TextView) subLayout.findViewById(R.id.radio2C);
-                this.radioes[1][1] = (TextView) subLayout.findViewById(R.id.radio2B);
-                this.radioes[1][0] = (TextView) subLayout.findViewById(R.id.radio2A);
-                this.tvq2 = (TextView) subLayout.findViewById(R.id.tv_q2);
-                this.radioes[0][3] = (TextView) subLayout.findViewById(R.id.radio1D);
-                this.radioes[0][2] = (TextView) subLayout.findViewById(R.id.radio1C);
-                this.radioes[0][1] = (TextView) subLayout.findViewById(R.id.radio1B);
-                this.radioes[0][0] = (TextView) subLayout.findViewById(R.id.radio1A);
-                this.tvq1 = (TextView) subLayout.findViewById(R.id.tv_q1);
+                this.radioes[2][3] = (SelectableTextView) subLayout.findViewById(R.id.radio3D);
+                this.radioes[2][2] = (SelectableTextView) subLayout.findViewById(R.id.radio3C);
+                this.radioes[2][1] = (SelectableTextView) subLayout.findViewById(R.id.radio3B);
+                this.radioes[2][0] = (SelectableTextView) subLayout.findViewById(R.id.radio3A);
+                this.tvq3 = (SelectableTextView) subLayout.findViewById(R.id.tv_q3);
+                this.radioes[1][3] = (SelectableTextView) subLayout.findViewById(R.id.radio2D);
+                this.radioes[1][2] = (SelectableTextView) subLayout.findViewById(R.id.radio2C);
+                this.radioes[1][1] = (SelectableTextView) subLayout.findViewById(R.id.radio2B);
+                this.radioes[1][0] = (SelectableTextView) subLayout.findViewById(R.id.radio2A);
+                this.tvq2 = (SelectableTextView) subLayout.findViewById(R.id.tv_q2);
+                this.radioes[0][3] = (SelectableTextView) subLayout.findViewById(R.id.radio1D);
+                this.radioes[0][2] = (SelectableTextView) subLayout.findViewById(R.id.radio1C);
+                this.radioes[0][1] = (SelectableTextView) subLayout.findViewById(R.id.radio1B);
+                this.radioes[0][0] = (SelectableTextView) subLayout.findViewById(R.id.radio1A);
+                this.tvq1 = (SelectableTextView) subLayout.findViewById(R.id.tv_q1);
+
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        radioes[i][j].init(this);
+                    }
+                }
+                tvq1.init(this);
+                tvq2.init(this);
+                tvq3.init(this);
+
                 //If PART 2: remove D answer
                 if (part==2){
                     answerAmount = 3;
@@ -197,5 +209,10 @@ public class QuestionFragment extends Fragment {
         answerViews[0].clearAll();
         answerViews[1].clearAll();
         answerViews[2].clearAll();
+    }
+
+    @Override
+    public void onCompleteSelectTextView(String str) {
+        Dictionary.getInstance().showDialogAndAddToHistory(getActivity(), str);
     }
 }

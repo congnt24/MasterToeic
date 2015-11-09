@@ -12,77 +12,80 @@
         android:text="@string/app_name_title_lc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="50dp"
+        android:textSize="46dip"
         android:gravity="center"
         android:textStyle="bold"
         android:textColor="@color/White"
         android:layout_centerHorizontal="true"/>
-    <LinearLayout
+    <ScrollView
         android:layout_below="@id/tv_Title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical"
-        android:paddingTop="40dp">
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <apv.congnt24.customviews.SquarButton
-                android:layout_margin="3dp"
-                android:id="@+id/btn_part1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:background="@color/SaddleBrown"
-                android:text="Part 1"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:textColor="@color/White"/>
-            <apv.congnt24.customviews.SquarButton
-                android:layout_margin="3dp"
-                android:id="@+id/btn_part2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:background="@color/SaddleBrown"
-                android:text="Part 2"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:textColor="@color/White"/>
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            android:paddingTop="40dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <apv.congnt24.customviews.SquarButton
+                    android:layout_margin="3dp"
+                    android:id="@+id/btn_part1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@color/SaddleBrown"
+                    android:text="Part 1"
+                    android:textStyle="bold"
+                    android:textSize="30dp"
+                    android:textColor="@color/White"/>
+                <apv.congnt24.customviews.SquarButton
+                    android:layout_margin="3dp"
+                    android:id="@+id/btn_part2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@color/SaddleBrown"
+                    android:text="Part 2"
+                    android:textStyle="bold"
+                    android:textSize="30dp"
+                    android:textColor="@color/White"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <apv.congnt24.customviews.SquarButton
+                    android:layout_margin="3dp"
+                    android:id="@+id/btn_part3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@color/SaddleBrown"
+                    android:text="Part 3"
+                    android:textStyle="bold"
+                    android:textSize="30dp"
+                    android:textColor="@color/White"/>
+                <apv.congnt24.customviews.SquarButton
+                    android:layout_margin="3dp"
+                    android:id="@+id/btn_part4"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@color/SaddleBrown"
+                    android:text="Part 4"
+                    android:textStyle="bold"
+                    android:textSize="30dp"
+                    android:textColor="@color/White"/>
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <apv.congnt24.customviews.SquarButton
-                android:layout_margin="3dp"
-                android:id="@+id/btn_part3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:background="@color/SaddleBrown"
-                android:text="Part 3"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:textColor="@color/White"/>
-            <apv.congnt24.customviews.SquarButton
-                android:layout_margin="3dp"
-                android:id="@+id/btn_part4"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:background="@color/SaddleBrown"
-                android:text="Part 4"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:textColor="@color/White"/>
-        </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

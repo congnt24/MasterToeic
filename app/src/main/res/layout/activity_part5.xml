@@ -65,7 +65,7 @@
             app:aw_canCancelAnswer="false"
             android:layout_above="@+id/parent_group"/>
     </LinearLayout>
-    <TextView
+    <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/question"

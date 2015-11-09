@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 
+import com.ptpmcn.cong.dictionary.Dictionary;
 import com.ptpmcn.cong.jsonconfig.About_Activity;
 
 import apv.congnt24.customviews.SquarButton;
@@ -31,6 +32,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         SQLiteFactory.getSQLiteHelper(getApplicationContext(), "data.db").openDatabase("data.db");
         SQLiteFactory.getSQLiteHelper(getApplicationContext(), "dict.db").openDatabase("dict.db");
+        Dictionary.getInstance().initTextToSpeech(this);
         ButterKnife.bind(this);
     }
 

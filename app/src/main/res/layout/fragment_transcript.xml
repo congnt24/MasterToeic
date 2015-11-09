@@ -16,8 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/scrollView">
-        <TextView
-            android:textIsSelectable="true"
+        <com.ptpmcn.cong.mastertoeiclc.SelectableTextView
             android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

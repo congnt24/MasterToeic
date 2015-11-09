@@ -3,6 +3,7 @@ package com.ptpmcn.cong.mastertoeiclc;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.SystemClock;
@@ -86,10 +87,11 @@ public class Part1Activity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(this, MainActivity.class));
+        //startActivity(new Intent(this, MainActivity.class));
     }
 
     public void initialize(){
+        this.viewPager = (ViewPager) findViewById(R.id.view_pager);
         answerView = (AnswerView) findViewById(R.id.answer_view);
         answerView.setOnAnswerChange(new AnswerView.OnAnswerChange() {
             @Override
@@ -104,7 +106,6 @@ public class Part1Activity extends AppCompatActivity {
         this.btnprev = (Button) findViewById(R.id.btn_prev);
         this.tvcau = (TextView) findViewById(R.id.tv_cau);
         chrono = (Chronometer) findViewById(R.id.chronometer);
-        this.viewPager = (ViewPager) findViewById(R.id.view_pager);
         tvcau.setText("Câu 1:");
         AudioCong.getInstance().setDefaultUi(playercontainer, getLayoutInflater());
         btnprev.setOnClickListener(onPrev);
@@ -126,36 +127,51 @@ public class Part1Activity extends AppCompatActivity {
      * Initialize data for part from database sqlite
      */
     private void initdata() {
-        if (SQLiteFactory.getSQLiteHelper(context, "data.db") != null) {
-            try {
-                if (!isReviewMode) {
-                    Cursor cs = SQLiteFactory.getSQLiteHelper(context, "data.db").queryRandom("part1", 10);
-                    while (cs.moveToNext()) {
-                        Question q = new Question();
-                        q.setAudio(cs.getString(1));
-                        q.setQuestion(cs.getString(2).split("\\)", 2)[1].trim());
-                        q.setAnswer(cs.getString(3));
-                        q.setTranscript(cs.getString(4));
-                        list.add(q);
+        new AsyncTask<Void, Void, Void>(){
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                if (SQLiteFactory.getSQLiteHelper(context, "data.db") != null) {
+                    try {
+                        if (!isReviewMode) {
+                            Cursor cs = SQLiteFactory.getSQLiteHelper(context, "data.db").queryRandom("part1", 10);
+                            while (cs.moveToNext()) {
+                                Question q = new Question();
+                                q.setAudio(cs.getString(1));
+                                q.setQuestion(cs.getString(2).split("\\)", 2)[1].trim());
+                                q.setAnswer(cs.getString(3));
+                                q.setTranscript(cs.getString(4));
+                                list.add(q);
+                            }
+                            cs.close();
+                        }
+                        pagerAdapter = new PagerAdapter(getSupportFragmentManager()
+                                , 1//part 1
+                                , context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg" //Question: img path
+                                , list.get(count).getQuestion()+"\n"+list.get(count).getTranscript());  //transcript
+
+                    }catch (Exception e){
+                       // Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
                     }
-                    cs.close();
+                }else{
+                   // Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
                 }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
                 AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".mp3"));
-                pagerAdapter = new PagerAdapter(getSupportFragmentManager()
-                        , 1//part 1
-                        , context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg" //Question: img path
-                        , list.get(count).getQuestion()+"\n"+list.get(count).getTranscript());  //transcript
+
                 viewPager.setAdapter(pagerAdapter);
                 if (isReviewMode){
                     answerView.clearAll();
                     autoCheckRadioButton(count);
                 }
-            }catch (Exception e){
-                Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
             }
-        }else{
-            Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
-        }
+        }.execute();
+
     }
 
     /**

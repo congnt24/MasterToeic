@@ -13,80 +13,83 @@
         android:text="@string/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="50dp"
+        android:textSize="46dip"
         android:gravity="center"
         android:textStyle="bold"
         android:textColor="@color/White"
         android:layout_centerHorizontal="true"/>
-    <LinearLayout
+    <ScrollView
         android:layout_below="@id/tv_Title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical"
-        android:paddingTop="40dp"
-        android:paddingBottom="40dp">
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <apv.congnt24.customviews.SquarButton
-                android:layout_margin="3dp"
-                android:id="@+id/btn_lc"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:background="@color/SaddleBrown"
-                android:text="LC"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:textColor="@color/White"/>
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <apv.congnt24.customviews.SquarButton
+                    android:layout_margin="3dp"
+                    android:id="@+id/btn_lc"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@color/SaddleBrown"
+                    android:text="LC"
+                    android:textStyle="bold"
+                    android:textSize="30dp"
+                    android:textColor="@color/White"/>
 
-            <apv.congnt24.customviews.SquarButton
-                android:layout_margin="3dp"
-                android:id="@+id/btn_rc"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:background="@color/SaddleBrown"
-                android:text="RC"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:textColor="@color/White"/>
+                <apv.congnt24.customviews.SquarButton
+                    android:layout_margin="3dp"
+                    android:id="@+id/btn_rc"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@color/SaddleBrown"
+                    android:text="RC"
+                    android:textStyle="bold"
+                    android:textSize="30dp"
+                    android:textColor="@color/White"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+                <apv.congnt24.customviews.SquarButton
+                    android:layout_margin="3dp"
+                    android:id="@+id/btn_dict"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@color/SaddleBrown"
+                    android:text="Dict"
+                    android:textStyle="bold"
+                    android:textSize="30dp"
+                    android:textColor="@color/White"/>
+                <apv.congnt24.customviews.SquarButton
+                    android:layout_margin="3dp"
+                    android:id="@+id/btn_about"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@color/SaddleBrown"
+                    android:text="About"
+                    android:textStyle="bold"
+                    android:textSize="30dp"
+                    android:textColor="@color/White"/>
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-            <apv.congnt24.customviews.SquarButton
-                android:layout_margin="3dp"
-                android:id="@+id/btn_dict"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:background="@color/SaddleBrown"
-                android:text="Dict"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:textColor="@color/White"/>
-            <apv.congnt24.customviews.SquarButton
-                android:layout_margin="3dp"
-                android:id="@+id/btn_about"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:background="@color/SaddleBrown"
-                android:text="About"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:textColor="@color/White"/>
-        </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

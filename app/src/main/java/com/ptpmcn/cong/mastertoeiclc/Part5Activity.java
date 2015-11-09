@@ -17,13 +17,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ptpmcn.cong.dictionary.Dictionary;
+
 import java.util.ArrayList;
 
 import apv.congnt24.customviews.AnswerView;
 import apv.congnt24.data.sqlite.SQLiteFactory;
 import model.Question;
 
-public class Part5Activity extends AppCompatActivity {
+public class Part5Activity extends AppCompatActivity implements IMenuHandler {
 
     private Context context;
     private Toolbar toolbar;
@@ -38,7 +40,7 @@ public class Part5Activity extends AppCompatActivity {
     private android.widget.TextView tvcau;
     private AnswerView answerView;
     private android.widget.LinearLayout parentgroup;
-    private android.widget.TextView question;
+    private SelectableTextView question;
     private android.widget.Chronometer chrono;
     private int count=0;
     private String time;
@@ -69,7 +71,8 @@ public class Part5Activity extends AppCompatActivity {
 
     private void initialize() {
         this.chrono = (Chronometer) findViewById(R.id.chronometer);
-        this.question = (TextView) findViewById(R.id.question);
+        this.question = (SelectableTextView) findViewById(R.id.question);
+        question.init(this);
         this.parentgroup = (LinearLayout) findViewById(R.id.parent_group);
         this.answerView = (AnswerView) findViewById(R.id.answer_view);
         this.tvcau = (TextView) findViewById(R.id.tv_cau);
@@ -228,5 +231,10 @@ public class Part5Activity extends AppCompatActivity {
         searchView.init(this);
         menu.findItem(R.id.search).setVisible(true);
         return true;
+    }
+
+    @Override
+    public void onCompleteSelectTextView(String str) {
+        Dictionary.getInstance().showDialogAndAddToHistory(this, str);
     }
 }

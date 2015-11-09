@@ -12,14 +12,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ptpmcn.cong.dictionary.Dictionary;
+import com.ptpmcn.cong.mastertoeiclc.IMenuHandler;
 import com.ptpmcn.cong.mastertoeiclc.R;
+import com.ptpmcn.cong.mastertoeiclc.SelectableTextView;
 
 
 /**
  * Created by cong on 9/22/2015.
  */
-public class TranscriptFragment extends Fragment{
-    TextView tvtranscript;
+public class TranscriptFragment extends Fragment implements IMenuHandler {
+    SelectableTextView tvtranscript;
     private static TranscriptFragment instance;
 
     /**
@@ -49,56 +51,18 @@ public class TranscriptFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_transcript, container, false);
-        tvtranscript = (TextView) rootView.findViewById(R.id.tv_transcript);
+        tvtranscript = (SelectableTextView) rootView.findViewById(R.id.tv_transcript);
         tvtranscript.setText(getArguments().getString("transcript"));
-        tvtranscript.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
-            @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                menu.add(0, R.id.tv_transcript, 0, "Dịch").setIcon(R.drawable.ic_action_play_circle_outline);
-                return true;
-            }
-            @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                menu.removeItem(android.R.id.selectAll);
-                menu.removeItem(android.R.id.cut);
-                menu.removeItem(android.R.id.copy);
-                return true;
-            }
-            @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.tv_transcript:
-                        int min = 0;
-                        int max = tvtranscript.getText().length();
-                        if (tvtranscript.isFocused()) {
-                            final int selStart = tvtranscript.getSelectionStart();
-                            final int selEnd = tvtranscript.getSelectionEnd();
-
-                            min = Math.max(0, Math.min(selStart, selEnd));
-                            max = Math.max(0, Math.max(selStart, selEnd));
-                        }
-                        // Perform your definition lookup with the selected text
-                        final CharSequence selectedText = tvtranscript.getText().subSequence(min, max);
-                        Dictionary.getInstance().showDialogAndAddToHistory(getActivity(), selectedText+"");
-                        //Toast.makeText(getActivity(), selectedText, Toast.LENGTH_SHORT).show();
-                        // Finish and close the ActionMode
-                        mode.finish();
-                        return true;
-                    default:
-                        break;
-                }
-                return false;
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-
-            }
-        });
+        tvtranscript.init(this);
         return rootView;
     }
 
     public void setTranscript(String text){
         tvtranscript.setText(text);
+    }
+
+    @Override
+    public void onCompleteSelectTextView(String str) {
+        Dictionary.getInstance().showDialogAndAddToHistory(getActivity(), str);
     }
 }

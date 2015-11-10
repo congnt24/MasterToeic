@@ -33,5 +33,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile project(':tess-two')
     compile project(':dictionary')
-    compile 'apv.congnt24:android-utilities:0.0.7@aar'
+    compile 'apv.congnt24:android-utilities:0.0.9@aar'
 }

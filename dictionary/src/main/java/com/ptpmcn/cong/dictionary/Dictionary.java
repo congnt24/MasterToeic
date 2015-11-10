@@ -202,7 +202,7 @@ public class Dictionary implements AdapterView.OnItemClickListener {
     }
     public List<String> loadHistory(){
         List<String> tmp = new ArrayList<>();
-        Cursor c = dictSQL.queryAll("history");
+        Cursor c = dictSQL.queryAll("history", "id", "DESC");
         while (c.moveToNext()){
             tmp.add(c.getString(1));
         }

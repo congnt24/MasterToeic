@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
     }
     @OnClick(R.id.btn_about)
     public void openAboutActivity(){
-        startActivity(new Intent(getApplicationContext(), About_Activity.class));
+        startActivity(new Intent(getApplicationContext(), FlashCardActivity.class));
     }
     @OnClick(R.id.btn_rc)
     public void openPart5Activity(){

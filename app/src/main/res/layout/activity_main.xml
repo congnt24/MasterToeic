@@ -84,7 +84,7 @@
                     android:layout_weight="1"
                     android:layout_gravity="center"
                     android:background="@color/SaddleBrown"
-                    android:text="About"
+                    android:text="Quiz"
                     android:textStyle="bold"
                     android:textSize="30dp"
                     android:textColor="@color/White"/>

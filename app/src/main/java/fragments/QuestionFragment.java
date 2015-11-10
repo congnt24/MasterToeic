@@ -44,6 +44,8 @@ public class QuestionFragment extends Fragment implements IMenuHandler {
     public String[] listResult = new String[QUESTIONNUMBER];
     private int answerAmount=4;
     private int part;
+    private TextView sen_count;
+
     /**
      * Create new instance of Fragment class for call in PagerAdapter
      * @param part:     define part of test
@@ -90,6 +92,7 @@ public class QuestionFragment extends Fragment implements IMenuHandler {
                 break;
             default:
                 LinearLayout subLayout = (LinearLayout) inflater.inflate(R.layout.fragment_3questions, container, false);
+                sen_count = (TextView) subLayout.findViewById(R.id.sen_count);
                 answerViews[0] = (AnswerView) subLayout.findViewById(R.id.answer_view1);
                 answerViews[1] = (AnswerView) subLayout.findViewById(R.id.answer_view2);
                 answerViews[2] = (AnswerView) subLayout.findViewById(R.id.answer_view3);
@@ -164,6 +167,7 @@ public class QuestionFragment extends Fragment implements IMenuHandler {
         }
     }
     public void initQuestion(String[] questions, int count){
+        sen_count.setText("Câu "+(count+1)+":");
         try {
             for (int j = 0; j < answerAmount; j++) {
                 radioes[0][j].setText((char)(65+j)+". "+questions[j+1]);

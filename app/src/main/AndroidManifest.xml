@@ -55,7 +55,6 @@
             android:name=".Part5Activity"
             android:label="Part5" />
         <activity android:name=".DictActivity" />
-        <activity android:name=".Quiz" />
         <activity android:name=".FlashCardActivity"></activity>
     </application>
 

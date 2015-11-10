@@ -121,6 +121,7 @@ public class ResultActivity extends AppCompatActivity {
                 switch(part){
                     case 1:
                         intent = new Intent(ResultActivity.this, Part1Activity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         bundle.putBoolean("reviewmode", true);
                         bundle.putStringArray("result", result);
                         bundle.putString("time", time);

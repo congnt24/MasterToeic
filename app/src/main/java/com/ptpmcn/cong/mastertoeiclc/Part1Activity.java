@@ -3,7 +3,6 @@ package com.ptpmcn.cong.mastertoeiclc;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.SystemClock;
@@ -74,8 +73,8 @@ public class Part1Activity extends AppCompatActivity {
                 }
             }
         }
-            initialize();
-            initdata();
+        initialize();
+        initdata();
     }
 
     @Override
@@ -127,41 +126,25 @@ public class Part1Activity extends AppCompatActivity {
      * Initialize data for part from database sqlite
      */
     private void initdata() {
-        new AsyncTask<Void, Void, Void>(){
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                if (SQLiteFactory.getSQLiteHelper(context, "data.db") != null) {
-                    try {
-                        if (!isReviewMode) {
-                            Cursor cs = SQLiteFactory.getSQLiteHelper(context, "data.db").queryRandom("part1", 10);
-                            while (cs.moveToNext()) {
-                                Question q = new Question();
-                                q.setAudio(cs.getString(1));
-                                q.setQuestion(cs.getString(2).split("\\)", 2)[1].trim());
-                                q.setAnswer(cs.getString(3));
-                                q.setTranscript(cs.getString(4));
-                                list.add(q);
-                            }
-                            cs.close();
-                        }
-                        pagerAdapter = new PagerAdapter(getSupportFragmentManager()
-                                , 1//part 1
-                                , context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg" //Question: img path
-                                , list.get(count).getQuestion()+"\n"+list.get(count).getTranscript());  //transcript
-
-                    }catch (Exception e){
-                       // Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
+        if (SQLiteFactory.getSQLiteHelper(context, "data.db") != null) {
+            try {
+                if (!isReviewMode) {
+                    Cursor cs = SQLiteFactory.getSQLiteHelper(context, "data.db").queryRandom("part1", 10);
+                    while (cs.moveToNext()) {
+                        Question q = new Question();
+                        q.setAudio(cs.getString(1));
+                        q.setQuestion(cs.getString(2).split("\\)", 2)[1].trim());
+                        q.setAnswer(cs.getString(3));
+                        q.setTranscript(cs.getString(4));
+                        list.add(q);
                     }
-                }else{
-                   // Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
+                    cs.close();
                 }
-                return null;
-            }
+                pagerAdapter = new PagerAdapter(getSupportFragmentManager()
+                        , 1//part 1
+                        , context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg" //Question: img path
+                        , list.get(count).getQuestion()+"\n"+list.get(count).getTranscript());  //transcript
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
                 AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".mp3"));
 
                 viewPager.setAdapter(pagerAdapter);
@@ -169,9 +152,12 @@ public class Part1Activity extends AppCompatActivity {
                     answerView.clearAll();
                     autoCheckRadioButton(count);
                 }
+            }catch (Exception e){
+                Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
             }
-        }.execute();
-
+        }else{
+            Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**

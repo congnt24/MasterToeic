@@ -127,6 +127,9 @@ public class QuestionFragment extends Fragment implements IMenuHandler {
                     radioes[0][3].setVisibility(View.GONE);
                     radioes[1][3].setVisibility(View.GONE);
                     radioes[2][3].setVisibility(View.GONE);
+                    for (int i = 0; i < 3; i++) {
+                        answerViews[i].resize(3);
+                    }
                 }
                 layout.addView(subLayout, matchParams);
                 initQuestion(question.replaceAll("(?m)^\\s", "").split("\\n"), Part3Activity.getInstance().count);

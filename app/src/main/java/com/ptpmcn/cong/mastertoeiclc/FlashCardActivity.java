@@ -83,7 +83,7 @@ public class FlashCardActivity extends AppCompatActivity implements ICustomColor
     public void changeBackColor(View v) {
 
 //        v.setBackgroundColor(Color.BLACK);
-        v.setBackgroundResource(R.drawable.card_boder);
+        v.setBackgroundResource(R.drawable.card_boder_back);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class FlashCardActivity extends AppCompatActivity implements ICustomColor
     @Override
     public void changeBackTextColor(View v) {
         ((TextView) v).setTextSize(40);
-        ((TextView) v).setTextColor(Color.BLUE);
+        ((TextView) v).setTextColor(Color.WHITE);
     }
 
     @Override

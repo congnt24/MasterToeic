@@ -127,7 +127,7 @@ public class Part1Activity extends AppCompatActivity {
         answerView.setOnAnswerChange(new AnswerView.OnAnswerChange() {
             @Override
             public void onAnswerChange(AnswerView view, int index) {
-                Toast.makeText(Part1Activity.this, "Choose: " + index, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Part1Activity.this, "Choose: " + index, Toast.LENGTH_SHORT).show();
                 listResult[count] = String.valueOf((char) (((int) 'A') + index));//ABCD
             }
         });

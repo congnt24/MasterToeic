@@ -19,9 +19,11 @@ import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import adapter.PagerAdapter;
 import apv.congnt24.customviews.AnswerView;
 import apv.congnt24.customviews.AudioCong;
@@ -32,8 +34,8 @@ import model.Question;
 
 /**
  * Created on 8/29/2015. This activity will display Part1 screen of TOEIC TEST
- * @author Nguyen Trung Cong
  *
+ * @author Nguyen Trung Cong
  */
 public class Part1Activity extends AppCompatActivity {
 
@@ -43,16 +45,46 @@ public class Part1Activity extends AppCompatActivity {
     ViewPager viewPager;
     Toolbar toolbar;
     List<Question> list = new ArrayList<>();
-    private int count = 0;
     Context context;
-    private String[] listResult = new String[10];
     PagerAdapter pagerAdapter;
+    String time = "";// Store time
+    DictSearchView searchView;
+    private int count = 0;
+    private String[] listResult = new String[10];
     //Review mode
     private boolean isReviewMode = false;
-    String time="";// Store time
-    DictSearchView searchView;
     private Chronometer chrono;
     private AnswerView answerView;
+    private View.OnClickListener onPrev = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (count > 0) {
+                count--;
+                tvcau.setText("Câu " + (count + 1) + ":");
+                answerView.clearAll();
+                initQuestion();
+            }
+        }
+    };
+    private View.OnClickListener onNext = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (count < 9) {
+                count++;
+                tvcau.setText("Câu " + (count + 1) + ":");
+                answerView.clearAll();
+                initQuestion();
+            } else {//neu tra loi het 10 cau thi tu ket thuc khi chon next
+                finishTest();
+            }
+        }
+    };
+    private View.OnClickListener onFinish = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            finishTest();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +94,10 @@ public class Part1Activity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //Handle Review mode or test mode
-        if (getIntent()!=null) {
+        if (getIntent() != null) {
             Bundle b = getIntent().getExtras();
-            if(b!=null){//review mode
-                if( b.getBoolean("reviewmode", false)){
+            if (b != null) {//review mode
+                if (b.getBoolean("reviewmode", false)) {
                     isReviewMode = true;
                     listResult = b.getStringArray("result");
                     list = b.getParcelableArrayList("question");
@@ -89,13 +121,13 @@ public class Part1Activity extends AppCompatActivity {
         //startActivity(new Intent(this, MainActivity.class));
     }
 
-    public void initialize(){
+    public void initialize() {
         this.viewPager = (ViewPager) findViewById(R.id.view_pager);
         answerView = (AnswerView) findViewById(R.id.answer_view);
         answerView.setOnAnswerChange(new AnswerView.OnAnswerChange() {
             @Override
             public void onAnswerChange(AnswerView view, int index) {
-                Toast.makeText(Part1Activity.this, "Choose: "+index, Toast.LENGTH_SHORT).show();
+                Toast.makeText(Part1Activity.this, "Choose: " + index, Toast.LENGTH_SHORT).show();
                 listResult[count] = String.valueOf((char) (((int) 'A') + index));//ABCD
             }
         });
@@ -110,18 +142,20 @@ public class Part1Activity extends AppCompatActivity {
         btnprev.setOnClickListener(onPrev);
         btnnext.setOnClickListener(onNext);
         btnfinish.setOnClickListener(onFinish);
-        if (!isReviewMode){
+        if (!isReviewMode) {
             initTestMode();
             chrono.setBase(SystemClock.elapsedRealtime());
             chrono.start();
-        }else{
+        } else {
             chrono.setText(time);
         }
         //
     }
-    public void initTestMode(){
+
+    public void initTestMode() {
         //groupradio.setOnCheckedChangeListener(onChecked);
     }
+
     /**
      * Initialize data for part from database sqlite
      */
@@ -143,18 +177,18 @@ public class Part1Activity extends AppCompatActivity {
                 pagerAdapter = new PagerAdapter(getSupportFragmentManager()
                         , 1//part 1
                         , context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg" //Question: img path
-                        , list.get(count).getQuestion()+"\n"+list.get(count).getTranscript());  //transcript
+                        , list.get(count).getQuestion() + "\n" + list.get(count).getTranscript());  //transcript
                 AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".mp3"));
                 viewPager.setAdapter(pagerAdapter);
 
-                if (isReviewMode){
+                if (isReviewMode) {
                     answerView.clearAll();
                     autoCheckRadioButton(count);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
             }
-        }else{
+        } else {
             Toast.makeText(Part1Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
         }
     }
@@ -162,17 +196,17 @@ public class Part1Activity extends AppCompatActivity {
     /**
      * Using when user wanna change question
      */
-    private void initQuestion(){
+    private void initQuestion() {
         try {
             viewPager.setCurrentItem(0, true);
             AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".mp3"));
             QuestionFragment.getInstance().setImageView(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg");
-            TranscriptFragment.getInstance().setTranscript(list.get(count).getQuestion()+"\n"+list.get(count).getTranscript());
-            if (isReviewMode){
+            TranscriptFragment.getInstance().setTranscript(list.get(count).getQuestion() + "\n" + list.get(count).getTranscript());
+            if (isReviewMode) {
                 autoCheckRadioButton(count);
             }
             AudioCong.getInstance().play();
-        }catch (Exception e){
+        } catch (Exception e) {
             //Toast.makeText(Part1Activity.this, "Image not found", Toast.LENGTH_SHORT).show();
         }
     }
@@ -180,54 +214,22 @@ public class Part1Activity extends AppCompatActivity {
     /**
      * After finish testting, user can't review all the test they just taking. In this review mode,
      * this method will be used to check the corrects answer and the answer what user choosed
+     *
      * @param i: the count = id of question
      */
-    public void autoCheckRadioButton(int i){
+    public void autoCheckRadioButton(int i) {
         answerView.disableAll();
-        int usercheck = listResult[i]==null?-1:(int)listResult[i].charAt(0)-65;
-        int correct = (int)list.get(i).getAnswer().toUpperCase().charAt(0) - 65;
-        if (usercheck!=-1)
+        int usercheck = listResult[i] == null ? -1 : (int) listResult[i].charAt(0) - 65;
+        int correct = (int) list.get(i).getAnswer().toUpperCase().charAt(0) - 65;
+        if (usercheck != -1)
             answerView.setActiveIndex(usercheck);
         answerView.setTrueAnswer(correct);
     }
 
-
-    private View.OnClickListener onPrev = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            if (count>0){
-                count--;
-                tvcau.setText("Câu " + (count + 1) + ":");
-                answerView.clearAll();
-                initQuestion();
-            }
-        }
-    };
-    private View.OnClickListener onNext = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            if (count<9){
-                count++;
-                tvcau.setText("Câu "+(count +1)+":");
-                answerView.clearAll();
-                initQuestion();
-            }
-            else {//neu tra loi het 10 cau thi tu ket thuc khi chon next
-                finishTest();
-            }
-        }
-    };
-    private View.OnClickListener onFinish = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            finishTest();
-        }
-    };
-
     /**
      * Finish test method, show the result activity of current test
      */
-    private void finishTest(){
+    private void finishTest() {
         //Count correct answer
         Intent intent = new Intent(context, ResultActivity.class);
         Bundle b = new Bundle();
@@ -238,7 +240,7 @@ public class Part1Activity extends AppCompatActivity {
         b.putInt("total", 10);
         intent.putExtras(b);
         startActivity(intent);
-        if (chrono!=null)
+        if (chrono != null)
             chrono.stop();
     }
     //Context Menu
@@ -271,9 +273,14 @@ public class Part1Activity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.search){
+        if (id == R.id.search) {
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        AudioCong.getInstance().pause();
+        super.onDestroy();
+    }
 }

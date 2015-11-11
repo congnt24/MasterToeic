@@ -10,7 +10,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
-import android.speech.tts.TextToSpeech;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -22,11 +21,11 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class DictActivity extends Activity implements IDictionaryHandler{
+public class DictActivity extends Activity implements IDictionaryHandler {
     private static final int REQUEST_IMAGE_CAPTURE = 10;
-    private static final int REQUEST_SELECT_PHOTO= 11;
-    private final int REQ_CODE_SPEECH_INPUT = 100;
+    private static final int REQUEST_SELECT_PHOTO = 11;
     public static TessBaseAPI baseApi;
+    private final int REQ_CODE_SPEECH_INPUT = 100;
     FrameLayout dict_container;
     private Dictionary dict;
 
@@ -40,7 +39,7 @@ public class DictActivity extends Activity implements IDictionaryHandler{
     }
 
     private void initAPI() {
-        new AsyncTask<Void, Void, Void>(){
+        new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
                 baseApi = new TessBaseAPI();
@@ -95,8 +94,7 @@ public class DictActivity extends Activity implements IDictionaryHandler{
             baseApi.setImage((Bitmap) extras.get("data"));
             String text = baseApi.getUTF8Text();
             Dictionary.getInstance().setSearchView(text);
-        }else
-        if (requestCode == REQUEST_SELECT_PHOTO && resultCode == RESULT_OK) {
+        } else if (requestCode == REQUEST_SELECT_PHOTO && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
             try {
                 Bitmap bm = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImageUri));
@@ -106,8 +104,7 @@ public class DictActivity extends Activity implements IDictionaryHandler{
             } catch (FileNotFoundException e) {
                 Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();
             }
-        }else
-        if (requestCode == REQ_CODE_SPEECH_INPUT && resultCode == RESULT_OK){
+        } else if (requestCode == REQ_CODE_SPEECH_INPUT && resultCode == RESULT_OK) {
             if (null != data) {
                 ArrayList<String> result = data
                         .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
@@ -115,8 +112,5 @@ public class DictActivity extends Activity implements IDictionaryHandler{
             }
         }
     }
-
-
-
 }
 

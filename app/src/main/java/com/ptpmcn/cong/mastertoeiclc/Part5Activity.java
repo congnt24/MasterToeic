@@ -42,9 +42,40 @@ public class Part5Activity extends AppCompatActivity implements IMenuHandler {
     private android.widget.LinearLayout parentgroup;
     private SelectableTextView question;
     private android.widget.Chronometer chrono;
-    private int count=0;
+    private int count = 0;
     private String time;
     private DictSearchView searchView;
+    private View.OnClickListener onPrev = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (count > 0) {
+                count--;
+                tvcau.setText("Câu " + (count + 1) + ":");
+                answerView.clearAll();
+                initQuestion();
+            }
+        }
+    };
+    private View.OnClickListener onNext = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (count < 9) {
+                count++;
+                tvcau.setText("Câu " + (count + 1) + ":");
+                answerView.clearAll();
+                initQuestion();
+            } else {//neu tra loi het 10 cau thi tu ket thuc khi chon next
+                finishTest();
+            }
+        }
+    };
+    private View.OnClickListener onFinish = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            finishTest();
+        }
+    };
+    //Button click handler
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +85,10 @@ public class Part5Activity extends AppCompatActivity implements IMenuHandler {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         SQLiteFactory.getSQLiteHelper(context, "data/data_reading.db").openDatabase("data/data_reading.db");
-       if (getIntent()!=null) {
+        if (getIntent() != null) {
             Bundle b = getIntent().getExtras();
-            if(b!=null){//review mode
-                if( b.getBoolean("reviewmode", false)){
+            if (b != null) {//review mode
+                if (b.getBoolean("reviewmode", false)) {
                     isReviewMode = true;
                     listResult = b.getStringArray("result");
                     list = b.getParcelableArrayList("question");
@@ -93,51 +124,18 @@ public class Part5Activity extends AppCompatActivity implements IMenuHandler {
         btnprev.setOnClickListener(onPrev);
         btnnext.setOnClickListener(onNext);
         btnfinish.setOnClickListener(onFinish);
-        if (!isReviewMode){
+        if (!isReviewMode) {
             initTestMode();
             chrono.setBase(SystemClock.elapsedRealtime());
             chrono.start();
-        }else{
+        } else {
             chrono.setText(time);
         }
     }
 
-    public void initTestMode(){
+    public void initTestMode() {
         //groupradio.setOnCheckedChangeListener(onChecked);
     }
-    //Button click handler
-
-    private View.OnClickListener onPrev = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            if (count>0){
-                count--;
-                tvcau.setText("Câu " + (count + 1) + ":");
-                answerView.clearAll();
-                initQuestion();
-            }
-        }
-    };
-    private View.OnClickListener onNext = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            if (count<9){
-                count++;
-                tvcau.setText("Câu "+(count +1)+":");
-                answerView.clearAll();
-                initQuestion();
-            }
-            else {//neu tra loi het 10 cau thi tu ket thuc khi chon next
-                finishTest();
-            }
-        }
-    };
-    private View.OnClickListener onFinish = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            finishTest();
-        }
-    };
 
     /**
      * Initialize data for part from database sqlite
@@ -149,34 +147,34 @@ public class Part5Activity extends AppCompatActivity implements IMenuHandler {
                     Cursor cs = SQLiteFactory.getSQLiteHelper(context, "data/data_reading.db").queryRandom("part5", 10);
                     while (cs.moveToNext()) {
                         Question q = new Question();
-                        q.setQuestion(cs.getString(1).split("\\)", 2)[1].trim()+"\n\n"+cs.getString(2)+"\n"+cs.getString(3)+"\n"+cs.getString(4)+"\n"+cs.getString(5));
-                        q.setAnswer(String.valueOf((char) (cs.getInt(6)+64)));//String.valueOf((char)
+                        q.setQuestion(cs.getString(1).split("\\)", 2)[1].trim() + "\n\n" + cs.getString(2) + "\n" + cs.getString(3) + "\n" + cs.getString(4) + "\n" + cs.getString(5));
+                        q.setAnswer(String.valueOf((char) (cs.getInt(6) + 64)));//String.valueOf((char)
                         list.add(q);
                     }
                     cs.close();
-                } else
-                if (isReviewMode){
+                } else if (isReviewMode) {
                     answerView.clearAll();
                     autoCheckRadioButton(count);
                 }
                 initQuestion();
-            }catch (Exception e){
+            } catch (Exception e) {
                 Toast.makeText(Part5Activity.this, "Dữ liệu không khả dụng3", Toast.LENGTH_SHORT).show();
             }
-        }else{
+        } else {
             Toast.makeText(Part5Activity.this, "Dữ liệu không khả dụng", Toast.LENGTH_SHORT).show();
         }
     }
+
     /**
      * Using when user wanna change question
      */
-    private void initQuestion(){
+    private void initQuestion() {
         try {
             question.setText(list.get(count).getQuestion());
-            if (isReviewMode){
+            if (isReviewMode) {
                 autoCheckRadioButton(count);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             //Toast.makeText(Part1Activity.this, "Image not found", Toast.LENGTH_SHORT).show();
         }
     }
@@ -184,13 +182,14 @@ public class Part5Activity extends AppCompatActivity implements IMenuHandler {
     /**
      * After finish testting, user can't review all the test they just taking. In this review mode,
      * this method will be used to check the corrects answer and the answer what user choosed
+     *
      * @param i: the count = id of question
      */
-    public void autoCheckRadioButton(int i){
+    public void autoCheckRadioButton(int i) {
         answerView.disableAll();
-        int usercheck = listResult[i]==null?-1:(int)listResult[i].charAt(0)-65;
-        int correct = (int)list.get(i).getAnswer().toUpperCase().charAt(0) - 65;
-        if (usercheck!=-1)
+        int usercheck = listResult[i] == null ? -1 : (int) listResult[i].charAt(0) - 65;
+        int correct = (int) list.get(i).getAnswer().toUpperCase().charAt(0) - 65;
+        if (usercheck != -1)
             answerView.setActiveIndex(usercheck);
         answerView.setTrueAnswer(correct);
     }
@@ -198,7 +197,7 @@ public class Part5Activity extends AppCompatActivity implements IMenuHandler {
     /**
      * Finish test method, show the result activity of current test
      */
-    private void finishTest(){
+    private void finishTest() {
         //Count correct answer
         Intent intent = new Intent(context, ResultActivity.class);
         Bundle b = new Bundle();
@@ -209,7 +208,7 @@ public class Part5Activity extends AppCompatActivity implements IMenuHandler {
         b.putInt("total", 10);
         intent.putExtras(b);
         startActivity(intent);
-        if (chrono!=null)
+        if (chrono != null)
             chrono.stop();
     }
 

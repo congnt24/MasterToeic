@@ -11,9 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,22 +51,39 @@ public class ResultActivity extends AppCompatActivity {
             tvResult.setText("Kết Quả Part " + part);
             tvtime.setText("Thời gian: " + time);
             tvcorrect.setText("Số câu đúng: " + KiemTraKetQua(result, list));
-            Log.d("LIST", "LIST: "+list);
+            Log.d("LIST", "LIST: " + list);
         }
     }
+
     private int KiemTraKetQua(String[] list1, List<Question> list2) {
         int countCorrect = 0;
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            for (int i = 0; i < list1.length; i++) {
-                View row = inflater.inflate(R.layout.result_row, null);
-                TextView stt = (TextView) row.findViewById(R.id.tv_stt2);
-                TextView answer = (TextView) row.findViewById(R.id.tv_resultanswer);
-                stt.setText(i + "");
-                if (list1.length < 30) {//Part1
-                    ((TextView) row.findViewById(R.id.tv_correctanswer)).setText(list2.get(i).getAnswer());
+        for (int i = 0; i < list1.length; i++) {
+            View row = inflater.inflate(R.layout.result_row, null);
+            TextView stt = (TextView) row.findViewById(R.id.tv_stt2);
+            TextView answer = (TextView) row.findViewById(R.id.tv_resultanswer);
+            stt.setText(i + "");
+            if (list1.length < 30) {//Part1
+                ((TextView) row.findViewById(R.id.tv_correctanswer)).setText(list2.get(i).getAnswer());
+                if (list1[i] != null) {
+                    answer.setText(list1[i]);
+                    if (list1[i].equalsIgnoreCase(list2.get(i).getAnswer())) {
+                        listcorrect.add(i);
+                        countCorrect++;
+                        answer.setTextColor(Color.GREEN);
+                    } else {
+                        answer.setTextColor(Color.RED);
+                    }
+                } else {
+                    answer.setText("X");
+                    answer.setTextColor(Color.RED);
+                }
+            } else {//Part2,3,4
+                try {
+                    ((TextView) row.findViewById(R.id.tv_correctanswer)).setText(list2.get(i / 3).getAnswer().substring(i % 3, i % 3 + 1));
                     if (list1[i] != null) {
                         answer.setText(list1[i]);
-                        if (list1[i].equalsIgnoreCase(list2.get(i).getAnswer())) {
+                        if (list1[i].equalsIgnoreCase(list2.get(i / 3).getAnswer().substring(i % 3, i % 3 + 1))) {
                             listcorrect.add(i);
                             countCorrect++;
                             answer.setTextColor(Color.GREEN);
@@ -79,33 +94,17 @@ public class ResultActivity extends AppCompatActivity {
                         answer.setText("X");
                         answer.setTextColor(Color.RED);
                     }
-                }else{//Part2,3,4
-                    try {
-                        ((TextView) row.findViewById(R.id.tv_correctanswer)).setText(list2.get(i / 3).getAnswer().substring(i % 3, i % 3 + 1));
-                        if (list1[i] != null) {
-                            answer.setText(list1[i]);
-                            if (list1[i].equalsIgnoreCase(list2.get(i /3).getAnswer().substring(i % 3, i % 3 + 1))) {
-                                listcorrect.add(i);
-                                countCorrect++;
-                                answer.setTextColor(Color.GREEN);
-                            } else {
-                                answer.setTextColor(Color.RED);
-                            }
-                        } else {
-                            answer.setText("X");
-                            answer.setTextColor(Color.RED);
-                        }
-                    }catch (Exception e){
-                        Log.d("ERROR", "Unknown exception");
-                    }
+                } catch (Exception e) {
+                    Log.d("ERROR", "Unknown exception");
                 }
-                historyContainer.addView(row);
-
             }
-        return  countCorrect;
+            historyContainer.addView(row);
+
+        }
+        return countCorrect;
     }
 
-    private void initialize(){
+    private void initialize() {
         this.btnxemlai = (Button) findViewById(R.id.btn_xemlai);
         this.btnktlai = (Button) findViewById(R.id.btn_ktlai);
         this.ivBanner = (ImageView) findViewById(R.id.iv_Banner);
@@ -118,7 +117,7 @@ public class ResultActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent;
                 Bundle bundle = new Bundle();
-                switch(part){
+                switch (part) {
                     case 1:
                         intent = new Intent(ResultActivity.this, Part1Activity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -158,7 +157,7 @@ public class ResultActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent;
                 Bundle bundle = new Bundle();
-                switch(part){
+                switch (part) {
                     case 1:
                         intent = new Intent(ResultActivity.this, Part1Activity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);

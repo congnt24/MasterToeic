@@ -1,7 +1,5 @@
 package com.ptpmcn.cong.mastertoeiclc;
 
-import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -37,43 +35,45 @@ public class FlashCardActivity extends AppCompatActivity implements ICustomColor
         getSupportActionBar().setTitle("Quiz");
         dictSQL = (SQLiteHelper) SQLiteFactory.getSQLiteHelper(this, "dict.db");
         parent = (LinearLayout) findViewById(R.id.layout_parent);
-        if(getIntent()!=null){
-            if (getIntent().getBooleanExtra("isnewword", false)){
+        if (getIntent() != null) {
+            if (getIntent().getBooleanExtra("isnewword", false)) {
                 list = generateNewWord();
-            }else{
+            } else {
                 list = generateData();
             }
-        }else{
+        } else {
             list = generateData();
         }
 
         flashCards = new CustomFlashCard[list.size()];
         for (int i = 0; i < list.size(); i++) {
-            flashCards[i]=new CustomFlashCard(this);
-            flashCards[i].setId(0x1000+i);
+            flashCards[i] = new CustomFlashCard(this);
+            flashCards[i].setId(0x1000 + i);
             flashCards[i].init(list.get(i), this);
             parent.addView(flashCards[i]);
         }
     }
 
-    public List<String[]> generateData(){
+    public List<String[]> generateData() {
         List<String[]> tmplist = new ArrayList<String[]>();
-        Cursor c =dictSQL.queryRandom("history", 5);
-        while (c.moveToNext()){
-            tmplist.add(new String[]{c.getString(c.getColumnIndex("word")),c.getString(c.getColumnIndex("summary"))});
+        Cursor c = dictSQL.queryRandom("history", 5);
+        while (c.moveToNext()) {
+            tmplist.add(new String[]{c.getString(c.getColumnIndex("word")), c.getString(c.getColumnIndex("summary"))});
         }
         return tmplist;
     }
-    public List<String[]> generateNewWord(){
+
+    public List<String[]> generateNewWord() {
         List<String[]> tmplist = new ArrayList<String[]>();
-        Cursor c =dictSQL.getSQLiteDatabase().query("history", null
+        Cursor c = dictSQL.getSQLiteDatabase().query("history", null
                 , "count = ?", new String[]{"0"}
                 , null, null, "count ASC", "5");
-        while (c.moveToNext()){
-            tmplist.add(new String[]{c.getString(c.getColumnIndex("word")),c.getString(c.getColumnIndex("summary"))});
+        while (c.moveToNext()) {
+            tmplist.add(new String[]{c.getString(c.getColumnIndex("word")), c.getString(c.getColumnIndex("summary"))});
         }
         return tmplist;
     }
+
     @Override
     public void changeFrontColor(View v) {
         v.setBackgroundResource(R.drawable.card_boder);
@@ -88,23 +88,24 @@ public class FlashCardActivity extends AppCompatActivity implements ICustomColor
 
     @Override
     public void changeFrontTextColor(View v) {
-        ((TextView)v).setTextSize(40);
-        ((TextView)v).setTextColor(Color.BLACK);
+        ((TextView) v).setTextSize(40);
+        ((TextView) v).setTextColor(Color.BLACK);
     }
 
     @Override
     public void changeBackTextColor(View v) {
-        ((TextView)v).setTextSize(40);
-        ((TextView)v).setTextColor(Color.BLUE);
+        ((TextView) v).setTextSize(40);
+        ((TextView) v).setTextColor(Color.BLUE);
     }
 
     @Override
     public void onFlipCard(View v) {
         TextView tv = (TextView) v;
         String word = tv.getText().toString();
-        Log.d("SQL", "SQL: "+word);
+        Log.d("SQL", "SQL: " + word);
         dictSQL.getSQLiteDatabase().execSQL("UPDATE history SET count=count+1 WHERE word = ?", new String[]{word});
     }
+
     @Override
     public void onBackPressed() {
         //startActivity(new Intent(this, MainActivity.class));

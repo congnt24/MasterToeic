@@ -39,35 +39,36 @@ public class MainActivity extends Activity {
         ButterKnife.bind(this);
 
         //Check word in history
-        if (getHistoryNotLearnYet()>=5){
+        if (getHistoryNotLearnYet() >= 5) {
             new AlertDialog.Builder(this).setTitle("Do you want to learn some words you've lookup?")
-            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(MainActivity.this, FlashCardActivity.class);
-                    intent.putExtra("isnewword", true);
-                    startActivity(intent);
-                }
-            })
-            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            }).show();
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(MainActivity.this, FlashCardActivity.class);
+                            intent.putExtra("isnewword", true);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
         }
     }
 
     private int getHistoryNotLearnYet() {
-        int tmp=0;
+        int tmp = 0;
         SQLiteHelper dict = (SQLiteHelper) SQLiteFactory.getSQLiteHelper(getApplicationContext(), "dict.db");
         createHistoryTable();
-        Cursor c  = dict.getSQLiteDatabase().query("history", null, " count = ?", new String[]{"0"}, null, null, null);
-        while (c.moveToNext()){
+        Cursor c = dict.getSQLiteDatabase().query("history", null, " count = ?", new String[]{"0"}, null, null, null);
+        while (c.moveToNext()) {
             tmp++;
         }
         return tmp;
     }
+
     private void createHistoryTable() {
         String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS history(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "word TEXT NOT NULL UNIQUE, phonetic TEXT, summary TEXT, mean TEXT, count INTEGER DEFAULT 0)";
@@ -78,20 +79,24 @@ public class MainActivity extends Activity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
     }
+
     @OnClick(R.id.btn_lc)
     public void openLCActivity() {
         startActivity(new Intent(this, LCMenuActivity.class));
     }
+
     @OnClick(R.id.btn_about)
-    public void openAboutActivity(){
+    public void openAboutActivity() {
         startActivity(new Intent(getApplicationContext(), FlashCardActivity.class));
     }
+
     @OnClick(R.id.btn_rc)
-    public void openPart5Activity(){
+    public void openPart5Activity() {
         startActivity(new Intent(getApplicationContext(), Part5Activity.class));
     }
+
     @OnClick(R.id.btn_dict)
-    public void openDictActivity(){
+    public void openDictActivity() {
         startActivity(new Intent(getApplicationContext(), DictActivity.class));
     }
 }

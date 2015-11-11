@@ -34,7 +34,8 @@ public class DictSearchView extends SearchView implements SearchView.OnQueryText
     public DictSearchView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-    public void init(Activity activity){
+
+    public void init(Activity activity) {
         this.activity = activity;
         dictSQL = (SQLiteHelper) SQLiteFactory.getSQLiteHelper(activity, "dict.db");
         setQueryHint(activity.getString(R.string.search_hint));
@@ -76,7 +77,6 @@ public class DictSearchView extends SearchView implements SearchView.OnQueryText
         Dictionary.getInstance().showDialogAndAddToHistory(activity, mAdapter.getCursor().getString(1));
         return false;
     }
-
 
     private void loadHints() {
         final String[] from = new String[]{CITY_NAME};

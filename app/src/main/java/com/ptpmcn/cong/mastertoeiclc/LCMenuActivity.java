@@ -9,9 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import apv.congnt24.data.sqlite.SQLiteFactory;
-import apv.congnt24.data.sqlite.SQLiteHelper;
-
 public class LCMenuActivity extends AppCompatActivity {
 
     private TextView tvTitle;
@@ -27,7 +24,7 @@ public class LCMenuActivity extends AppCompatActivity {
         initialize();
     }
 
-    public void initialize(){
+    public void initialize() {
 
         this.btnpart4 = (Button) findViewById(R.id.btn_part4);
         this.btnpart3 = (Button) findViewById(R.id.btn_part3);

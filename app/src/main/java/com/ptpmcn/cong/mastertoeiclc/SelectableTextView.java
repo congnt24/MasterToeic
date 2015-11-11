@@ -3,12 +3,9 @@ package com.ptpmcn.cong.mastertoeiclc;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ActionMode;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-
-import com.ptpmcn.cong.dictionary.Dictionary;
 
 /**
  * Created by cong on 11/8/2015.

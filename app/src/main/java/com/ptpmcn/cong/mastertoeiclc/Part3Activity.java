@@ -8,7 +8,6 @@ import android.os.Parcelable;
 import android.os.SystemClock;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,11 +19,12 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import adapter.PagerAdapter;
-import apv.congnt24.customviews.AnswerView;
 import apv.congnt24.customviews.AudioCong;
 import apv.congnt24.data.sqlite.SQLiteFactory;
 import fragments.QuestionFragment;
@@ -37,12 +37,25 @@ import model.Question;
 public class Part3Activity extends AppCompatActivity {
 
 
-
     public static final int QUESTIONNUMBER = 30;
+    private static Part3Activity instance;
     public List<Question> list = new ArrayList<>();
     public int count = 0;
+    public boolean isReviewMode = false;
+    public String[] listResult;
     Context context;
-    int part=3;
+    int part = 3;
+    DictSearchView searchView;
+    View.OnClickListener onPrev = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (count > 0) {
+                QuestionFragment.getInstance().clearGroupCheck();
+                count--;
+                initQuestion();
+            }
+        }
+    };
     private Button btnprev;
     private Button btnfinish;
     private Button btnnext;
@@ -50,18 +63,33 @@ public class Part3Activity extends AppCompatActivity {
     private PagerAdapter pagerAdapter;
     private ViewPager viewPager;
     private Toolbar toolbar;
-    private static Part3Activity instance;
     private Chronometer chrono;
-    public boolean isReviewMode = false;
+    View.OnClickListener onNext = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (count < 9) {
+                QuestionFragment.getInstance().clearGroupCheck();
+                count++;
+                initQuestion();
+            } else {//neu tra loi het 10 cau thi tu ket thuc khi chon next
+                finishTest();
+            }
+        }
+    };
+    View.OnClickListener onFinish = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            finishTest();
+        }
+    };
     private String time;
-    public String[] listResult;
-    DictSearchView searchView;
 
-    public static Part3Activity getInstance(){
+    public static Part3Activity getInstance() {
         if (instance == null)
             instance = new Part3Activity();
         return instance;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,18 +100,18 @@ public class Part3Activity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         context = getApplicationContext();
         initialize();
-        if (getIntent()!=null) {
+        if (getIntent() != null) {
             Bundle b = getIntent().getExtras();
-            if(b!=null) {
-                if (b.getInt("part", 0) !=0) {//Part 2,3 or 4
+            if (b != null) {
+                if (b.getInt("part", 0) != 0) {//Part 2,3 or 4
                     part = b.getInt("part");
                     try {
                         ab.setTitle("Part " + part);
-                    }catch (NullPointerException e){
+                    } catch (NullPointerException e) {
                         Log.e("ActionBar", "No ActionBar");
                     }
                 }
-                if( b.getBoolean("reviewmode", false)){//review mode
+                if (b.getBoolean("reviewmode", false)) {//review mode
                     isReviewMode = true;
                     listResult = b.getStringArray("result");
                     list = b.getParcelableArrayList("question");
@@ -92,28 +120,29 @@ public class Part3Activity extends AppCompatActivity {
                 }
             }
         }
-        if (!isReviewMode){
+        if (!isReviewMode) {
             initTestMode();
             chrono.setBase(SystemClock.elapsedRealtime());
             chrono.start();
-        }else{//Revire mode
+        } else {//Revire mode
             chrono.setText(time);
         }
         initdata();
     }
-
 
     @Override
     protected void onPause() {
         super.onPause();
         AudioCong.getInstance().pause();
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(this, LCMenuActivity.class));
     }
-    public void initialize(){
+
+    public void initialize() {
         this.playercontainer = (LinearLayout) findViewById(R.id.player_container);
         this.btnnext = (Button) findViewById(R.id.btn_next);
         this.btnfinish = (Button) findViewById(R.id.btn_finish);
@@ -134,13 +163,13 @@ public class Part3Activity extends AppCompatActivity {
     private void initdata() {
         if (SQLiteFactory.getSQLiteHelper(context, "data.db") != null) {
             try {
-                if (!isReviewMode){
+                if (!isReviewMode) {
                     Cursor cs = SQLiteFactory.getSQLiteHelper(context, "data.db").queryRandom("part" + part, 10);
                     while (cs.moveToNext()) {
                         cs.getColumnCount();
                         Question q = new Question();
                         q.setAudio(cs.getString(1));
-                        q.setQuestion(part!=2?cs.getString(2):"1).\n" +
+                        q.setQuestion(part != 2 ? cs.getString(2) : "1).\n" +
                                 "-----------\n" +
                                 "-----------\n" +
                                 "-----------\n" +
@@ -167,16 +196,17 @@ public class Part3Activity extends AppCompatActivity {
                 pagerAdapter = new PagerAdapter(getSupportFragmentManager()
                         , part//part
                         , list.get(count).getQuestion()
-                        , ""+list.get(count).getTranscript());  //transcript
+                        , "" + list.get(count).getTranscript());  //transcript
                 viewPager.setAdapter(pagerAdapter);
-            }catch (Exception e){
+            } catch (Exception e) {
                 Toast.makeText(Part3Activity.this, "Dữ liệu không khả dụng1", Toast.LENGTH_SHORT).show();
             }
-        }else{
+        } else {
             Toast.makeText(Part3Activity.this, "Dữ liệu không khả dụng2", Toast.LENGTH_SHORT).show();
         }
     }
-    private void initQuestion(){
+
+    private void initQuestion() {
         try {
             AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part" + part + "/" + list.get(count).getAudio() + ".mp3"));
             AudioCong.getInstance().pause();
@@ -189,41 +219,10 @@ public class Part3Activity extends AppCompatActivity {
         }
     }
 
-
-    View.OnClickListener onPrev = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            if (count>0){
-                QuestionFragment.getInstance().clearGroupCheck();
-                count--;
-                initQuestion();
-            }
-        }
-    };
-    View.OnClickListener onNext = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            if (count<9){
-                QuestionFragment.getInstance().clearGroupCheck();
-                count++;
-                initQuestion();
-            }
-            else {//neu tra loi het 10 cau thi tu ket thuc khi chon next
-                finishTest();
-            }
-        }
-    };
-    View.OnClickListener onFinish = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            finishTest();
-        }
-    };
-
     /**
      * Finish test method, show the result activity of current test
      */
-    private void finishTest(){
+    private void finishTest() {
         Intent intent = new Intent(context, ResultActivity.class);
         Bundle b = new Bundle();
         b.putInt("part", part);
@@ -233,7 +232,7 @@ public class Part3Activity extends AppCompatActivity {
         b.putInt("total", QUESTIONNUMBER);
         intent.putExtras(b);
         startActivity(intent);
-        if (chrono!=null)
+        if (chrono != null)
             chrono.stop();
     }
 
@@ -253,10 +252,15 @@ public class Part3Activity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.search){
+        if (id == R.id.search) {
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        AudioCong.getInstance().pause();
+        super.onDestroy();
+    }
 }

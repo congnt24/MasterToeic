@@ -27,11 +27,10 @@ repositories {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile project(':jsonconfig')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile project(':tess-two')
     compile project(':dictionary')
-    compile 'apv.congnt24:android-utilities:0.0.9@aar'
+    compile 'apv.congnt24:android-utilities:0.0.11@aar'
 }

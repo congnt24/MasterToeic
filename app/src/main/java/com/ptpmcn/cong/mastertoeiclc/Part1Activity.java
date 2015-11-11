@@ -144,10 +144,9 @@ public class Part1Activity extends AppCompatActivity {
                         , 1//part 1
                         , context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".jpg" //Question: img path
                         , list.get(count).getQuestion()+"\n"+list.get(count).getTranscript());  //transcript
-
                 AudioCong.getInstance().init(context, new File(context.getFilesDir() + "/part1/" + list.get(count).getAudio() + ".mp3"));
-
                 viewPager.setAdapter(pagerAdapter);
+
                 if (isReviewMode){
                     answerView.clearAll();
                     autoCheckRadioButton(count);

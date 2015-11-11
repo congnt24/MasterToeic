@@ -1,11 +1,13 @@
 package com.ptpmcn.cong.mastertoeiclc;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -65,7 +67,7 @@ public class FlashCardActivity extends AppCompatActivity implements ICustomColor
     public List<String[]> generateNewWord(){
         List<String[]> tmplist = new ArrayList<String[]>();
         Cursor c =dictSQL.getSQLiteDatabase().query("history", null
-                , "where count = ?", new String[]{"0"}
+                , "count = ?", new String[]{"0"}
                 , null, null, "count ASC", "5");
         while (c.moveToNext()){
             tmplist.add(new String[]{c.getString(c.getColumnIndex("word")),c.getString(c.getColumnIndex("summary"))});
@@ -97,7 +99,16 @@ public class FlashCardActivity extends AppCompatActivity implements ICustomColor
     }
 
     @Override
+    public void onFlipCard(View v) {
+        TextView tv = (TextView) v;
+        String word = tv.getText().toString();
+        Log.d("SQL", "SQL: "+word);
+        dictSQL.getSQLiteDatabase().execSQL("UPDATE history SET count=count+1 WHERE word = ?", new String[]{word});
+    }
+    @Override
     public void onBackPressed() {
-        startActivity(new Intent(this, MainActivity.class));
+        //startActivity(new Intent(this, MainActivity.class));
+//        finish();
+        super.onBackPressed();
     }
 }

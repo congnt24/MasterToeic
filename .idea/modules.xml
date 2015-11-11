@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/MasterToeic.iml" filepath="$PROJECT_DIR$/MasterToeic.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/dictionary/dictionary.iml" filepath="$PROJECT_DIR$/dictionary/dictionary.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jsonconfig/jsonconfig.iml" filepath="$PROJECT_DIR$/jsonconfig/jsonconfig.iml" />
       <module fileurl="file://$PROJECT_DIR$/tess-two/tess-two.iml" filepath="$PROJECT_DIR$/tess-two/tess-two.iml" />
     </modules>
   </component>

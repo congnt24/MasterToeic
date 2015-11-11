@@ -60,13 +60,20 @@ public class Dictionary implements AdapterView.OnItemClickListener {
 //Init database
         dictSQL = (SQLiteHelper) SQLiteFactory.getSQLiteHelper(context, "dict.db");
         if (dictSQL.openDatabase("dict.db")){
-            dictSQL.createHistoryTable();
+            createHistoryTable();
             Toast.makeText(context, "Ket noi thanh cong den CSDL", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(context, "Khong the ket noi den CSDL", Toast.LENGTH_SHORT).show();
         }
         return this;
     }
+
+    private void createHistoryTable() {
+        String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS history(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "word TEXT NOT NULL UNIQUE, phonetic TEXT, summary TEXT, mean TEXT, count INTEGER DEFAULT 0)";
+        dictSQL.getSQLiteDatabase().execSQL(CREATE_TABLE);
+    }
+
     public Dictionary initTextToSpeech(Activity activity){
         //Text to speech
         textToSpeech = new TextToSpeech(activity, new TextToSpeech.OnInitListener() {
@@ -244,6 +251,9 @@ public class Dictionary implements AdapterView.OnItemClickListener {
         showDialogAndAddToHistory(activity, txt);
     }
     public void speech(String toSpeak){
+        if (textToSpeech == null){
+            initTextToSpeech(activity);
+        }
         textToSpeech.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
     }
     public void close(){

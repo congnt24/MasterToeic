@@ -1,1 +1,1 @@
-include ':app', ':jsonconfig', ':tess-two', ':dictionary'
+include ':app', ':tess-two', ':dictionary'

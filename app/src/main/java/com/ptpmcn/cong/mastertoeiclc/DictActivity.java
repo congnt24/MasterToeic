@@ -116,10 +116,7 @@ public class DictActivity extends Activity implements IDictionaryHandler{
         }
     }
 
-    @Override
-    protected void onStop() {
-        dict.close();
-        super.onStop();
-    }
+
+
 }
 

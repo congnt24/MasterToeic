@@ -1,19 +1,14 @@
 package com.ptpmcn.cong.mastertoeiclc;
 
 import android.app.Activity;
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.Window;
 
 import com.ptpmcn.cong.dictionary.Dictionary;
-import com.ptpmcn.cong.jsonconfig.About_Activity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import apv.congnt24.customviews.SquarButton;
 import apv.congnt24.data.sqlite.SQLiteFactory;
@@ -44,7 +39,7 @@ public class MainActivity extends Activity {
         ButterKnife.bind(this);
 
         //Check word in history
-        /*if (getHistoryNotLearnYet()>=5){
+        if (getHistoryNotLearnYet()>=5){
             new AlertDialog.Builder(this).setTitle("Do you want to learn some words you've lookup?")
             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -59,18 +54,24 @@ public class MainActivity extends Activity {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                 }
-            });
-        }*/
+            }).show();
+        }
     }
 
     private int getHistoryNotLearnYet() {
         int tmp=0;
         SQLiteHelper dict = (SQLiteHelper) SQLiteFactory.getSQLiteHelper(getApplicationContext(), "dict.db");
-        Cursor c  = dict.getSQLiteDatabase().query("history", null, "where count = ?", new String[]{"0"}, null, null, null);
+        createHistoryTable();
+        Cursor c  = dict.getSQLiteDatabase().query("history", null, " count = ?", new String[]{"0"}, null, null, null);
         while (c.moveToNext()){
             tmp++;
         }
         return tmp;
+    }
+    private void createHistoryTable() {
+        String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS history(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "word TEXT NOT NULL UNIQUE, phonetic TEXT, summary TEXT, mean TEXT, count INTEGER DEFAULT 0)";
+        SQLiteFactory.getSQLiteHelper(getApplicationContext(), "dict.db").getSQLiteDatabase().execSQL(CREATE_TABLE);
     }
 
     @Override

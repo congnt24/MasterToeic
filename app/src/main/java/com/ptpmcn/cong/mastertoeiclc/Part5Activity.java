@@ -236,4 +236,9 @@ public class Part5Activity extends AppCompatActivity implements IMenuHandler {
     public void onCompleteSelectTextView(String str) {
         Dictionary.getInstance().showDialogAndAddToHistory(this, str);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

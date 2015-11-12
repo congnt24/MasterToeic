@@ -76,6 +76,9 @@ public class Dictionary implements AdapterView.OnItemClickListener {
 
     public Dictionary initTextToSpeech(Activity activity){
         //Text to speech
+        if (textToSpeech!=null){
+            return this;
+        }
         textToSpeech = new TextToSpeech(activity, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {

@@ -138,8 +138,11 @@ public class Part3Activity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(this, LCMenuActivity.class));
+        if (isReviewMode) {
+            startActivity(new Intent(this, LCMenuActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+        }else{
+            super.onBackPressed();
+        }
     }
 
     public void initialize() {
@@ -261,6 +264,9 @@ public class Part3Activity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         AudioCong.getInstance().pause();
+        if (isReviewMode){
+            startActivity(new Intent(this, MainActivity.class));
+        }
         super.onDestroy();
     }
 }

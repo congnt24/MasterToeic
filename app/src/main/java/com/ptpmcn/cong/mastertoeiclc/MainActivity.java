@@ -99,4 +99,5 @@ public class MainActivity extends Activity {
     public void openDictActivity() {
         startActivity(new Intent(getApplicationContext(), DictActivity.class));
     }
+
 }
